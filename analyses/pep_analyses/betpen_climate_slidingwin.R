@@ -17,7 +17,7 @@ library(egg)
 library(raster)
 library(RColorBrewer)
 
-setwd("~/Documents/git/ospree/analyses/bb_analysis/PEP_climate")
+setwd("~/Documents/git/decsens/analyses/pep_analysis")
 d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 
 df<-d%>%
@@ -50,8 +50,8 @@ bestsites <- bestsites$Var1
 
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
-rn<-brick("~/Desktop/Big Data Items/tn_0.25deg_reg_v16.0.nc", sep="")
-rx<-brick("~/Desktop/Big Data Items/tx_0.25deg_reg_v16.0.nc", sep="")
+rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
+rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
@@ -141,8 +141,7 @@ alltemps$date <- as.character(alltemps$date)
 climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1961),]
 climatedatapost <- alltemps[(alltemps$year>=2000 & alltemps$year<=2011),]
 
-setwd("~/Documents/git/ospree/analyses/bb_analysis/pep_sims/simmonds_slidingwin")
-write.csv(climatedatapre, file="input/bp_climatedatapre.csv", row.names=FALSE)
-write.csv(climatedatapost, file="input/bp_climatedatapost.csv", row.names=FALSE)
+write.csv(climatedatapre, file="output/bp_climatedatapre.csv", row.names=FALSE)
+write.csv(climatedatapost, file="output/bp_climatedatapost.csv", row.names=FALSE)
 
 
