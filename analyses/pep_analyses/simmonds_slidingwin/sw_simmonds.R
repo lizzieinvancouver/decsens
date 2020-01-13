@@ -9,15 +9,7 @@ library(climwin)
 library(lubridate)
 
 # Setting working directory. Add in your own path in an if statement for your file structure
-if(length(grep("ailene", getwd()))>0) { 
-  setwd("~/Documents/GitHub/ospree/analyses/bb_analysis")
-} else if(length(grep("lizzie", getwd()))>0) {
-  setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/bb_analysis")
-} else if(length(grep("Ignacio", getwd()))>0) { 
-  setwd("~/GitHub/ospree/analyses/bb_analysis") 
-} else if(length(grep("catchamberlain", getwd()))>0) { 
-  setwd("~/Documents/git/ospree/analyses/bb_analysis")
-} else setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/bb_analysis")
+setwd("~/Documents/git/decsens/analyses/pep_analysis")
 
 ###### FOR JUST ANALYZING RESULTS JUMP TO LINE 75 ########
 
@@ -78,25 +70,29 @@ write.csv(Parameters_SWRpost, "pep_sims/simmonds_slidingwin/output/parameters_sw
 ######################################################################
 
 ### Now let's check out the data
-swapre <- read.csv("pep_sims/simmonds_slidingwin/output/results_swapre_bp_mayref.csv")
+swapre <- read.csv("simmonds_slidingwin/output/results_swapre_bp_mayref.csv")
 #swapre <- Results_SWRpre[[2]]
-swapost <- read.csv("pep_sims/simmonds_slidingwin/output/results_swapost_bp_mayref.csv")
+swapost <- read.csv("simmonds_slidingwin/output/results_swapost_bp_mayref.csv")
 #swapost <- Results_SWRpost[[2]]
 
-swapre_stat <- read.csv("pep_sims/simmonds_slidingwin/output/sumstats_swapre_bp_mayref.csv")
+swapre_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayref.csv")
 #swapre_stat <- Results_SWRpre[[1]]
-swapost_stat <- read.csv("pep_sims/simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
+swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
 #swapost_stat <- Results_SWRpost[[1]]
 
-confint(lm(yvar~climate,data=swapre))
-#                2.5 %     97.5 %
-#(Intercept) 152.960357 161.229140
-#climate      -6.022899  -4.989201
+### Alright, now we have to convert to Kelvin again...
+swapre$tempk <- swapre$climate + 273.15
+swapost$tempk <- swapost$climate + 273.15
 
-confint(lm(yvar~climate, data=swapost))
-#                2.5 %     97.5 %
-#(Intercept) 124.322906 129.083060
-#climate      -3.995561  -3.181351
+estprecc <- lm(yvar~tempk, data=swapre)
+estpostcc <- lm(yvar~tempk, data=swapost)
+
+diffbefore.after <- coef(estprecc)[2]-coef(estpostcc)[2]
+
+estprecc.log <- lm(log(yvar)~log(tempk), data=swapre)
+estpostcc.log <- lm(log(yvar)~log(tempk), data=swapost)
+
+logdiffbefore.after <- coef(estprecc.log)[2]-coef(estpostcc.log)[2]
 
 ##### Now let's try and compare the model output from the SWA to mean, sd, and variance
 mean(swapre$yvar) ### 113.8089
