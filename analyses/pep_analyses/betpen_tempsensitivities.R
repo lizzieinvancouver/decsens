@@ -24,7 +24,9 @@ bppost <- read.csv("output/bp_climatedatapost.csv")
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
 bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
                     sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
-                    matslope=numeric(), matslopese=numeric(), meanmatlo=numeric(), varmatlo=numeric(), sdmatlo=numeric())
+                    matslope=numeric(), matslopese=numeric(), meanmatlo=numeric(), 
+                    matslopelog=numeric(), matslopelogse=numeric(),
+                    varmatlo=numeric(), sdmatlo=numeric())
 
 sitez <- unique(bp$siteslist)
 
@@ -45,16 +47,20 @@ for(i in c(1:length(sitez))){ # i <- 1
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
     lmmat <- lm(lo~mat, data=subbycc)
     lmmatse <- summary(lmmat)$coef[2,2]
+    lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
+    lmmatlogse <- summary(lmmatlog)$coef[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
-                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, meanmatlo=meanmatlo,
+                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, 
+                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, 
+                           meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
     bpest <- rbind(bpest, bpestadd)
   }
 }    
 
 meanhere <- aggregate(bpest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "sdlo", "meanutah", "meangdd",
-                              "matslope", "matslopese")], bpest["cc"], FUN=mean)
+                              "matslope", "matslopese", "matslopelog", "matslopelogse")], bpest["cc"], FUN=mean)
 sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
                     bpest["cc"], FUN=sd)
 
@@ -63,6 +69,10 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanl
 # 1950-1960 5.365163 3.005094 1.731358  6.814883 1.363054 1.086849 113.8089 110.51111 10.25803 2246.987 68.70881 -4.534630   1.258845
 # 2000-2010 6.450939 1.251629 1.111780  6.615273 1.431603 1.152353 106.3356  46.95728  6.57374 2235.493 61.50754 -3.611025   1.579758
 
+
+bpest$matslopelog_exp <- exp(bpest$matslopelog)
+
+write.csv(bpest, file="output/bpenestimates_withlog.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better
@@ -77,57 +87,18 @@ for(i in c(1:length(sitez))){ # i <- 1
   matdiff <- precc$meanmat-postcc$meanmat
   matlodiff <- precc$meanmatlo-postcc$meanmatlo
   diffslope <- precc$matslope-postcc$matslope
+  diffslopelog <- precc$matslopelog-postcc$matslopelog
   varlodiff <- precc$varlo-postcc$varlo
   varlodiffper <- postcc$varlo/precc$varlo
   varmatdiffper <- postcc$varmat/precc$varmat
   bpest.sitediffs.add <- data.frame(siteslist=sitez[i], matdiff=matdiff,matlodiff=matlodiff, diffslope=diffslope,
+                                    diffslopelog,
                                     varlodiff=varlodiff, varlodiffper=varlodiffper, varmatdiffper=varmatdiffper)
   bpest.sitediffs <- rbind(bpest.sitediffs, bpest.sitediffs.add)
 }
 
 bpest.sitediffs$daysperC <- bpest.sitediffs$diffslope/bpest.sitediffs$matdiff
-
-
-bpclimall <- full_join(bppre, bppost)
-bpclimall <- subset(bpclimall, select=c(yday, year, temp, spatial))
-bpclimall$cc <- ifelse(bpclimall$year>=1950 & bpclimall$year<=1960, "1950-1960", "2000-2010")
-names(bpclimall) <- c("doy", "year", "temp", "siteslist", "cc")
-bpclimall <- bpclimall[!duplicated(bpclimall),]
-nonyrs <- c(1950, 1961, 2000, 2011)
-bpclimall <- bpclimall[!(bpclimall$year%in%nonyrs),]
-#bpclimall <- bpclimall[!(bpclimall$doy<=60),]
-
-lodate <- subset(bp, select=c("year", "siteslist", "cc", "lo"))
-lodate <- lodate[!duplicated(lodate),]
-
-lopersite <- data.frame()
-dailytemps <- data.frame()
-for(i in length(sitez)){ #i=1
-  for(j in 1951:2010){ #j=1951
-    lopersite <- lodate[(lodate$siteslist==i & lodate$year==j),]
-    lo <- as.numeric(lopersite$lo)
-    dailytemps <- bpclimall[(bpclimall$doy<=lo),]
-    
-  }
-}
-
-bptempandbb <- full_join(dailytemps, lodate)
-bptempandbb <- bptempandbb[!duplicated(bptempandbb),]
-bptempandbb$tempk <- bptempandbb$temp + 273.15
-
-#### Now calculate temperature sensitivites but with log
-estprecc.log <- lm(log(lo)~log(tempk), data=subset(bptempandbb, cc=="1950-1960")) 
-estpostcc.log <- lm(log(lo)~log(tempk), data=subset(bptempandbb, cc=="2000-2010"))
-
-logdiffbefore.after <- coef(estprecc.log)[2]-coef(estpostcc.log)[2]
-# negative means a decline in sensitivity AFTER climate change
-
-#### Now calculate temperature sensitivites without log to compare
-estprecc <- lm(lo~tempk, data=subset(bptempandbb, cc=="1950-1960")) 
-estpostcc <- lm(lo~tempk, data=subset(bptempandbb, cc=="2000-2010"))
-
-diffbefore.after <- coef(estprecc)[2]-coef(estpostcc)[2]
-# negative means a decline in sensitivity AFTER climate change
+bpest.sitediffs$daysperClog <- bpest.sitediffs$diffslopelog/bpest.sitediffs$matdiff
 
 
 ########################

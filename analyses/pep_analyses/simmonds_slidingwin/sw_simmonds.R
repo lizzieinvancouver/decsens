@@ -80,17 +80,18 @@ swapre_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayref.cs
 swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
 #swapost_stat <- Results_SWRpost[[1]]
 
+if(FALSE){
 ### Alright, now we have to convert to Kelvin again...
-swapre$tempk <- swapre$climate + 273.15
-swapost$tempk <- swapost$climate + 273.15
+#swapre$tempk <- swapre$climate + 273.15
+#swapost$tempk <- swapost$climate + 273.15
 
-estprecc <- lm(yvar~tempk, data=swapre)
-estpostcc <- lm(yvar~tempk, data=swapost)
+estprecc <- lm(yvar~climate, data=swapre)
+estpostcc <- lm(yvar~climate, data=swapost)
 
 diffbefore.after <- coef(estprecc)[2]-coef(estpostcc)[2]
 
-estprecc.log <- lm(log(yvar)~log(tempk), data=swapre)
-estpostcc.log <- lm(log(yvar)~log(tempk), data=swapost)
+estprecc.log <- lm(log(yvar)~log(climate), data=swapre)
+estpostcc.log <- lm(log(yvar)~log(climate), data=swapost)
 
 logdiffbefore.after <- coef(estprecc.log)[2]-coef(estpostcc.log)[2]
 
@@ -120,7 +121,7 @@ var(swapost$climate) ## 1.969164
 ## Post CC SWA results
 #   WindowOpen WindowClose Variable   Int       EST        SE        R2
 #1        -34          22        1 126.703 -3.588456 0.2071495 0.3998027
-
+}
 
 ######################################################################
 ## Now using code from `bb_analysis/PEP_climate/comparetopepsims.R` ##
@@ -131,36 +132,37 @@ swapost$site <- rep(1:45)
 swa <- rbind(swapre, swapost)
 swa$cc <- rep(c("pre", "post"), each=450)
 
-bpest <- data.frame(siteslist=numeric(), cc=character(), meanbb=numeric(), varbb=numeric(),  
-                    sdbb=numeric(), meanclim=numeric(), varclim=numeric(), sdclim=numeric(),
-                    climslope=numeric(), climslopese=numeric())
+swaest <- data.frame(site=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
+                    sdmat=numeric(), 
+                    matslope=numeric(), matslopese=numeric(), meanmatlo=numeric(), 
+                    matslopelog=numeric(), matslopelogse=numeric())
 
-
-sitez <- 1:45
+sitez <- unique(swa$site)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(swa, site==sitez[i])
   for(ccstate in c(1:2)){
     subbycc <- subset(subby, cc==unique(swa$cc)[ccstate])
-    meanbb <- mean(subbycc$yvar, na.rm=TRUE)
-    varbb <- var(subbycc$yvar, na.rm=TRUE)
-    sdbb <- sd(subbycc$yvar, na.rm=TRUE)
-    meanclim <- mean(subbycc$climate, na.rm=TRUE)
-    varclim <- var(subbycc$climate, na.rm=TRUE)
-    sdclim <- sd(subbycc$climate, na.rm=TRUE)
-    lmclim <- lm(yvar~climate, data=subbycc)
-    lmclimse <- summary(lmclim)$coef[2,2]
-    bpestadd <- data.frame(siteslist=sitez[i], cc=unique(swa$cc)[ccstate], meanbb=meanbb, 
-                           varbb=varbb, sdbb=sdbb, meanclim=meanclim, varclim=varclim, sdclim=sdclim, 
-                           climslope=coef(lmclim)["climate"], climslopese=lmclimse)
-    bpest <- rbind(bpest, bpestadd)
+    meanmat <- mean(subbycc$climate, na.rm=TRUE)
+    varmat <- var(subbycc$climate, na.rm=TRUE)
+    sdmat <- sd(subbycc$climate, na.rm=TRUE)
+    meanlo <- mean(subbycc$yvar, na.rm=TRUE)
+    varlo <- var(subbycc$yvar, na.rm=TRUE)
+    sdlo <- sd(subbycc$yvar, na.rm=TRUE)
+    lmmat <- lm(yvar~climate, data=subbycc)
+    lmmatse <- summary(lmmat)$coef[2,2]
+    lmmatlog <- lm(log(yvar)~log(climate), data=subbycc)
+    lmmatlogse <- summary(lmmatlog)$coef[2,2]
+    swaestadd <- data.frame(siteslist=sitez[i], cc=unique(swa$cc)[ccstate], meanmat=meanmat, 
+                           varmat=varmat, sdmat=sdmat, matslope=coef(lmmat)["climate"], matslopese=lmmatse, 
+                           matslopelog=coef(lmmatlog)["log(climate)"], matslopelogse=lmmatlogse)
+    swaest <- rbind(swaest, swaestadd)
   }
 }    
 
-meanhere <- aggregate(bpest[c("meanbb", "varbb", "sdbb", "meanclim", "varclim", "sdclim", 
-                              "climslope", "climslopese")], bpest["cc"], FUN=mean)
-sdhere <- aggregate(bpest[c("meanbb", "varbb", "meanclim", "varclim","climslope")],
-                    bpest["cc"], FUN=sd)
+swaest$matsloplog_exp <- exp(swaest$matslopelog)
+
+write.csv(swaest, file=("output/swaestimates_withlog.csv"), row.names = FALSE)
 
 #cc            meanbb     varbb      sdbb   meanclim   varclim   sdclim climslope   climslopese
 #1 post       106.3356  45.47136  6.510241 14.49351  1.391118 1.110196 -2.048819  2.111988
