@@ -40,6 +40,7 @@ for (i in degreez){
        daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
        leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
        yearly_temp <- colMeans(daily_temp)
+       # yearly_temp <- rnorm(length(yearly_temp), yearly_temp, 1) # add noise to reduce slopes
        per_leafout_date <- leafout_date/mean(leafout_date)
        per_yearly_temp <- yearly_temp/mean(yearly_temp)
        plot(yearly_temp, leafout_date, pch=20)
