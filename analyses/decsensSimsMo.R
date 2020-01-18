@@ -18,7 +18,7 @@ options(stringsAsFactors = FALSE)
 # set.seed(113)
 
 # Setting working directory. 
-setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/decsens")
+setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 
 # Step 1: Set up years, days per year, temperatures, required GDD (fstar), required chill (cstar) and how much higher fstar is when cstar is not met

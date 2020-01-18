@@ -18,7 +18,7 @@ if(length(grep("ailene", getwd()))>0) {
   setwd("~/GitHub/ospree/analyses/decsens") 
 } else if(length(grep("catchamberlain", getwd()))>0) { 
   setwd("~/Documents/git/ospree/analyses/bb_analysis/pep_sims")
-} else setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/decsens")
+} else setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 # Make some data ...
 
@@ -95,4 +95,68 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 # par(xpd=TRUE) # so I can plot legend outside
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
    cex=1, bty="n")
+dev.off()
+
+
+
+########################
+## Plotting, plus PEP ##
+########################
+
+# Get data ...
+dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE)
+
+# Get means and SD
+mean.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"], FUN=mean)
+sd.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"],  FUN=sd)
+
+tempdiff <- mean.betpen$meanmat[which(mean.betpen$cc=="2000-2010")]-
+    mean.betpen$meanmat[which(mean.betpen$cc=="1950-1960")]
+tempdiffplot <- c(0, tempdiff)
+
+library(grDevices)
+colz <- c("blue4", "violetred4", "blue1", "violetred1")
+colzalpha <- adjustcolor(colz, alpha.f = 0.5)
+
+cexhere <- 0.95
+pdf(file.path("figures/basicsimsandpep.pdf"), width = 6, height = 4)
+par(xpd=FALSE)
+par(mar=c(5,5,2,2))
+plot(x=NULL,y=NULL, xlim=c(-0.5, 3), ylim=c(-6, -0.1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="")
+# abline(h=0, lty=2, col="darkgrey")
+tempsteps <- 4
+for(i in 1:tempsteps){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm[i]
+  sdhere <- sd.sims$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[1])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[1])
+  }
+for(i in 1:tempsteps){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm[i]
+  sdhere <- sd.sims$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[2])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
+  }
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslope[i]
+  sdhere <- sd.betpen$matslope[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[3])
+  }
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslopelog[i]
+  sdhere <- sd.betpen$matslopelog[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[4])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[4])
+  }
+# par(xpd=TRUE) # so I can plot legend outside
+legend("bottomright", pch=c(19, 17, 19, 17), col=colzalpha,
+       legend=c("Simple linear regression sims", "Using logged variables PEP725",
+       "Using logged variables sims", "Using logged variables PEP725"), cex=0.5, bty="n")
 dev.off()
