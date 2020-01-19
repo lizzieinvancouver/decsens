@@ -1,0 +1,61 @@
+\documentclass[11pt,letter]{article}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\renewcommand{\baselinestretch}{1.1}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{hyperref} 
+
+\def\labelitemi{--}
+\parindent=0pt
+\begin{document}
+\emph{Edited by Lizzie} ...\\
+Let:
+\begin{align*}
+i & = \text{index the days, }  i = 0, 1, ..., N\\
+X_i & = \text{temperature on day $i$, assume } X_0 = 0\\
+\mu & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\
+S_i & = \sum_{X_1}^{X_n} X_i,  \text{(for example, GDD)}\\
+M_i & = \text{cumulative mean}, S_i / n \\
+\beta & = \text{a threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
+n &  = \text{the first day such that }  \beta < S_n, \text{ (for example, doy of budburst)}\\
+l &  = \text{the last date over which temperature is integrated}
+\end{align*}
+
+`Sensitivity' is generally measured by taking the slope---I am calling it $m$ here---of a linear regression of $n$ against $M_l$.\\
+
+It is not surprising that $n$ decreases with $\mu$ (and thus $M_l$) under the null model (this is equivalent to saying it is not surprising that plants leafout earlier with warmer spring temperatures, we all are fine with this). Researchers are surprised that the decrease of $m$ as $\mu$ increases and suggest this is evidence of declining sensitivities; $n$ is ``reacting'' or ``changing'' to $M_l$.\\
+
+So I say (I think, assuming the math still holds): Plotting $n$ against $M_l$ is similar to plotting $n$ against $S_n / n$, which is approximately the same as plotting $n$ against $\beta/n$, which is a hyperbola. The data is consistent with the null model; no need for $n$ to react to $M_l$.\\
+
+\newpage
+\emph{Original from J. Auerbach on 15 January 2020} ...\\
+Let:
+\begin{align*}
+i & = \text{index the days, }  i = 0, 1, ..., N\\
+X_i & = \text{temperature on day $i$, assume } X_0 = 0\\
+\mu & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\
+S_i & = \sum_{X_1}^{X_n} X_i \\
+M_i & = \text{cumulative mean}, S_i / n \\
+\beta & = \text{a threshold of interest, } \beta > 0\\
+n &  = \text{the first day such that }  \beta < S_n
+\end{align*}
+
+Note: a time $n$, we have $M_n = S_n / n \approx \beta / n$.\\
+
+Some say: It is NOT surprising that $n$ decreases in $\mu$ (and thus $M_n$) under the null model. It IS surprising that the decrease of $n$ in $M_n$ slows under the null model. This may be evidence of declining sensitivities; $n$ is ``reacting'' or '''changing'' to $M_n$.\\
+
+You say: Plotting $n$ against $M_n$ is the same as plotting $n$ against $S_n / n$, which is approximately the same as plotting $n$ against $\beta/n$, which is a hyperbola. The data is consistent with the null model; no need for $n$ to react to $M_n$.\\
+
+If this is the correct framing of the problem, $X_i$ is a gaussian random walk with drift and $n$ is a hitting time. I believe the mean and variance are difficult to work out in closed form since you would have to integrate $S_n$ over $n$. However, the continuous time generalization can be worked ot: a Brownian motion with instantaneous variance sigma and drift mu. The time, $t$, the process hits some threshold beta is distributed Inverse Gaussian Distribution, having mean $\mu/\beta$ and variance $\mu * \sigma / \beta^3$. This seems like a more accurate description of the problem anyway since the relationship between temperature and time is not discrete. \\
+
+
+
+\end{document}
+
+
+
+
+
+% \bibliography{..//..//refs/ospreebibplus.bib}
