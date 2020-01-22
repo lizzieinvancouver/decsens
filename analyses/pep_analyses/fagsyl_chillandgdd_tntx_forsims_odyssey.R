@@ -16,8 +16,8 @@ require(chillR)
 require(raster)
 
 #setwd("~/Documents/git/decsens/analyses/pep_analyses")
-d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_betpen_all.csv", header=TRUE)
-#d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
+d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_fagsyl_all.csv", header=TRUE)
+#d<-read.csv("input/pep_fagsyl_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -50,7 +50,9 @@ bestsites <- bestsites$Var1
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
 rn<-brick("/n/wolkovich_lab/Lab/Cat/tn_0.25deg_reg_v16.0.nc", sep="")
+#rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
 rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
+#rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
@@ -59,6 +61,7 @@ sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
 sites<-sites[!(sites$lat.long%in%badsites),]
+sites<-sites[sample(nrow(sites), 45), ]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
