@@ -17,6 +17,7 @@ require(raster)
 
 #setwd("~/Documents/git/decsens/analyses/pep_analyses")
 d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_betpen_all.csv", header=TRUE)
+#d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -35,7 +36,7 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1951 & df$year<=1960) | (df$year>=2001 & df$year<=2010),]
+allpeps <- df[(df$year>=1951 & df$year<=1960) | (df$year>=1991 & df$year<=2000) | (df$year>=2001 & df$year<=2010),]
 
 allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1960, "apre", "post")
 allpeps$num.years<-ave(allpeps$year, allpeps$lat.long, FUN=length)
@@ -49,7 +50,9 @@ bestsites <- bestsites$Var1
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
 rn<-brick("/n/wolkovich_lab/Lab/Cat/tn_0.25deg_reg_v16.0.nc", sep="")
+#rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
 rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
+#rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
@@ -405,7 +408,7 @@ extractclimpost<-function(tmin,period){
 clim_post<-extractclimpost(tmin,period) ## rerun from top but change period to 2000:2010 and create function extractchillpost
 
 period<-1991:2000
-extractclim90s<-function(tmin,period){
+extractclim90s<-function(tmin,period){ #i=1 j=1991
   
   ## define array to store results
   nyears<-length(period)

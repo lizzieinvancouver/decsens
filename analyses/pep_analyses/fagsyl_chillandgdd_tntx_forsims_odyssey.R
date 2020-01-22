@@ -16,8 +16,8 @@ require(chillR)
 require(raster)
 
 #setwd("~/Documents/git/decsens/analyses/pep_analyses")
-#d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_betpen_all.csv", header=TRUE)
-d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
+d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_betpen_all.csv", header=TRUE)
+#d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -36,7 +36,7 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1951 & df$year<=1960) | (df$year>=2001 & df$year<=2010),]
+allpeps <- df[(df$year>=1951 & df$year<=1960) | (df$year>=1991 & df$year<=2000) | (df$year>=2001 & df$year<=2010),]
 
 allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1960, "apre", "post")
 allpeps$num.years<-ave(allpeps$year, allpeps$lat.long, FUN=length)
