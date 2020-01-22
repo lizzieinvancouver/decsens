@@ -953,7 +953,9 @@ site.nineties$y<-NULL
 full.site<-full_join(site, site.post)
 full.site<-full_join(full.site, site.nineties)
 full.site$year<-as.numeric(full.site$year)
-full.site$cc <- ifelse(full.site$year>1960, "2000-2010", "1950-1960")
+full.site$cc <- ifelse(full.site$year<1960, "1950-1960", full.site$cc)
+full.site$cc <- ifelse(full.site$year>2000, "2000-2010", full.site$cc)
+others<-c("1950-1960", "2000-2010")
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -964,7 +966,7 @@ if(FALSE){
   allchillsgdds<-rbind(allchillsgdds, full.site4)
   allchillsgdds<-rbind(allchillsgdds, full.site5)
 }
-#write.csv(full.site.nonas, file="output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
+write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
 
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
