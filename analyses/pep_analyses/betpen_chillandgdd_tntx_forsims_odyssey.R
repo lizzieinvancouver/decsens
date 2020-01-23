@@ -42,7 +42,7 @@ allpeps$cc<-NA
 allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1960, "1950-1960", allpeps$cc)
 allpeps$cc<-ifelse(allpeps$year>=1990 & allpeps$year<=2000, "1990-2000", allpeps$cc)
 allpeps$cc<-ifelse(allpeps$year>=2000 & allpeps$year<=2010, "2000-2010", allpeps$cc)
-allpeps$num.years<-ave(allpeps$year, allpeps$lat.long, FUN=length)
+allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
 mostdata<-allpeps[(allpeps$num.years>=30),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
@@ -67,7 +67,7 @@ sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
-sites$siteslist<-1:39
+sites$siteslist<-1:38
 tmin<-rn
 tmax<-rx
 
@@ -245,6 +245,9 @@ extractclimpre<-function(tmin,period){
 ## apply function
 clim_pre<-extractclimpre(tmin,period)
 
+pre<-as.data.frame(clim_pre)
+write.csv(pre, file="/n/wolkovich_lab/Lab/Cat/prebetpen.csv", row.names=FALSE)
+
 
 period<-2001:2010
 extractclimpost<-function(tmin,period){
@@ -408,7 +411,9 @@ extractclimpost<-function(tmin,period){
   
 }
 
-clim_post<-extractclimpost(tmin,period) ## rerun from top but change period to 2000:2010 and create function extractchillpost
+clim_post<-extractclimpost(tmin,period) 
+post<-as.data.frame(clim_post)
+write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postbetpen.csv", row.names=FALSE)
 
 period<-1991:2000
 extractclim90s<-function(tmin,period){ #i=1 j=1991
@@ -572,9 +577,8 @@ extractclim90s<-function(tmin,period){ #i=1 j=1991
 }
 clim_90s<-extractclim90s(tmin,period)
 
-pre<-as.data.frame(clim_pre)
-post<-as.data.frame(clim_post)
 nineties<-as.data.frame(clim_90s)
+write.csv(nineties, file="/n/wolkovich_lab/Lab/Cat/ninetiesbetpen.csv", row.names=FALSE)
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -594,8 +598,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.31, pre$Mean.Utah.32,
                                   pre$Mean.Utah.33, pre$Mean.Utah.34,
                                   pre$Mean.Utah.35, pre$Mean.Utah.36,
-                                  pre$Mean.Utah.37, pre$Mean.Utah.38,
-                                  pre$Mean.Utah.39),
+                                  pre$Mean.Utah.37, pre$Mean.Utah.38),
                     
                     chillports = c(pre$Mean.Port.1, pre$Mean.Port.2,
                                    pre$Mean.Port.3, pre$Mean.Port.4,
@@ -615,8 +618,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                    pre$Mean.Port.31, pre$Mean.Port.32,
                                    pre$Mean.Port.33, pre$Mean.Port.34,
                                    pre$Mean.Port.35, pre$Mean.Port.36,
-                                   pre$Mean.Port.37, pre$Mean.Port.38,
-                                   pre$Mean.Port.39),
+                                   pre$Mean.Port.37, pre$Mean.Port.38),
                     
                     
                     gdd = c(pre$Mean.GDD.1, pre$Mean.GDD.2,
@@ -637,8 +639,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                             pre$Mean.GDD.31, pre$Mean.GDD.32,
                             pre$Mean.GDD.33, pre$Mean.GDD.34,
                             pre$Mean.GDD.35, pre$Mean.GDD.36,
-                            pre$Mean.GDD.37, pre$Mean.GDD.38,
-                            pre$Mean.GDD.39),
+                            pre$Mean.GDD.37, pre$Mean.GDD.38),
                     
                     mat.lo = c(pre$Spring.Temp.1, pre$Spring.Temp.2,
                                pre$Spring.Temp.3, pre$Spring.Temp.4,
@@ -658,29 +659,27 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                pre$Spring.Temp.31, pre$Spring.Temp.32,
                                pre$Spring.Temp.33, pre$Spring.Temp.34,
                                pre$Spring.Temp.35, pre$Spring.Temp.36,
-                               pre$Spring.Temp.37, pre$Spring.Temp.38,
-                               pre$Spring.Temp.39),
+                               pre$Spring.Temp.37, pre$Spring.Temp.38),
                     
-                    siteslist = c(pre$`Site Num..1`, pre$`Site Num..2`,
-                                  pre$`Site Num..3`, pre$`Site Num..4`,
-                                  pre$`Site Num..5`, pre$`Site Num..6`,
-                                  pre$`Site Num..7`, pre$`Site Num..8`,
-                                  pre$`Site Num..9`, pre$`Site Num..10`,
-                                  pre$`Site Num..11`, pre$`Site Num..12`,
-                                  pre$`Site Num..13`, pre$`Site Num..14`,
-                                  pre$`Site Num..15`, pre$`Site Num..16`,
-                                  pre$`Site Num..17`, pre$`Site Num..18`,
-                                  pre$`Site Num..19`, pre$`Site Num..20`,
-                                  pre$`Site Num..21`, pre$`Site Num..22`,
-                                  pre$`Site Num..23`, pre$`Site Num..24`,
-                                  pre$`Site Num..25`, pre$`Site Num..26`,
-                                  pre$`Site Num..27`, pre$`Site Num..28`,
-                                  pre$`Site Num..29`, pre$`Site Num..30`,
-                                  pre$`Site Num..31`, pre$`Site Num..32`,
-                                  pre$`Site Num..33`, pre$`Site Num..34`,
-                                  pre$`Site Num..35`, pre$`Site Num..36`,
-                                  pre$`Site Num..37`, pre$`Site Num..38`,
-                                  pre$`Site Num..39`),
+                    siteslist = c(pre$Site.Num..1, pre$Site.Num..2,
+                                  pre$Site.Num..3, pre$Site.Num..4,
+                                  pre$Site.Num..5, pre$Site.Num..6,
+                                  pre$Site.Num..7, pre$Site.Num..8,
+                                  pre$Site.Num..9, pre$Site.Num..10,
+                                  pre$Site.Num..11, pre$Site.Num..12,
+                                  pre$Site.Num..13, pre$Site.Num..14,
+                                  pre$Site.Num..15, pre$Site.Num..16,
+                                  pre$Site.Num..17, pre$Site.Num..18,
+                                  pre$Site.Num..19, pre$Site.Num..20,
+                                  pre$Site.Num..21, pre$Site.Num..22,
+                                  pre$Site.Num..23, pre$Site.Num..24,
+                                  pre$Site.Num..25, pre$Site.Num..26,
+                                  pre$Site.Num..27, pre$Site.Num..28,
+                                  pre$Site.Num..29, pre$Site.Num..30,
+                                  pre$Site.Num..31, pre$Site.Num..32,
+                                  pre$Site.Num..33, pre$Site.Num..34,
+                                  pre$Site.Num..35, pre$Site.Num..36,
+                                  pre$Site.Num..37, pre$Site.Num..38),
                     year = rownames(pre))
 
 site<-full_join(predata, sites)
@@ -705,8 +704,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Mean.Utah.31, post$Mean.Utah.32,
                                    post$Mean.Utah.33, post$Mean.Utah.34,
                                    post$Mean.Utah.35, post$Mean.Utah.36,
-                                   post$Mean.Utah.37, post$Mean.Utah.38,
-                                   post$Mean.Utah.39),
+                                   post$Mean.Utah.37, post$Mean.Utah.38),
                      
                      chillports = c(post$Mean.Port.1, post$Mean.Port.2,
                                     post$Mean.Port.3, post$Mean.Port.4,
@@ -726,8 +724,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                     post$Mean.Port.31, post$Mean.Port.32,
                                     post$Mean.Port.33, post$Mean.Port.34,
                                     post$Mean.Port.35, post$Mean.Port.36,
-                                    post$Mean.Port.37, post$Mean.Port.38,
-                                    post$Mean.Port.39),
+                                    post$Mean.Port.37, post$Mean.Port.38),
                      
                      
                      gdd = c(post$Mean.GDD.1, post$Mean.GDD.2,
@@ -748,8 +745,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                              post$Mean.GDD.31, post$Mean.GDD.32,
                              post$Mean.GDD.33, post$Mean.GDD.34,
                              post$Mean.GDD.35, post$Mean.GDD.36,
-                             post$Mean.GDD.37, post$Mean.GDD.38,
-                             post$Mean.GDD.39),
+                             post$Mean.GDD.37, post$Mean.GDD.38),
                      
                      mat.lo = c(post$Spring.Temp.1, post$Spring.Temp.2,
                                 post$Spring.Temp.3, post$Spring.Temp.4,
@@ -769,36 +765,34 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                 post$Spring.Temp.31, post$Spring.Temp.32,
                                 post$Spring.Temp.33, post$Spring.Temp.34,
                                 post$Spring.Temp.35, post$Spring.Temp.36,
-                                post$Spring.Temp.37, post$Spring.Temp.38,
-                                post$Spring.Temp.39),
+                                post$Spring.Temp.37, post$Spring.Temp.38),
                      
-                     siteslist = c(post$`Site Num..1`, post$`Site Num..2`,
-                                   post$`Site Num..3`, post$`Site Num..4`,
-                                   post$`Site Num..5`, post$`Site Num..6`,
-                                   post$`Site Num..7`, post$`Site Num..8`,
-                                   post$`Site Num..9`, post$`Site Num..10`,
-                                   post$`Site Num..11`, post$`Site Num..12`,
-                                   post$`Site Num..13`, post$`Site Num..14`,
-                                   post$`Site Num..15`, post$`Site Num..16`,
-                                   post$`Site Num..17`, post$`Site Num..18`,
-                                   post$`Site Num..19`, post$`Site Num..20`,
-                                   post$`Site Num..21`, post$`Site Num..22`,
-                                   post$`Site Num..23`, post$`Site Num..24`,
-                                   post$`Site Num..25`, post$`Site Num..26`,
-                                   post$`Site Num..27`, post$`Site Num..28`,
-                                   post$`Site Num..29`, post$`Site Num..30`,
-                                   post$`Site Num..31`, post$`Site Num..32`,
-                                   post$`Site Num..33`, post$`Site Num..34`,
-                                   post$`Site Num..35`, post$`Site Num..36`,
-                                   post$`Site Num..37`, post$`Site Num..38`,
-                                   post$`Site Num..39`),
+                     siteslist = c(post$Site.Num..1, post$Site.Num..2,
+                                   post$Site.Num..3, post$Site.Num..4,
+                                   post$Site.Num..5, post$Site.Num..6,
+                                   post$Site.Num..7, post$Site.Num..8,
+                                   post$Site.Num..9, post$Site.Num..10,
+                                   post$Site.Num..11, post$Site.Num..12,
+                                   post$Site.Num..13, post$Site.Num..14,
+                                   post$Site.Num..15, post$Site.Num..16,
+                                   post$Site.Num..17, post$Site.Num..18,
+                                   post$Site.Num..19, post$Site.Num..20,
+                                   post$Site.Num..21, post$Site.Num..22,
+                                   post$Site.Num..23, post$Site.Num..24,
+                                   post$Site.Num..25, post$Site.Num..26,
+                                   post$Site.Num..27, post$Site.Num..28,
+                                   post$Site.Num..29, post$Site.Num..30,
+                                   post$Site.Num..31, post$Site.Num..32,
+                                   post$Site.Num..33, post$Site.Num..34,
+                                   post$Site.Num..35, post$Site.Num..36,
+                                   post$Site.Num..37, post$Site.Num..38),
                      year = rownames(post))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
 site.post$y<-NULL
 
-
+#nineties <- read.csv("~/Desktop/ninetiesbetpen.csv")
 ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.2,
                                        nineties$Mean.Utah.3, nineties$Mean.Utah.4,
                                        nineties$Mean.Utah.5, nineties$Mean.Utah.6,
@@ -817,8 +811,7 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                        nineties$Mean.Utah.31, nineties$Mean.Utah.32,
                                        nineties$Mean.Utah.33, nineties$Mean.Utah.34,
                                        nineties$Mean.Utah.35, nineties$Mean.Utah.36,
-                                       nineties$Mean.Utah.37, nineties$Mean.Utah.38,
-                                       nineties$Mean.Utah.39),
+                                       nineties$Mean.Utah.37, nineties$Mean.Utah.38),
                          
                          chillports = c(nineties$Mean.Port.1, nineties$Mean.Port.2,
                                         nineties$Mean.Port.3, nineties$Mean.Port.4,
@@ -838,8 +831,7 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                         nineties$Mean.Port.31, nineties$Mean.Port.32,
                                         nineties$Mean.Port.33, nineties$Mean.Port.34,
                                         nineties$Mean.Port.35, nineties$Mean.Port.36,
-                                        nineties$Mean.Port.37, nineties$Mean.Port.38,
-                                        nineties$Mean.Port.39),
+                                        nineties$Mean.Port.37, nineties$Mean.Port.38),
                          
                          
                          gdd = c(nineties$Mean.GDD.1, nineties$Mean.GDD.2,
@@ -860,8 +852,7 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                  nineties$Mean.GDD.31, nineties$Mean.GDD.32,
                                  nineties$Mean.GDD.33, nineties$Mean.GDD.34,
                                  nineties$Mean.GDD.35, nineties$Mean.GDD.36,
-                                 nineties$Mean.GDD.37, nineties$Mean.GDD.38,
-                                 nineties$Mean.GDD.39),
+                                 nineties$Mean.GDD.37, nineties$Mean.GDD.38),
                          
                          mat.lo = c(nineties$Spring.Temp.1, nineties$Spring.Temp.2,
                                     nineties$Spring.Temp.3, nineties$Spring.Temp.4,
@@ -881,29 +872,27 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                     nineties$Spring.Temp.31, nineties$Spring.Temp.32,
                                     nineties$Spring.Temp.33, nineties$Spring.Temp.34,
                                     nineties$Spring.Temp.35, nineties$Spring.Temp.36,
-                                    nineties$Spring.Temp.37, nineties$Spring.Temp.38,
-                                    nineties$Spring.Temp.39),
+                                    nineties$Spring.Temp.37, nineties$Spring.Temp.38),
                          
-                         siteslist = c(nineties$`Site Num..1`, nineties$`Site Num..2`,
-                                       nineties$`Site Num..3`, nineties$`Site Num..4`,
-                                       nineties$`Site Num..5`, nineties$`Site Num..6`,
-                                       nineties$`Site Num..7`, nineties$`Site Num..8`,
-                                       nineties$`Site Num..9`, nineties$`Site Num..10`,
-                                       nineties$`Site Num..11`, nineties$`Site Num..12`,
-                                       nineties$`Site Num..13`, nineties$`Site Num..14`,
-                                       nineties$`Site Num..15`, nineties$`Site Num..16`,
-                                       nineties$`Site Num..17`, nineties$`Site Num..18`,
-                                       nineties$`Site Num..19`, nineties$`Site Num..20`,
-                                       nineties$`Site Num..21`, nineties$`Site Num..22`,
-                                       nineties$`Site Num..23`, nineties$`Site Num..24`,
-                                       nineties$`Site Num..25`, nineties$`Site Num..26`,
-                                       nineties$`Site Num..27`, nineties$`Site Num..28`,
-                                       nineties$`Site Num..29`, nineties$`Site Num..30`,
-                                       nineties$`Site Num..31`, nineties$`Site Num..32`,
-                                       nineties$`Site Num..33`, nineties$`Site Num..34`,
-                                       nineties$`Site Num..35`, nineties$`Site Num..36`,
-                                       nineties$`Site Num..37`, nineties$`Site Num..38`,
-                                       nineties$`Site Num..39`),
+                         siteslist = c(nineties$Site.Num..1, nineties$Site.Num..2,
+                                       nineties$Site.Num..3, nineties$Site.Num..4,
+                                       nineties$Site.Num..5, nineties$Site.Num..6,
+                                       nineties$Site.Num..7, nineties$Site.Num..8,
+                                       nineties$Site.Num..9, nineties$Site.Num..10,
+                                       nineties$Site.Num..11, nineties$Site.Num..12,
+                                       nineties$Site.Num..13, nineties$Site.Num..14,
+                                       nineties$Site.Num..15, nineties$Site.Num..16,
+                                       nineties$Site.Num..17, nineties$Site.Num..18,
+                                       nineties$Site.Num..19, nineties$Site.Num..20,
+                                       nineties$Site.Num..21, nineties$Site.Num..22,
+                                       nineties$Site.Num..23, nineties$Site.Num..24,
+                                       nineties$Site.Num..25, nineties$Site.Num..26,
+                                       nineties$Site.Num..27, nineties$Site.Num..28,
+                                       nineties$Site.Num..29, nineties$Site.Num..30,
+                                       nineties$Site.Num..31, nineties$Site.Num..32,
+                                       nineties$Site.Num..33, nineties$Site.Num..34,
+                                       nineties$Site.Num..35, nineties$Site.Num..36,
+                                       nineties$Site.Num..37, nineties$Site.Num..38),
                          year = rownames(nineties))
 
 site.nineties<-full_join(ninetiesdata, sites)
