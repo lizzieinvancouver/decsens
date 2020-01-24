@@ -78,6 +78,7 @@ lositeyear<-na.omit(lositeyear)
 
 leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
 
+if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
 #extractclimpost<-function(tmin,period){
@@ -580,6 +581,12 @@ clim_90s<-extractclim90s(tmin,period)
 
 nineties<-as.data.frame(clim_90s)
 write.csv(nineties, file="/n/wolkovich_lab/Lab/Cat/ninetiesfagsyl.csv", row.names=FALSE)
+}
+
+setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
+pre <- read.csv("prefagsyl.csv")
+post <- read.csv("postfagsyl.csv")
+nineties <- read.csv("ninetiesfagsyl.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -681,7 +688,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..33, pre$Site.Num..34,
                                   pre$Site.Num..35, pre$Site.Num..36,
                                   pre$Site.Num..37, pre$Site.Num..38),
-                    year = rownames(pre))
+                    year = (as.numeric(rownames(nineties))+1950))
 
 site<-full_join(predata, sites)
 site$x<-NULL
@@ -787,7 +794,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Site.Num..33, post$Site.Num..34,
                                    post$Site.Num..35, post$Site.Num..36,
                                    post$Site.Num..37, post$Site.Num..38),
-                     year = rownames(post))
+                     year = (as.numeric(rownames(nineties))+1990))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
@@ -894,243 +901,21 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                        nineties$Site.Num..33, nineties$Site.Num..34,
                                        nineties$Site.Num..35, nineties$Site.Num..36,
                                        nineties$Site.Num..37, nineties$Site.Num..38),
-                         year = rownames(nineties))
-
-site<-full_join(predata, sites)
-site$x<-NULL
-site$y<-NULL  
-
-postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
-                                   post$Mean.Utah.3, post$Mean.Utah.4,
-                                   post$Mean.Utah.5, post$Mean.Utah.6,
-                                   post$Mean.Utah.7, post$Mean.Utah.8,
-                                   post$Mean.Utah.9, post$Mean.Utah.10,
-                                   post$Mean.Utah.11, post$Mean.Utah.12,
-                                   post$Mean.Utah.13, post$Mean.Utah.14,
-                                   post$Mean.Utah.15, post$Mean.Utah.16,
-                                   post$Mean.Utah.17, post$Mean.Utah.18,
-                                   post$Mean.Utah.19, post$Mean.Utah.20,
-                                   post$Mean.Utah.21, post$Mean.Utah.22,
-                                   post$Mean.Utah.23, post$Mean.Utah.24,
-                                   post$Mean.Utah.25, post$Mean.Utah.26,
-                                   post$Mean.Utah.27, post$Mean.Utah.28,
-                                   post$Mean.Utah.29, post$Mean.Utah.30,
-                                   post$Mean.Utah.31, post$Mean.Utah.32,
-                                   post$Mean.Utah.33, post$Mean.Utah.34,
-                                   post$Mean.Utah.35, post$Mean.Utah.36,
-                                   post$Mean.Utah.37, post$Mean.Utah.38,
-                                   post$Mean.Utah.39, post$Mean.Utah.40),
-                     
-                     chillports = c(post$Mean.Port.1, post$Mean.Port.2,
-                                    post$Mean.Port.3, post$Mean.Port.4,
-                                    post$Mean.Port.5, post$Mean.Port.6,
-                                    post$Mean.Port.7, post$Mean.Port.8,
-                                    post$Mean.Port.9, post$Mean.Port.10,
-                                    post$Mean.Port.11, post$Mean.Port.12,
-                                    post$Mean.Port.13, post$Mean.Port.14,
-                                    post$Mean.Port.15, post$Mean.Port.16,
-                                    post$Mean.Port.17, post$Mean.Port.18,
-                                    post$Mean.Port.19, post$Mean.Port.20,
-                                    post$Mean.Port.21, post$Mean.Port.22,
-                                    post$Mean.Port.23, post$Mean.Port.24,
-                                    post$Mean.Port.25, post$Mean.Port.26,
-                                    post$Mean.Port.27, post$Mean.Port.28,
-                                    post$Mean.Port.29, post$Mean.Port.30,
-                                    post$Mean.Port.31, post$Mean.Port.32,
-                                    post$Mean.Port.33, post$Mean.Port.34,
-                                    post$Mean.Port.35, post$Mean.Port.36,
-                                    post$Mean.Port.37, post$Mean.Port.38,
-                                    post$Mean.Port.39, post$Mean.Port.40),
-                     
-                     
-                     gdd = c(post$Mean.GDD.1, post$Mean.GDD.2,
-                             post$Mean.GDD.3, post$Mean.GDD.4,
-                             post$Mean.GDD.5, post$Mean.GDD.6,
-                             post$Mean.GDD.7, post$Mean.GDD.8,
-                             post$Mean.GDD.9, post$Mean.GDD.10,
-                             post$Mean.GDD.11, post$Mean.GDD.12,
-                             post$Mean.GDD.13, post$Mean.GDD.14,
-                             post$Mean.GDD.15, post$Mean.GDD.16,
-                             post$Mean.GDD.17, post$Mean.GDD.18,
-                             post$Mean.GDD.19, post$Mean.GDD.20,
-                             post$Mean.GDD.21, post$Mean.GDD.22,
-                             post$Mean.GDD.23, post$Mean.GDD.24,
-                             post$Mean.GDD.25, post$Mean.GDD.26,
-                             post$Mean.GDD.27, post$Mean.GDD.28,
-                             post$Mean.GDD.29, post$Mean.GDD.30,
-                             post$Mean.GDD.31, post$Mean.GDD.32,
-                             post$Mean.GDD.33, post$Mean.GDD.34,
-                             post$Mean.GDD.35, post$Mean.GDD.36,
-                             post$Mean.GDD.37, post$Mean.GDD.38,
-                             post$Mean.GDD.39, post$Mean.GDD.40),
-                     
-                     mat.lo = c(post$Spring.Temp.1, post$Spring.Temp.2,
-                             post$Spring.Temp.3, post$Spring.Temp.4,
-                             post$Spring.Temp.5, post$Spring.Temp.6,
-                             post$Spring.Temp.7, post$Spring.Temp.8,
-                             post$Spring.Temp.9, post$Spring.Temp.10,
-                             post$Spring.Temp.11, post$Spring.Temp.12,
-                             post$Spring.Temp.13, post$Spring.Temp.14,
-                             post$Spring.Temp.15, post$Spring.Temp.16,
-                             post$Spring.Temp.17, post$Spring.Temp.18,
-                             post$Spring.Temp.19, post$Spring.Temp.20,
-                             post$Spring.Temp.21, post$Spring.Temp.22,
-                             post$Spring.Temp.23, post$Spring.Temp.24,
-                             post$Spring.Temp.25, post$Spring.Temp.26,
-                             post$Spring.Temp.27, post$Spring.Temp.28,
-                             post$Spring.Temp.29, post$Spring.Temp.30,
-                             post$Spring.Temp.31, post$Spring.Temp.32,
-                             post$Spring.Temp.33, post$Spring.Temp.34,
-                             post$Spring.Temp.35, post$Spring.Temp.36,
-                             post$Spring.Temp.37, post$Spring.Temp.38,
-                             post$Spring.Temp.39, post$Spring.Temp.40),
-                     
-                     siteslist = c(post$`Site Num..1`, post$`Site Num..2`,
-                                   post$`Site Num..3`, post$`Site Num..4`,
-                                   post$`Site Num..5`, post$`Site Num..6`,
-                                   post$`Site Num..7`, post$`Site Num..8`,
-                                   post$`Site Num..9`, post$`Site Num..10`,
-                                   post$`Site Num..11`, post$`Site Num..12`,
-                                   post$`Site Num..13`, post$`Site Num..14`,
-                                   post$`Site Num..15`, post$`Site Num..16`,
-                                   post$`Site Num..17`, post$`Site Num..18`,
-                                   post$`Site Num..19`, post$`Site Num..20`,
-                                   post$`Site Num..21`, post$`Site Num..22`,
-                                   post$`Site Num..23`, post$`Site Num..24`,
-                                   post$`Site Num..25`, post$`Site Num..26`,
-                                   post$`Site Num..27`, post$`Site Num..28`,
-                                   post$`Site Num..29`, post$`Site Num..30`,
-                                   post$`Site Num..31`, post$`Site Num..32`,
-                                   post$`Site Num..33`, post$`Site Num..34`,
-                                   post$`Site Num..35`, post$`Site Num..36`,
-                                   post$`Site Num..37`, post$`Site Num..38`,
-                                   post$`Site Num..39`, post$`Site Num..40`),
-                     year = rownames(post))
-
-site.post<-full_join(postdata, sites)
-site.post$x<-NULL
-site.post$y<-NULL
-
-
-ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.2,
-                                       nineties$Mean.Utah.3, nineties$Mean.Utah.4,
-                                       nineties$Mean.Utah.5, nineties$Mean.Utah.6,
-                                       nineties$Mean.Utah.7, nineties$Mean.Utah.8,
-                                       nineties$Mean.Utah.9, nineties$Mean.Utah.10,
-                                       nineties$Mean.Utah.11, nineties$Mean.Utah.12,
-                                       nineties$Mean.Utah.13, nineties$Mean.Utah.14,
-                                       nineties$Mean.Utah.15, nineties$Mean.Utah.16,
-                                       nineties$Mean.Utah.17, nineties$Mean.Utah.18,
-                                       nineties$Mean.Utah.19, nineties$Mean.Utah.20,
-                                       nineties$Mean.Utah.21, nineties$Mean.Utah.22,
-                                       nineties$Mean.Utah.23, nineties$Mean.Utah.24,
-                                       nineties$Mean.Utah.25, nineties$Mean.Utah.26,
-                                       nineties$Mean.Utah.27, nineties$Mean.Utah.28,
-                                       nineties$Mean.Utah.29, nineties$Mean.Utah.30,
-                                       nineties$Mean.Utah.31, nineties$Mean.Utah.32,
-                                       nineties$Mean.Utah.33, nineties$Mean.Utah.34,
-                                       nineties$Mean.Utah.35, nineties$Mean.Utah.36,
-                                       nineties$Mean.Utah.37, nineties$Mean.Utah.38,
-                                       nineties$Mean.Utah.39, nineties$Mean.Utah.40),
-                         
-                         chillports = c(nineties$Mean.Port.1, nineties$Mean.Port.2,
-                                        nineties$Mean.Port.3, nineties$Mean.Port.4,
-                                        nineties$Mean.Port.5, nineties$Mean.Port.6,
-                                        nineties$Mean.Port.7, nineties$Mean.Port.8,
-                                        nineties$Mean.Port.9, nineties$Mean.Port.10,
-                                        nineties$Mean.Port.11, nineties$Mean.Port.12,
-                                        nineties$Mean.Port.13, nineties$Mean.Port.14,
-                                        nineties$Mean.Port.15, nineties$Mean.Port.16,
-                                        nineties$Mean.Port.17, nineties$Mean.Port.18,
-                                        nineties$Mean.Port.19, nineties$Mean.Port.20,
-                                        nineties$Mean.Port.21, nineties$Mean.Port.22,
-                                        nineties$Mean.Port.23, nineties$Mean.Port.24,
-                                        nineties$Mean.Port.25, nineties$Mean.Port.26,
-                                        nineties$Mean.Port.27, nineties$Mean.Port.28,
-                                        nineties$Mean.Port.29, nineties$Mean.Port.30,
-                                        nineties$Mean.Port.31, nineties$Mean.Port.32,
-                                        nineties$Mean.Port.33, nineties$Mean.Port.34,
-                                        nineties$Mean.Port.35, nineties$Mean.Port.36,
-                                        nineties$Mean.Port.37, nineties$Mean.Port.38,
-                                        nineties$Mean.Port.39, nineties$Mean.Port.40),
-                         
-                         
-                         gdd = c(nineties$Mean.GDD.1, nineties$Mean.GDD.2,
-                                 nineties$Mean.GDD.3, nineties$Mean.GDD.4,
-                                 nineties$Mean.GDD.5, nineties$Mean.GDD.6,
-                                 nineties$Mean.GDD.7, nineties$Mean.GDD.8,
-                                 nineties$Mean.GDD.9, nineties$Mean.GDD.10,
-                                 nineties$Mean.GDD.11, nineties$Mean.GDD.12,
-                                 nineties$Mean.GDD.13, nineties$Mean.GDD.14,
-                                 nineties$Mean.GDD.15, nineties$Mean.GDD.16,
-                                 nineties$Mean.GDD.17, nineties$Mean.GDD.18,
-                                 nineties$Mean.GDD.19, nineties$Mean.GDD.20,
-                                 nineties$Mean.GDD.21, nineties$Mean.GDD.22,
-                                 nineties$Mean.GDD.23, nineties$Mean.GDD.24,
-                                 nineties$Mean.GDD.25, nineties$Mean.GDD.26,
-                                 nineties$Mean.GDD.27, nineties$Mean.GDD.28,
-                                 nineties$Mean.GDD.29, nineties$Mean.GDD.30,
-                                 nineties$Mean.GDD.31, nineties$Mean.GDD.32,
-                                 nineties$Mean.GDD.33, nineties$Mean.GDD.34,
-                                 nineties$Mean.GDD.35, nineties$Mean.GDD.36,
-                                 nineties$Mean.GDD.37, nineties$Mean.GDD.38,
-                                 nineties$Mean.GDD.39, nineties$Mean.GDD.40),
-                         
-                         mat.lo = c(nineties$Spring.Temp.1, nineties$Spring.Temp.2,
-                                    nineties$Spring.Temp.3, nineties$Spring.Temp.4,
-                                    nineties$Spring.Temp.5, nineties$Spring.Temp.6,
-                                    nineties$Spring.Temp.7, nineties$Spring.Temp.8,
-                                    nineties$Spring.Temp.9, nineties$Spring.Temp.10,
-                                    nineties$Spring.Temp.11, nineties$Spring.Temp.12,
-                                    nineties$Spring.Temp.13, nineties$Spring.Temp.14,
-                                    nineties$Spring.Temp.15, nineties$Spring.Temp.16,
-                                    nineties$Spring.Temp.17, nineties$Spring.Temp.18,
-                                    nineties$Spring.Temp.19, nineties$Spring.Temp.20,
-                                    nineties$Spring.Temp.21, nineties$Spring.Temp.22,
-                                    nineties$Spring.Temp.23, nineties$Spring.Temp.24,
-                                    nineties$Spring.Temp.25, nineties$Spring.Temp.26,
-                                    nineties$Spring.Temp.27, nineties$Spring.Temp.28,
-                                    nineties$Spring.Temp.29, nineties$Spring.Temp.30,
-                                    nineties$Spring.Temp.31, nineties$Spring.Temp.32,
-                                    nineties$Spring.Temp.33, nineties$Spring.Temp.34,
-                                    nineties$Spring.Temp.35, nineties$Spring.Temp.36,
-                                    nineties$Spring.Temp.37, nineties$Spring.Temp.38,
-                                    nineties$Spring.Temp.39, nineties$Spring.Temp.40),
-                         
-                         siteslist = c(nineties$`Site Num..1`, nineties$`Site Num..2`,
-                                       nineties$`Site Num..3`, nineties$`Site Num..4`,
-                                       nineties$`Site Num..5`, nineties$`Site Num..6`,
-                                       nineties$`Site Num..7`, nineties$`Site Num..8`,
-                                       nineties$`Site Num..9`, nineties$`Site Num..10`,
-                                       nineties$`Site Num..11`, nineties$`Site Num..12`,
-                                       nineties$`Site Num..13`, nineties$`Site Num..14`,
-                                       nineties$`Site Num..15`, nineties$`Site Num..16`,
-                                       nineties$`Site Num..17`, nineties$`Site Num..18`,
-                                       nineties$`Site Num..19`, nineties$`Site Num..20`,
-                                       nineties$`Site Num..21`, nineties$`Site Num..22`,
-                                       nineties$`Site Num..23`, nineties$`Site Num..24`,
-                                       nineties$`Site Num..25`, nineties$`Site Num..26`,
-                                       nineties$`Site Num..27`, nineties$`Site Num..28`,
-                                       nineties$`Site Num..29`, nineties$`Site Num..30`,
-                                       nineties$`Site Num..31`, nineties$`Site Num..32`,
-                                       nineties$`Site Num..33`, nineties$`Site Num..34`,
-                                       nineties$`Site Num..35`, nineties$`Site Num..36`,
-                                       nineties$`Site Num..37`, nineties$`Site Num..38`,
-                                       nineties$`Site Num..39`, nineties$`Site Num..40`),
-                         year = rownames(nineties))
+                         year = (as.numeric(rownames(nineties))+2000))
 
 site.nineties<-full_join(ninetiesdata, sites)
 site.nineties$x<-NULL
-site.nineties$y<-NULL
+site.nineties$y<-NULL  
 
 
 full.site<-full_join(site, site.post)
 full.site<-full_join(full.site, site.nineties)
 full.site$year<-as.numeric(full.site$year)
-full.site$cc <- ifelse(full.site$year<1960, "1950-1960", full.site$cc)
+full.site$cc <- NA
+full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
 full.site$cc <- ifelse(full.site$year>2000, "2000-2010", full.site$cc)
 others<-c("1950-1960", "2000-2010")
-full.site$cc <- ifelse(!full.site$year%in% others, "1990-2000", full.site.cc)
+full.site$cc <- ifelse(!full.site$cc %in% others, "1990-2000", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -1141,7 +926,7 @@ if(FALSE){
   allchillsgdds<-rbind(allchillsgdds, full.site4)
   allchillsgdds<-rbind(allchillsgdds, full.site5)
 }
-write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/fagsyl_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
+#write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/fagsyl_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
 
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
@@ -1214,7 +999,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="/n/wolkovich_lab/Lab/Cat/fagsyl_allchillsandgdds_45sites_mat_tntx_forsims.csv", row.names = FALSE)
+write.csv(fullsites45, file="fagsyl_decsens_1950_1990_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################

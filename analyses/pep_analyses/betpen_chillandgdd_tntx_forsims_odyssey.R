@@ -78,6 +78,7 @@ lositeyear<-na.omit(lositeyear)
 
 leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
 
+if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
   #extractclimpost<-function(tmin,period){
@@ -579,6 +580,12 @@ clim_90s<-extractclim90s(tmin,period)
 
 nineties<-as.data.frame(clim_90s)
 write.csv(nineties, file="/n/wolkovich_lab/Lab/Cat/ninetiesbetpen.csv", row.names=FALSE)
+}
+
+setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
+pre <- read.csv("prebetpen.csv")
+post <- read.csv("postbetpen.csv")
+nineties <- read.csv("ninetiesbetpen.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -680,7 +687,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..33, pre$Site.Num..34,
                                   pre$Site.Num..35, pre$Site.Num..36,
                                   pre$Site.Num..37, pre$Site.Num..38),
-                    year = rownames(pre))
+                    year = (as.numeric(rownames(nineties))+1950))
 
 site<-full_join(predata, sites)
 site$x<-NULL
@@ -786,7 +793,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Site.Num..33, post$Site.Num..34,
                                    post$Site.Num..35, post$Site.Num..36,
                                    post$Site.Num..37, post$Site.Num..38),
-                     year = rownames(post))
+                     year = (as.numeric(rownames(nineties))+1990))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
@@ -893,7 +900,7 @@ ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.
                                        nineties$Site.Num..33, nineties$Site.Num..34,
                                        nineties$Site.Num..35, nineties$Site.Num..36,
                                        nineties$Site.Num..37, nineties$Site.Num..38),
-                         year = rownames(nineties))
+                         year = (as.numeric(rownames(nineties))+2000))
 
 site.nineties<-full_join(ninetiesdata, sites)
 site.nineties$x<-NULL
@@ -903,10 +910,11 @@ site.nineties$y<-NULL
 full.site<-full_join(site, site.post)
 full.site<-full_join(full.site, site.nineties)
 full.site$year<-as.numeric(full.site$year)
-full.site$cc <- ifelse(full.site$year<1960, "1950-1960", full.site$cc)
+full.site$cc <- NA
+full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
 full.site$cc <- ifelse(full.site$year>2000, "2000-2010", full.site$cc)
 others<-c("1950-1960", "2000-2010")
-full.site$cc <- ifelse(!full.site$year%in% others, "1990-2000", full.site.cc)
+full.site$cc <- ifelse(!full.site$cc %in% others, "1990-2000", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -917,7 +925,7 @@ if(FALSE){
   allchillsgdds<-rbind(allchillsgdds, full.site4)
   allchillsgdds<-rbind(allchillsgdds, full.site5)
 }
-write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
+#write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_45sites_tntx_forsims.csv", row.names = FALSE)
 
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
@@ -990,7 +998,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_45sites_mat_tntx_forsims.csv", row.names = FALSE)
+write.csv(fullsites45, file="betpen_decsens_1950_1990_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################
