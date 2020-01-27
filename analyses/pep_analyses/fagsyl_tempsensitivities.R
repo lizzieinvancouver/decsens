@@ -13,29 +13,29 @@ library(tidyr)
 setwd("~/Documents/git/decsens/analyses/pep_analyses") 
 
 # get some data
-# Betula puendula data from PEP (both have has GDD from 1 Jan to leafout)
-# bp has mat from March 1st to June 1st and mat.lo is 30 days before leafout (uses tg -- aka mean -- data from E-OBS)
-# bpalt is similar, but calculated uses txtm -- aka min and max (and we caculate the mean ourselves from those values) -- data from E-OBS) ... we don't use this currently 
-#bp <- read.csv("output/betpen_allchillsandgdds_45sites_mat_tntx_forsims.csv", header=TRUE)
-#bppre <- read.csv("output/bp_climatedatapre.csv")
-#bppost <- read.csv("output/bp_climatedatapost.csv")
+# Fagus sylvatica data from PEP (both have has GDD from 1 Jan to leafout)
+# fs has mat from March 1st to June 1st and mat.lo is 30 days before leafout (uses tg -- aka mean -- data from E-OBS)
+# fsalt is similar, but calculated uses txtm -- aka min and max (and we caculate the mean ourselves from those values) -- data from E-OBS) ... we don't use this currently 
+#fs <- read.csv("output/betpen_allchillsandgdds_45sites_mat_tntx_forsims.csv", header=TRUE)
+#fspre <- read.csv("output/fs_climatedatapre.csv")
+#fspost <- read.csv("output/fs_climatedatapost.csv")
 
-bp <- read.csv("output/betpen_decsens_1950_1990_2000.csv")
+fs <- read.csv("output/fagsyl_decsens_1950_1990_2000.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
-bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
+fsest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
                     sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
                     matslope=numeric(), matslopese=numeric(), meanmatlo=numeric(), 
                     matslopelog=numeric(), matslopelogse=numeric(),
                     varmatlo=numeric(), sdmatlo=numeric())
 
-sitez <- unique(bp$siteslist)
+sitez <- unique(fs$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
-  subby <- subset(bp, siteslist==sitez[i])
+  subby <- subset(fs, siteslist==sitez[i])
   for(ccstate in c(1:3)){
-    subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
+    subbycc <- subset(subby, cc==unique(fs$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
     sdmat <- sd(subbycc$mat, na.rm=TRUE)
@@ -51,39 +51,34 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatse <- summary(lmmat)$coef[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
+    fsestadd <- data.frame(siteslist=sitez[i], cc=unique(fs$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, 
                            matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, 
                            meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
-    bpest <- rbind(bpest, bpestadd)
+    fsest <- rbind(fsest, fsestadd)
   }
 }    
 
-meanhere <- aggregate(bpest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "sdlo", "meanutah", "meangdd",
-                              "matslope", "matslopese", "matslopelog", "matslopelogse")], bpest["cc"], FUN=mean)
-sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
-                    bpest["cc"], FUN=sd)
+meanhere <- aggregate(fsest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "sdlo", "meanutah", "meangdd",
+                              "matslope", "matslopese", "matslopelog", "matslopelogse")], fsest["cc"], FUN=mean)
+sdhere <- aggregate(fsest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
+                    fsest["cc"], FUN=sd)
 
 
-#          cc  meanmat   varmat    sdmat meanmatlo varmatlo  sdmatlo   meanlo     varlo     sdlo meanutah  meangdd  matslope matslopese
-# 1950-1960 5.365163 3.005094 1.731358  6.814883 1.363054 1.086849 113.8089 110.51111 10.25803 2246.987 68.70881 -4.534630   1.258845
-# 2000-2010 6.450939 1.251629 1.111780  6.615273 1.431603 1.152353 106.3356  46.95728  6.57374 2235.493 61.50754 -3.611025   1.579758
+fsest$matslopelog_exp <- exp(fsest$matslopelog)
 
-
-bpest$matslopelog_exp <- exp(bpest$matslopelog)
-
-write.csv(bpest, file="output/bpenestimates_withlog_1950_1990_2000.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsylestimates_withlog_1950_1990_2000.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better
 
-bpest.sitediffs <- data.frame(siteslist=numeric(), matdiff=numeric(), matlodiff=numeric(), diffslope=numeric(),
+fsest.sitediffs <- data.frame(siteslist=numeric(), matdiff=numeric(), matlodiff=numeric(), diffslope=numeric(),
                               varlodiff=numeric(), varlodiffper=numeric(), varmatdiffper=numeric())
 
 for(i in c(1:length(sitez))){ # i <- 1
-  subby <- subset(bpest, siteslist==sitez[i])
+  subby <- subset(fsest, siteslist==sitez[i])
   precc <- subset(subby, cc=="1950-1960")
   postcc <- subset(subby, cc=="2000-2010")
   matdiff <- precc$meanmat-postcc$meanmat
@@ -93,14 +88,14 @@ for(i in c(1:length(sitez))){ # i <- 1
   varlodiff <- precc$varlo-postcc$varlo
   varlodiffper <- postcc$varlo/precc$varlo
   varmatdiffper <- postcc$varmat/precc$varmat
-  bpest.sitediffs.add <- data.frame(siteslist=sitez[i], matdiff=matdiff,matlodiff=matlodiff, diffslope=diffslope,
+  fsest.sitediffs.add <- data.frame(siteslist=sitez[i], matdiff=matdiff,matlodiff=matlodiff, diffslope=diffslope,
                                     diffslopelog,
                                     varlodiff=varlodiff, varlodiffper=varlodiffper, varmatdiffper=varmatdiffper)
-  bpest.sitediffs <- rbind(bpest.sitediffs, bpest.sitediffs.add)
+  fsest.sitediffs <- rbind(fsest.sitediffs, fsest.sitediffs.add)
 }
 
-bpest.sitediffs$daysperC <- bpest.sitediffs$diffslope/bpest.sitediffs$matdiff
-bpest.sitediffs$daysperClog <- bpest.sitediffs$diffslopelog/bpest.sitediffs$matdiff
+fsest.sitediffs$daysperC <- fsest.sitediffs$diffslope/fsest.sitediffs$matdiff
+fsest.sitediffs$daysperClog <- fsest.sitediffs$diffslopelog/fsest.sitediffs$matdiff
 
 
 ########################
@@ -114,12 +109,12 @@ bpest.sitediffs$daysperClog <- bpest.sitediffs$diffslopelog/bpest.sitediffs$matd
 1-median.pepsims$var.lo.postcc[1]/median.pepsims$var.lo.precc[1]
 
 # in supp 'we estimated a decline in sensitivity'
-mean(bpest.sitediffs$daysperC)
-sd(bpest.sitediffs$daysperC)/sqrt(45) # days per C mean SE bp
+mean(fsest.sitediffs$daysperC)
+sd(fsest.sitediffs$daysperC)/sqrt(45) # days per C mean SE fs
 
 # in supp 'given X warming'
-mean(bpest.sitediffs$matdiff)
-mean(bpest.sitediffs$matdiff)/sqrt(45)
+mean(fsest.sitediffs$matdiff)
+mean(fsest.sitediffs$matdiff)/sqrt(45)
 
 # compare to pep sims (in figure, not text in supp currently)
 mean.pepsims$diffbefore.after[1]
@@ -140,8 +135,8 @@ sdhere$meanmatlo/sqrt(45)
 ##############################
 
 # variance! here's what you get if you calculate the % change site-by-site then average
-1 - mean(bpest.sitediffs$varlodiffper)
-sd(bpest.sitediffs$varlodiffper)/sqrt(45)
+1 - mean(fsest.sitediffs$varlodiffper)
+sd(fsest.sitediffs$varlodiffper)/sqrt(45)
 1 - mean.pepsims$varlodiffper[1]
 sd.pepsims$varlodiffper[1]/(sqrt(45))
 
@@ -153,12 +148,12 @@ hist(pepsims.1d$var.lo.precc)
 hist(pepsims.1d$var.lo.postcc)
 
 # other stuff ... (not using currently)
-mean(bpest.sitediffs$diffslope)
-sd(bpest.sitediffs$diffslope)/sqrt(45)
-mean(bpest.sitediffs$matlodiff)
-sd(bpest.sitediffs$matdiff)
-sd(bpest.sitediffs$matlodiff)
-sd(bpest.sitediffs$daysperC)
+mean(fsest.sitediffs$diffslope)
+sd(fsest.sitediffs$diffslope)/sqrt(45)
+mean(fsest.sitediffs$matlodiff)
+sd(fsest.sitediffs$matdiff)
+sd(fsest.sitediffs$matlodiff)
+sd(fsest.sitediffs$daysperC)
 
 ##############
 ## Plotting ##
@@ -179,10 +174,10 @@ for(i in 1:4){
   lines(x=rep(pos.x, 2), y=c(pos.y-sehere, pos.y+sehere), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
 }
-realdat.diff <- mean(bpest.sitediffs$diffslope) 
-points(abs(mean(bpest.sitediffs$matdiff)), realdat.diff, cex=cexhere, pch=17, col="salmon")
-realdatse <- sd(bpest.sitediffs$diffslope)/sqrt(45)
-lines(x=rep(abs(mean(bpest.sitediffs$matdiff)), 2), y=c(realdat.diff-realdatse, realdat.diff+realdatse),
+realdat.diff <- mean(fsest.sitediffs$diffslope) 
+points(abs(mean(fsest.sitediffs$matdiff)), realdat.diff, cex=cexhere, pch=17, col="salmon")
+realdatse <- sd(fsest.sitediffs$diffslope)/sqrt(45)
+lines(x=rep(abs(mean(fsest.sitediffs$matdiff)), 2), y=c(realdat.diff-realdatse, realdat.diff+realdatse),
       col="salmon")
 # par(xpd=TRUE) # so I can plot legend outside
 legend("topright", pch=c(17, 19), col=c("salmon", "darkblue"), legend=c("European data (PEP725)", "Simulations with constant cues"),
