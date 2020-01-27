@@ -10,6 +10,20 @@
 \def\labelitemi{--}
 \parindent=0pt
 \begin{document}
+
+\emph{Original from J. Auerbach on 22 January 2020} ...\\
+
+Sorry, I'm confused by the additional notation. Is it correct to deonte the time window $[a, b]$ and $S_a^b = \sum_{i = a}^b X_i $?
+The question is then how a and b relate to n, the first time, $i$, that $S_a^i$ hits $\beta$, i.e. $\sum_{i=a}^n X_i \approx \beta$.\\
+
+I originally assumed $a = 0$ and $b = n$, in which case $M_b = M_n \approx \beta / n.$ \\
+
+If $a, b$ are chosen independently of n, for example the entire year/spring, then the relationship would be similar:\\
+Fix $\beta$ so that:\\
+$\beta \approx \sum_{i=a}^n X_i \approx \mu \sum_{i=a}^n$\\
+or\\
+$\mu = \beta / \sum_{i=a}^n  = \beta / (  (n * (n + 1) - a * (a + 1)) / 2 ) \approx 2 * \beta / n * (n +1)$\\
+
 \emph{Edited by Lizzie} ...\\
 Let:
 \begin{align*}
@@ -17,7 +31,7 @@ i & = \text{index the days, }  i = 0, 1, ..., N\\
 X_i & = \text{temperature on day $i$, assume } X_0 = 0\\
 \mu & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\
 S_i & = \sum_{X_1}^{X_n} X_i,  \text{(for example, GDD)}\\
-M_i & = \text{cumulative mean}, S_i / n \\
+M_i & = \text{cumulative mean}, S_i / i \text{and thus } M_n=S_n/n \\
 \beta & = \text{a threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
 n &  = \text{the first day such that }  \beta < S_n, \text{ (for example, doy of budburst)}\\
 l &  = \text{the last date over which temperature is integrated}
@@ -30,14 +44,14 @@ It is not surprising that $n$ decreases with $\mu$ (and thus $M_l$) under the nu
 So I say (I think, assuming the math still holds): Plotting $n$ against $M_l$ is similar to plotting $n$ against $S_n / n$, which is approximately the same as plotting $n$ against $\beta/n$, which is a hyperbola. The data is consistent with the null model; no need for $n$ to react to $M_l$.\\
 
 \newpage
-\emph{Original from J. Auerbach on 15 January 2020} ...\\
+\emph{Original from J. Auerbach on 15 January 2020, with corrections from 22 Jan 2020} ...\\
 Let:
 \begin{align*}
 i & = \text{index the days, }  i = 0, 1, ..., N\\
 X_i & = \text{temperature on day $i$, assume } X_0 = 0\\
 \mu & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\
 S_i & = \sum_{X_1}^{X_n} X_i \\
-M_i & = \text{cumulative mean}, S_i / n \\
+M_i & = \text{cumulative mean}, , S_i / i \text{and thus } M_n=S_n/n  \\
 \beta & = \text{a threshold of interest, } \beta > 0\\
 n &  = \text{the first day such that }  \beta < S_n
 \end{align*}
