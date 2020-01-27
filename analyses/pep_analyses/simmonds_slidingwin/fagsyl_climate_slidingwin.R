@@ -18,7 +18,7 @@ library(raster)
 library(RColorBrewer)
 
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
-d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
+d<-read.csv("input/pep_fagsyl_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -141,7 +141,7 @@ alltemps$date <- as.character(alltemps$date)
 climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1971),]
 climatedatapost <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
 
-write.csv(climatedatapre, file="output/bp_climatedatapre.csv", row.names=FALSE)
-write.csv(climatedatapost, file="output/bp_climatedatapost.csv", row.names=FALSE)
+write.csv(climatedatapre, file="output/fs_climatedatapre.csv", row.names=FALSE)
+write.csv(climatedatapost, file="output/fs_climatedatapost.csv", row.names=FALSE)
 
 
