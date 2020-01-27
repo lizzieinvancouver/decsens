@@ -18,7 +18,10 @@ options(stringsAsFactors = FALSE)
 # set.seed(113)
 
 # Setting working directory. 
-setwd("~/Documents/git/projects/treegarden/decsens/analyses")
+if(length(grep("ailene", getwd()))>0) { 
+  setwd("C:/Users/ailene.ettinger/Documents/GitHub/decsens/analyses")
+} else
+  setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 
 # Step 1: Set up years, days per year, temperatures, required GDD (fstar), required chill (cstar) and how much higher fstar is when cstar is not met
@@ -57,6 +60,7 @@ for (i in degreez){
 plot(daily_temp[,1]~c(1:nrow(daily_temp)), type="l")
 par(mfrow=c(1,2))
 plot(chill~degwarm, df)
+abline(h=cstar, col="red", lwd=2)
 plot(gdd~degwarm, df)
 par(mfrow=c(1,1))
 
@@ -81,17 +85,17 @@ plot(leafout_date~gddreq)
 ## Step 2: Now I put together the seasonal temps, varying fstar (increases when chill is low) and calculate the sensitivities
 
 df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeric(), simplelm=numeric(),
-    loglm=numeric(), perlm=numeric())
+    loglm=numeric(), perlm=numeric(),yrschillmet=numeric())#add times below cstar- times chilling not met
 
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
 
 for (i in degreez){
    for (j in 1:sitez){
-       yearly_expected_temp <- rep(6, yearz)
+       yearly_expected_temp <- rep(6, yearz)#what is intention with this?
        daily_temp <- sapply(yearly_expected_temp, function(x) c(rnorm(daysperseason, 0 + i, sigma),
            rnorm(daysperinterseason, 2 + i , sigma), rnorm(daysperinterseason, 4 + i, sigma),
-           rnorm(daysperseason, 6 + i, sigma)))
+           rnorm(daysperseason, 6 + i, sigma)))#yearly_expected_temp not referenced at all in generating daily temps- is this intentional?
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
@@ -108,8 +112,9 @@ for (i in degreez){
            gddreq[k] <- fstar + (cstar-chillsum[daystostart,k])*fstaradjforchill
            }
            leafout_date[k] <- min(which(gddsum[,k] > gddreq[k]))
-           meanchill <- mean(chillsum[daystostart,])
+           meanchill <- mean(chillsum[daystostart,])#why taking mean here? mean across 30 years?
            meanfstar <- mean(gddreq)
+           chillmet<-length(which(chillsum[daystostart,]>cstar))
            }
            yearly_tempall <- colMeans(daily_temp)
            yearly_temppostwinter <- colMeans(daily_temp[daystostart:nrow(daily_temp),])
@@ -124,15 +129,19 @@ for (i in degreez){
            dfadd <- data.frame(degwarm=i, rep=j, chill=meanchill, fstar=meanfstar,     
                simplelm=coef(lm(leafout_date~yearly_temp))[2],
                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
-               perlm=coef(lm(per_leafout_date~per_yearly_temp))[2])
+               perlm=coef(lm(per_leafout_date~per_yearly_temp))[2], yrschillmet = chillmet)
            df <- rbind(df, dfadd)
        }
    }
 
 plot(simplelm~degwarm, data=df, pch=16, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
 points(loglm~degwarm, data=df, col="dodgerblue")
-plot(perlm~degwarm, data=df, col="firebrick")
+points(perlm~degwarm, data=df, col="firebrick")
 
+plot(yrschillmet~degwarm, data=df, pch=16, ylab="Number of years (out of 30) when chilling is met", xlab="Degree warming")
+# add cstar to df so that we can show when chilling is below cstar
+#df$cstar<-cstar
+#lowchill<-df$chill
 
 ##############
 ## Plotting ##
@@ -167,3 +176,6 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
    cex=1, bty="n")
 dev.off()
+#Answering Lizzie's questions:
+#Is daily_temp working? But does this do what I think? Am I applying i correctly?
+
