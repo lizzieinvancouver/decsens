@@ -28,7 +28,7 @@ if(length(grep("ailene", getwd()))>0) {
 daysperseason <- 100
 daysperinterseason <- 25
 daystostart <- daysperseason+daysperinterseason # this defines the break between 'winter' and 'spring,' functionally we accumulate chill only in 1:daystostart and GDD only in daystostart:end(df)
-yearz <- 30
+yearz <- 20
 sitez <- 45 # aka reps
 degreez <- c(0, 0.5, 1, 2, 4, 6, 7) # warming -- applied evenly across whole period
 sigma <- 4
@@ -85,7 +85,7 @@ plot(leafout_date~gddreq)
 ## Step 2: Now I put together the seasonal temps, varying fstar (increases when chill is low) and calculate the sensitivities
 
 df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeric(), simplelm=numeric(),
-    loglm=numeric(), perlm=numeric(),yrschillmet=numeric())#add times below cstar- times chilling not met
+    loglm=numeric(), perlm=numeric(),propryrschillmet=numeric(),meangddsum=numeric())#add times below cstar- times chilling not met
 
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
@@ -114,7 +114,8 @@ for (i in degreez){
            leafout_date[k] <- min(which(gddsum[,k] > gddreq[k]))
            meanchill <- mean(chillsum[daystostart,])#why taking mean here? mean across 30 years?
            meanfstar <- mean(gddreq)
-           chillmet<-length(which(chillsum[daystostart,]>cstar))
+           chillmet<-length(which(chillsum[daystostart,]>cstar))/yearz
+           meangddsum<- mean(gddsum)
            }
            yearly_tempall <- colMeans(daily_temp)
            yearly_temppostwinter <- colMeans(daily_temp[daystostart:nrow(daily_temp),])
@@ -129,7 +130,7 @@ for (i in degreez){
            dfadd <- data.frame(degwarm=i, rep=j, chill=meanchill, fstar=meanfstar,     
                simplelm=coef(lm(leafout_date~yearly_temp))[2],
                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
-               perlm=coef(lm(per_leafout_date~per_yearly_temp))[2], yrschillmet = chillmet)
+               perlm=coef(lm(per_leafout_date~per_yearly_temp))[2], propryrschillmet = chillmet,meangddsum= meangddsum)
            df <- rbind(df, dfadd)
        }
    }
@@ -138,7 +139,10 @@ plot(simplelm~degwarm, data=df, pch=16, ylab="Sensitivity (days/C or log(days)/l
 points(loglm~degwarm, data=df, col="dodgerblue")
 points(perlm~degwarm, data=df, col="firebrick")
 
-plot(yrschillmet~degwarm, data=df, pch=16, ylab="Number of years (out of 30) when chilling is met", xlab="Degree warming")
+plot(propryrschillmet~degwarm, data=df, pch=16, ylab="Number of years (out of 30) when chilling is met", xlab="Degree warming")
+plot(fstar~degwarm, data=df, pch=16, ylab="GDD", xlab="Degree warming")
+plot(meangddsum~degwarm, data=df, pch=16, ylab="GDD", xlab="Degree warming")
+
 # add cstar to df so that we can show when chilling is below cstar
 #df$cstar<-cstar
 #lowchill<-df$chill
@@ -147,12 +151,13 @@ plot(yrschillmet~degwarm, data=df, pch=16, ylab="Number of years (out of 30) whe
 ## Plotting ##
 ##############
 
-mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm")], df["degwarm"], FUN=mean)
-sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm")], df["degwarm"], FUN=sd)
+mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm","propryrschillmet", "fstar","meangddsum")], df["degwarm"], FUN=mean)
+sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm","propryrschillmet", "fstar","meangddsum")], df["degwarm"], FUN=sd)
 
 cexhere <- 0.95
-pdf(file.path("figures/shiftingcuessims.pdf"), width = 6, height = 4)
-par(xpd=FALSE)
+pdf(file.path("figures/shiftingcuessims_3panels.pdf"), width = 6, height = 4)
+#par(xpd=FALSE)
+par(mfrow=c(3,1))
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-15, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
@@ -175,6 +180,36 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 # par(xpd=TRUE) # so I can plot legend outside
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
    cex=1, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(0, 1),
+     ylab="Proportion of years when chilling is met",
+     xlab=expression(paste("Warming (", degree, "C)")), main="")
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$propryrschillmet[i]
+  sdhere <- sd.sims$propryrschillmet[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkgray")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
+}
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,800),
+     ylab="GDD",
+     xlab=expression(paste("Warming (", degree, "C)")), main="")
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$meangddsum[i]
+  sdhere <- sd.sims$meangddsum[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darksalmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darksalmon")
+}
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$fstar[i]
+  sdhere <- sd.sims$fstar[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkred")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkred")
+}
+legend("topleft", pch=c(19, 19), col=c("darkbsalmon", "darkread"), legend=c("GDD Total", "GDD Required"),
+       cex=1, bty="n")
+
 dev.off()
 #Answering Lizzie's questions:
 #Is daily_temp working? But does this do what I think? Am I applying i correctly?

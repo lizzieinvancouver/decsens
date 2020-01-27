@@ -5,13 +5,9 @@
 
 ## housekeeping
 rm(list=ls()) 
-options(stringsAsFactors = FALSE)
-
-set.seed(113)
-
 # Setting working directory. Add in your own path in an if statement for your file structure
 if(length(grep("ailene", getwd()))>0) { 
-  setwd("~/Documents/GitHub/ospree/analyses/decsens")
+  setwd("C:/Users/ailene.ettinger/Documents/GitHub/decsens/analyses")
 } else if(length(grep("lizzie", getwd()))>0) {
   setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/decsens")
 } else if(length(grep("Ignacio", getwd()))>0) { 
@@ -21,6 +17,10 @@ if(length(grep("ailene", getwd()))>0) {
 } else setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 # Make some data ...
+
+options(stringsAsFactors = FALSE)
+
+set.seed(113)
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
 daysperyr <- 60
@@ -54,7 +54,7 @@ for (i in degreez){
 
 plot(simplelm~degwarm, data=df, pch=16, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
 points(loglm~degwarm, data=df, col="dodgerblue")
-plot(perlm~degwarm, data=df, col="firebrick")
+points(perlm~degwarm, data=df, col="firebrick")
 
 
 plot(abs(simplelm)~degwarm, data=df, col="lightgrey",
