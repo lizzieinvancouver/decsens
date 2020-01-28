@@ -36,14 +36,13 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1951 & df$year<=1960) | (df$year>=1991 & df$year<=2000) | (df$year>=2001 & df$year<=2010),]
+allpeps <- df[(df$year>=1951 & df$year<=1970) | (df$year>=1991 & df$year<=2010),]
 
 allpeps$cc<-NA
-allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1960, "1950-1960", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>=1990 & allpeps$year<=2000, "1990-2000", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>=2000 & allpeps$year<=2010, "2000-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1970, "1950-1960", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>=1990 & allpeps$year<=2010, "2000-2010", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=30),]
+mostdata<-allpeps[(allpeps$num.years>=40),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
@@ -59,7 +58,7 @@ rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
-period<-1951:1960
+period<-1951:1970
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167", "48.7167 9.21667") 
@@ -67,7 +66,7 @@ sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
-sites$siteslist<-1:37
+sites$siteslist<-1:nsites
 tmin<-rn
 tmax<-rx
 
@@ -78,7 +77,6 @@ lositeyear<-na.omit(lositeyear)
 
 leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
 
-if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
 #extractclimpost<-function(tmin,period){
@@ -249,7 +247,7 @@ pre<-as.data.frame(clim_pre)
 write.csv(pre, file="/n/wolkovich_lab/Lab/Cat/prefagsyl.csv", row.names=FALSE)
 
 
-period<-2001:2010
+period<-1991:2010
 extractclimpost<-function(tmin,period){
   #extractclim90s<-function(tmin,period){
   
@@ -415,178 +413,11 @@ clim_post<-extractclimpost(tmin,period)
 post<-as.data.frame(clim_post)
 write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postfagsyl.csv", row.names=FALSE)
 
-period<-1991:2000
-extractclim90s<-function(tmin,period){
-  
-  ## define array to store results
-  nyears<-length(period)
-  climateyears<-array(NA,dim=c(nyears, 5, nsites))
-  row.names(climateyears)<-period
-  colnames(climateyears)<-c("Mean.Utah", "Mean.Port", "Mean.GDD", "Spring.Temp", "Site Num.")
-  
-  ## subset climate years
-  yearsinclimmin<-as.numeric(format(as.Date(names(tmin),format="X%Y.%m.%d"),"%Y"))
-  yearsinclimmax<-as.numeric(format(as.Date(names(tmax),format="X%Y.%m.%d"),"%Y"))
-  yearsinperiodmin<-which(yearsinclimmin%in%period)
-  yearsinperiodmax<-which(yearsinclimmax%in%period)
-  climsubmin<-subset(tmin,yearsinperiodmin)
-  climsubmax<-subset(tmax,yearsinperiodmax)
-  
-  ## subset climate days
-  monthsinclimmin<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
-  monthsinclimmax<-as.numeric(format(as.Date(names(climsubmax),format="X%Y.%m.%d"),"%m"))
-  chillmonths<-c(9:12,1:3)
-  monthsinchillmin<-which(monthsinclimmin%in%chillmonths)
-  monthsinchillmax<-which(monthsinclimmax%in%chillmonths)
-  chillsubmin<-subset(climsubmin,monthsinchillmin)
-  chillsubmax<-subset(climsubmax,monthsinchillmax)
-  
-  warmmonths<-c(1:5)
-  monthsinwarmmin<-which(monthsinclimmin%in%warmmonths)
-  monthsinwarmmax<-which(monthsinclimmax%in%warmmonths)
-  warmsubmin<-subset(climsubmin,monthsinwarmmin)
-  warmsubmax<-subset(climsubmax,monthsinwarmmax)
-  
-  ## commence loop  
-  for (i in 1:nsites){#i=1
-    print(i)
-    sitesi<-sites$siteslist[i]
-    
-    ## load shape
-    if(sitesi==sites$siteslist[i])
-      Coords<-data.frame(sites$x, sites$y)
-    points.min <- SpatialPoints(Coords, proj4string = rn@crs)
-    points.max <- SpatialPoints(Coords, proj4string = rx@crs)
-    
-    ## loop across years to extract each years averages
-    # save first an array to store results
-    yearlyresults<-array(NA,dim=c(length(period),5))
-    
-    for(j in period){#j=1951
-      print(paste(i,j))
-      
-      # select year's layer
-      chillyearsmin<-which(as.numeric(format(as.Date(
-        names(chillsubmin),format="X%Y.%m.%d"),"%Y"))==j)
-      chillyearsmax<-which(as.numeric(format(as.Date(
-        names(chillsubmax),format="X%Y.%m.%d"),"%Y"))==j)
-      
-      yearschillmin<-subset(chillsubmin,chillyearsmin)
-      yearschillmax<-subset(chillsubmax,chillyearsmax)
-      
-      # extract values and format to compute means
-      tempschillsmin<-raster::extract(yearschillmin,points.min)
-      tempschillsmax<-raster::extract(yearschillmax,points.max)
-      
-      #turn into data frame and remove NAs
-      chmin<-as.data.frame(tempschillsmin)
-      chmin<-subset(chmin,!is.na(rowSums(chmin)))
-      chmax<-as.data.frame(tempschillsmax)
-      chmax<-subset(chmax,!is.na(rowSums(chmax)))
-      
-      ## calculate chilling
-      chillunitseachcelleachdaymin<-apply(chmin,2,function(x){
-        Tmin<-x
-        return(Tmin)})
-      tminchill<-chillunitseachcelleachdaymin[(as.numeric(rownames(chillunitseachcelleachdaymin))==i)]
-      
-      chillunitseachcelleachdaymax<-apply(chmax,2,function(x){
-        Tmax<-x
-        return(Tmax)})
-      tmaxchill<-chillunitseachcelleachdaymax[(as.numeric(rownames(chillunitseachcelleachdaymax))==i)]
-      
-      meandaily <- (tminchill + tmaxchill)/2
-      
-      x <- as.Date(substr(colnames(chillunitseachcelleachdaymin), 2, 11),format="%Y.%m.%d")
-      
-      hrly.temp=
-        data.frame(
-          Temp = c(rep(meandaily, each = 24)),
-          Year = c(rep(as.numeric(substr(colnames(chillunitseachcelleachdaymin), 2, 5)), times=24)),
-          #JDay = sort(c(rep(seq(1:length(colnames(meandaily))), times = 24)))
-          JDay = sort(c(rep(yday(x), times=24)))
-        )
-      
-      
-      # select year's layer
-      warmyearsmin<-which(as.numeric(format(as.Date(
-        names(warmsubmin),format="X%Y.%m.%d"),"%Y"))==j)
-      warmyearsmax<-which(as.numeric(format(as.Date(
-        names(warmsubmax),format="X%Y.%m.%d"),"%Y"))==j)
-      
-      yearswarmmin<-subset(warmsubmin,warmyearsmin)
-      yearswarmmax<-subset(warmsubmax,warmyearsmax)
-      
-      # extract values and format to compute means and sdevs
-      tempswarmsmin<-raster::extract(yearswarmmin,points.min)
-      tempswarmsmax<-raster::extract(yearswarmmax,points.max)
-      
-      #turn into data frame and remove NAs
-      wamin<-as.data.frame(tempswarmsmin)
-      wamin<-subset(wamin,!is.na(rowSums(wamin)))
-      wamax<-as.data.frame(tempswarmsmax)
-      wamax<-subset(wamax,!is.na(rowSums(wamax)))
-      
-      
-      ## calculate forcing (GDD)
-      warmunitseachcelleachdaymin<-apply(wamin,2,function(x){
-        Tmin.warm<-x
-        return(Tmin.warm)})
-      tminwarm<-warmunitseachcelleachdaymin[(as.numeric(rownames(warmunitseachcelleachdaymin))==i)]
-      
-      warmunitseachcelleachdaymax<-apply(wamax,2,function(x){
-        Tmax.warm<-x
-        return(Tmax.warm)})
-      tmaxwarm<-warmunitseachcelleachdaymax[(as.numeric(rownames(warmunitseachcelleachdaymax))==i)]
-      
-      meandaily.warm <- (tminwarm + tmaxwarm)/2
-      
-      
-      x.warm <- as.Date(substr(colnames(warmunitseachcelleachdaymin), 2, 11),format="%Y.%m.%d")
-      
-      hrly.temp.warm =
-        data.frame(
-          Temp = c(rep(meandaily.warm, each = 24)),
-          Year = c(rep(as.numeric(substr(colnames(warmunitseachcelleachdaymin), 2, 5)), times=24)),
-          JDay = sort(c(rep(yday(x.warm), times = 24)))
-        )
-      
-      lopersite <- lositeyear[(lositeyear$siteslist==i & lositeyear$year==j),]
-      lo <- as.numeric(lopersite$lo)
-      hrly.temp.warm <- hrly.temp.warm[(hrly.temp.warm$JDay<=lo & hrly.temp.warm$JDay>=lo-30),]
-      
-      chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])])
-      warmcalc.mn<-chilling(hrly.temp.warm, hrly.temp.warm$JDay[1], hrly.temp.warm$JDay[nrow(hrly.temp.warm[1])])
-      
-      
-      yearlyresults[which(period==j),1]<-chillcalc.mn$Utah_Model[which(chillcalc.mn$End_year==j)]
-      yearlyresults[which(period==j),2]<-chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
-      yearlyresults[which(period==j),3]<-(warmcalc.mn$GDH[which(warmcalc.mn$End_year==j)])/24
-      yearlyresults[which(period==j),4]<-mean(hrly.temp.warm$Temp, na.rm=TRUE)
-      
-      yearlyresults[which(period==j),5]<-sites$siteslist[i]
-      
-    }
-    
-    climateyears[,,i]<-yearlyresults
-    
-  } 
-  
-  return(climateyears)
-  
-}
-
-
-clim_90s<-extractclim90s(tmin,period)
-
-nineties<-as.data.frame(clim_90s)
-write.csv(nineties, file="/n/wolkovich_lab/Lab/Cat/ninetiesfagsyl.csv", row.names=FALSE)
-}
-
-setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
-pre <- read.csv("prefagsyl.csv")
-post <- read.csv("postfagsyl.csv")
-nineties <- read.csv("ninetiesfagsyl.csv")
+#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
+#pre <- read.csv("prefagsyl.csv")
+#post <- read.csv("postfagsyl.csv")
+pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prefagsyl.csv")
+post <- read.csv("/n/wolkovich_lab/Lab/Cat/postfagsyl.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -688,7 +519,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..33, pre$Site.Num..34,
                                   pre$Site.Num..35, pre$Site.Num..36,
                                   pre$Site.Num..37, pre$Site.Num..38),
-                    year = (as.numeric(rownames(nineties))+1950))
+                    year = (as.numeric(rownames(pre))+1950))
 
 site<-full_join(predata, sites)
 site$x<-NULL
@@ -794,128 +625,17 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Site.Num..33, post$Site.Num..34,
                                    post$Site.Num..35, post$Site.Num..36,
                                    post$Site.Num..37, post$Site.Num..38),
-                     year = (as.numeric(rownames(nineties))+1990))
+                     year = (as.numeric(rownames(post))+1990))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
 site.post$y<-NULL
 
-#nineties <- read.csv("~/Desktop/ninetiesbetpen.csv")
-ninetiesdata<-data.frame(chillutah = c(nineties$Mean.Utah.1, nineties$Mean.Utah.2,
-                                       nineties$Mean.Utah.3, nineties$Mean.Utah.4,
-                                       nineties$Mean.Utah.5, nineties$Mean.Utah.6,
-                                       nineties$Mean.Utah.7, nineties$Mean.Utah.8,
-                                       nineties$Mean.Utah.9, nineties$Mean.Utah.10,
-                                       nineties$Mean.Utah.11, nineties$Mean.Utah.12,
-                                       nineties$Mean.Utah.13, nineties$Mean.Utah.14,
-                                       nineties$Mean.Utah.15, nineties$Mean.Utah.16,
-                                       nineties$Mean.Utah.17, nineties$Mean.Utah.18,
-                                       nineties$Mean.Utah.19, nineties$Mean.Utah.20,
-                                       nineties$Mean.Utah.21, nineties$Mean.Utah.22,
-                                       nineties$Mean.Utah.23, nineties$Mean.Utah.24,
-                                       nineties$Mean.Utah.25, nineties$Mean.Utah.26,
-                                       nineties$Mean.Utah.27, nineties$Mean.Utah.28,
-                                       nineties$Mean.Utah.29, nineties$Mean.Utah.30,
-                                       nineties$Mean.Utah.31, nineties$Mean.Utah.32,
-                                       nineties$Mean.Utah.33, nineties$Mean.Utah.34,
-                                       nineties$Mean.Utah.35, nineties$Mean.Utah.36,
-                                       nineties$Mean.Utah.37, nineties$Mean.Utah.38),
-                         
-                         chillports = c(nineties$Mean.Port.1, nineties$Mean.Port.2,
-                                        nineties$Mean.Port.3, nineties$Mean.Port.4,
-                                        nineties$Mean.Port.5, nineties$Mean.Port.6,
-                                        nineties$Mean.Port.7, nineties$Mean.Port.8,
-                                        nineties$Mean.Port.9, nineties$Mean.Port.10,
-                                        nineties$Mean.Port.11, nineties$Mean.Port.12,
-                                        nineties$Mean.Port.13, nineties$Mean.Port.14,
-                                        nineties$Mean.Port.15, nineties$Mean.Port.16,
-                                        nineties$Mean.Port.17, nineties$Mean.Port.18,
-                                        nineties$Mean.Port.19, nineties$Mean.Port.20,
-                                        nineties$Mean.Port.21, nineties$Mean.Port.22,
-                                        nineties$Mean.Port.23, nineties$Mean.Port.24,
-                                        nineties$Mean.Port.25, nineties$Mean.Port.26,
-                                        nineties$Mean.Port.27, nineties$Mean.Port.28,
-                                        nineties$Mean.Port.29, nineties$Mean.Port.30,
-                                        nineties$Mean.Port.31, nineties$Mean.Port.32,
-                                        nineties$Mean.Port.33, nineties$Mean.Port.34,
-                                        nineties$Mean.Port.35, nineties$Mean.Port.36,
-                                        nineties$Mean.Port.37, nineties$Mean.Port.38),
-                         
-                         
-                         gdd = c(nineties$Mean.GDD.1, nineties$Mean.GDD.2,
-                                 nineties$Mean.GDD.3, nineties$Mean.GDD.4,
-                                 nineties$Mean.GDD.5, nineties$Mean.GDD.6,
-                                 nineties$Mean.GDD.7, nineties$Mean.GDD.8,
-                                 nineties$Mean.GDD.9, nineties$Mean.GDD.10,
-                                 nineties$Mean.GDD.11, nineties$Mean.GDD.12,
-                                 nineties$Mean.GDD.13, nineties$Mean.GDD.14,
-                                 nineties$Mean.GDD.15, nineties$Mean.GDD.16,
-                                 nineties$Mean.GDD.17, nineties$Mean.GDD.18,
-                                 nineties$Mean.GDD.19, nineties$Mean.GDD.20,
-                                 nineties$Mean.GDD.21, nineties$Mean.GDD.22,
-                                 nineties$Mean.GDD.23, nineties$Mean.GDD.24,
-                                 nineties$Mean.GDD.25, nineties$Mean.GDD.26,
-                                 nineties$Mean.GDD.27, nineties$Mean.GDD.28,
-                                 nineties$Mean.GDD.29, nineties$Mean.GDD.30,
-                                 nineties$Mean.GDD.31, nineties$Mean.GDD.32,
-                                 nineties$Mean.GDD.33, nineties$Mean.GDD.34,
-                                 nineties$Mean.GDD.35, nineties$Mean.GDD.36,
-                                 nineties$Mean.GDD.37, nineties$Mean.GDD.38),
-                         
-                         mat.lo = c(nineties$Spring.Temp.1, nineties$Spring.Temp.2,
-                                    nineties$Spring.Temp.3, nineties$Spring.Temp.4,
-                                    nineties$Spring.Temp.5, nineties$Spring.Temp.6,
-                                    nineties$Spring.Temp.7, nineties$Spring.Temp.8,
-                                    nineties$Spring.Temp.9, nineties$Spring.Temp.10,
-                                    nineties$Spring.Temp.11, nineties$Spring.Temp.12,
-                                    nineties$Spring.Temp.13, nineties$Spring.Temp.14,
-                                    nineties$Spring.Temp.15, nineties$Spring.Temp.16,
-                                    nineties$Spring.Temp.17, nineties$Spring.Temp.18,
-                                    nineties$Spring.Temp.19, nineties$Spring.Temp.20,
-                                    nineties$Spring.Temp.21, nineties$Spring.Temp.22,
-                                    nineties$Spring.Temp.23, nineties$Spring.Temp.24,
-                                    nineties$Spring.Temp.25, nineties$Spring.Temp.26,
-                                    nineties$Spring.Temp.27, nineties$Spring.Temp.28,
-                                    nineties$Spring.Temp.29, nineties$Spring.Temp.30,
-                                    nineties$Spring.Temp.31, nineties$Spring.Temp.32,
-                                    nineties$Spring.Temp.33, nineties$Spring.Temp.34,
-                                    nineties$Spring.Temp.35, nineties$Spring.Temp.36,
-                                    nineties$Spring.Temp.37, nineties$Spring.Temp.38),
-                         
-                         siteslist = c(nineties$Site.Num..1, nineties$Site.Num..2,
-                                       nineties$Site.Num..3, nineties$Site.Num..4,
-                                       nineties$Site.Num..5, nineties$Site.Num..6,
-                                       nineties$Site.Num..7, nineties$Site.Num..8,
-                                       nineties$Site.Num..9, nineties$Site.Num..10,
-                                       nineties$Site.Num..11, nineties$Site.Num..12,
-                                       nineties$Site.Num..13, nineties$Site.Num..14,
-                                       nineties$Site.Num..15, nineties$Site.Num..16,
-                                       nineties$Site.Num..17, nineties$Site.Num..18,
-                                       nineties$Site.Num..19, nineties$Site.Num..20,
-                                       nineties$Site.Num..21, nineties$Site.Num..22,
-                                       nineties$Site.Num..23, nineties$Site.Num..24,
-                                       nineties$Site.Num..25, nineties$Site.Num..26,
-                                       nineties$Site.Num..27, nineties$Site.Num..28,
-                                       nineties$Site.Num..29, nineties$Site.Num..30,
-                                       nineties$Site.Num..31, nineties$Site.Num..32,
-                                       nineties$Site.Num..33, nineties$Site.Num..34,
-                                       nineties$Site.Num..35, nineties$Site.Num..36,
-                                       nineties$Site.Num..37, nineties$Site.Num..38),
-                         year = (as.numeric(rownames(nineties))+2000))
-
-site.nineties<-full_join(ninetiesdata, sites)
-site.nineties$x<-NULL
-site.nineties$y<-NULL  
 
 
 full.site<-full_join(site, site.post)
-full.site<-full_join(full.site, site.nineties)
 full.site$year<-as.numeric(full.site$year)
-full.site$cc <- NA
-full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
-full.site$cc <- ifelse(full.site$year>2000, "2000-2010", full.site$cc)
-others<-c("1950-1960", "2000-2010")
-full.site$cc <- ifelse(!full.site$cc %in% others, "1990-2000", full.site$cc)
+full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", "1990-2010")
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -933,7 +653,7 @@ if(FALSE){
 ##################################################################################################
 #full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
 
-period <- c(1951:1960, 1991:2000, 2001:2010)
+period <- c(1951:1970,1991:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
@@ -953,7 +673,7 @@ climsubmax<-subset(tmax,yearsinperiod)
 
 ## subset climate days
 monthsinclim<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
-mstmonths<-c(3:4)
+mstmonths<-c(3:5)
 monthsinmst<-which(monthsinclim%in%mstmonths)
 mstsubmin<-subset(climsubmin,monthsinmst)
 mstsubmax<-subset(climsubmax,monthsinmst)
@@ -999,7 +719,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="fagsyl_decsens_1950_1990_2000.csv", row.names = FALSE)
+write.csv(fullsites45, file="fagsyl_decsens_1950-1970_1990-2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################
