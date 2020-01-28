@@ -26,9 +26,9 @@ bp <- read.csv("output/betpen_decsens_1950-1970_1990-2000.csv")
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
 bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
                     sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
-                    matslope=numeric(), matslopese=numeric(), matslopeconfint2.5=numeric(), matslopeconfint97.5=numeric(),
+                    matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
                     meanmatlo=numeric(), 
-                    matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint2.5=numeric(), matslopelogconfint97.5=numeric(),
+                    matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
                     varmatlo=numeric(), sdmatlo=numeric())
 
 sitez <- unique(bp$siteslist)
@@ -50,18 +50,18 @@ for(i in c(1:length(sitez))){ # i <- 1
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
     lmmat <- lm(lo~mat, data=subbycc)
     lmmatse <- summary(lmmat)$coef[2,2]
-    lmmatconfint2.5 <- confint(lmmat)[2,1]
-    lmmatconfint97.5 <- confint(lmmat)[2,2]
+    lmmatconfint11 <- confint(lmmat,level=89)[2,1]
+    lmmatconfint89 <- confint(lmmat,level=89)[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lmmatconfintlog2.5 <- confint(lmmatlog)[2,1]
-    lmmatconfintlog97.5 <- confint(lmmatlog)[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog,level=89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog,level=89)[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
-                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint2.5=lmmatconfint2.5, 
-                           matslopeconfint97.5=lmmatconfint97.5,
-                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint2.5=lmmatconfintlog2.5, 
-                           matslopelogconfint97.5=lmmatconfintlog97.5,
+                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
+                           matslopeconfint89=lmmatconfint89,
+                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
+                           matslopelogconfint89=lmmatconfintlog89,
                            meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
     bpest <- rbind(bpest, bpestadd)
@@ -74,10 +74,12 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanl
                     bpest["cc"], FUN=sd)
 
 
-#          cc  meanmat   varmat    sdmat meanmatlo varmatlo  sdmatlo   meanlo     varlo     sdlo meanutah  meangdd  matslope matslopese
-# 1950-1960 5.365163 3.005094 1.731358  6.814883 1.363054 1.086849 113.8089 110.51111 10.25803 2246.987 68.70881 -4.534630   1.258845
-# 2000-2010 6.450939 1.251629 1.111780  6.615273 1.431603 1.152353 106.3356  46.95728  6.57374 2235.493 61.50754 -3.611025   1.579758
-
+     # cc    meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo  meanlo    varlo     sdlo meanutah  meangdd
+# 1950-1970 7.661285 1.2515107 1.1172600  7.267610 1.076558 0.9952432 114.926 81.65211 8.914409 2038.200 77.86681
+# 1990-2000 8.807405 0.8897012 0.9427715  6.600241 1.010194 0.9970972 106.422 42.46895 6.363890 2287.104 59.19161
+#    matslope matslopese matslopelog matslopelogse
+# -6.042843   1.204039  -0.3978114    0.08225647
+# -2.291221   1.481032  -0.1839502    0.12221731
 
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 

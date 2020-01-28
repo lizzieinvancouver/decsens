@@ -26,9 +26,9 @@ fs <- read.csv("output/fagsyl_decsens_1950-1970_1990-2000.csv")
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
 fsest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
                     sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
-                    matslope=numeric(), matslopese=numeric(), matslopeconfint2.5=numeric(), matslopeconfint97.5=numeric(),
+                    matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
                     meanmatlo=numeric(), 
-                    matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint2.5=numeric(), matslopelogconfint97.5=numeric(),
+                    matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
                     varmatlo=numeric(), sdmatlo=numeric())
 
 sitez <- unique(fs$siteslist)
@@ -50,18 +50,18 @@ for(i in c(1:length(sitez))){ # i <- 1
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
     lmmat <- lm(lo~mat, data=subbycc)
     lmmatse <- summary(lmmat)$coef[2,2]
-    lmmatconfint2.5 <- confint(lmmat)[2,1]
-    lmmatconfint97.5 <- confint(lmmat)[2,2]
+    lmmatconfint11 <- confint(lmmat,level=89)[2,1]
+    lmmatconfint89 <- confint(lmmat,level=89)[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lmmatconfintlog2.5 <- confint(lmmatlog)[2,1]
-    lmmatconfintlog97.5 <- confint(lmmatlog)[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog, level=89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog, level=89)[2,2]
     fsestadd <- data.frame(siteslist=sitez[i], cc=unique(fs$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
-                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint2.5=lmmatconfint2.5, 
-                           matslopeconfint97.5=lmmatconfint97.5,
-                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint2.5=lmmatconfintlog2.5, 
-                           matslopelogconfint97.5=lmmatconfintlog97.5,
+                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
+                           matslopeconfint89=lmmatconfint89,
+                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11,
+                           matslopelogconfint89=lmmatconfintlog89,
                            meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
     fsest <- rbind(fsest, fsestadd)
@@ -72,6 +72,13 @@ meanhere <- aggregate(fsest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmat
                               "matslope", "matslopese", "matslopelog", "matslopelogse")], fsest["cc"], FUN=mean)
 sdhere <- aggregate(fsest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
                     fsest["cc"], FUN=sd)
+
+#       cc     meanmat   varmat   sdmat  meanmatlo varmatlo   sdmatlo   meanlo    varlo     sdlo meanutah  meangdd
+# 1950-1970 7.629376 1.237705 1.1112462  7.810838 1.336977 1.1276187 119.4534 63.49537 7.862192 2093.090 91.08116
+# 1990-2010 8.832890 0.901294 0.9488819  7.455157 1.037334 0.9979342 114.0345 31.88875 5.493083 2331.186 79.82799
+#   matslope matslopese matslopelog matslopelogse
+# -4.651015   1.211960  -0.2883085    0.07817823
+# -2.696109   1.182926  -0.2033251    0.09324998
 
 
 fsest$matslopelog_exp <- exp(fsest$matslopelog)
