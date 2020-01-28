@@ -36,13 +36,14 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1951 & df$year<=1970) | (df$year>=1991 & df$year<=2010),]
+allpeps <- df[(df$year>=1951 & df$year<=2010),]
 
 allpeps$cc<-NA
-allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1970, "1950-1960", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>=1990 & allpeps$year<=2010, "2000-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "2000-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=40),]
+mostdata<-allpeps[(allpeps$num.years>=60),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
@@ -77,6 +78,7 @@ lositeyear<-na.omit(lositeyear)
 
 leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
 
+if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
 #extractclimpost<-function(tmin,period){
@@ -412,12 +414,181 @@ extractclimpost<-function(tmin,period){
 clim_post<-extractclimpost(tmin,period) 
 post<-as.data.frame(clim_post)
 write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postfagsyl.csv", row.names=FALSE)
+}
 
+period<-1971:1990
+extractclimmid<-function(tmin,period){
+  #extractclim90s<-function(tmin,period){
+  
+  ## define array to store results
+  nyears<-length(period)
+  climateyears<-array(NA,dim=c(nyears, 5, nsites))
+  row.names(climateyears)<-period
+  colnames(climateyears)<-c("Mean.Utah", "Mean.Port", "Mean.GDD", "Spring.Temp", "Site Num.")
+  
+  ## subset climate years
+  yearsinclimmin<-as.numeric(format(as.Date(names(tmin),format="X%Y.%m.%d"),"%Y"))
+  yearsinclimmax<-as.numeric(format(as.Date(names(tmax),format="X%Y.%m.%d"),"%Y"))
+  yearsinperiodmin<-which(yearsinclimmin%in%period)
+  yearsinperiodmax<-which(yearsinclimmax%in%period)
+  climsubmin<-subset(tmin,yearsinperiodmin)
+  climsubmax<-subset(tmax,yearsinperiodmax)
+  
+  ## subset climate days
+  monthsinclimmin<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
+  monthsinclimmax<-as.numeric(format(as.Date(names(climsubmax),format="X%Y.%m.%d"),"%m"))
+  chillmonths<-c(9:12,1:3)
+  monthsinchillmin<-which(monthsinclimmin%in%chillmonths)
+  monthsinchillmax<-which(monthsinclimmax%in%chillmonths)
+  chillsubmin<-subset(climsubmin,monthsinchillmin)
+  chillsubmax<-subset(climsubmax,monthsinchillmax)
+  
+  warmmonths<-c(1:5)
+  monthsinwarmmin<-which(monthsinclimmin%in%warmmonths)
+  monthsinwarmmax<-which(monthsinclimmax%in%warmmonths)
+  warmsubmin<-subset(climsubmin,monthsinwarmmin)
+  warmsubmax<-subset(climsubmax,monthsinwarmmax)
+  
+  ## commence loop  
+  for (i in 1:nsites){#i=1
+    print(i)
+    sitesi<-sites$siteslist[i]
+    
+    ## load shape
+    if(sitesi==sites$siteslist[i])
+      Coords<-data.frame(sites$x, sites$y)
+    points.min <- SpatialPoints(Coords, proj4string = rn@crs)
+    points.max <- SpatialPoints(Coords, proj4string = rx@crs)
+    
+    ## loop across years to extract each years averages
+    # save first an array to store results
+    yearlyresults<-array(NA,dim=c(length(period),5))
+    
+    for(j in period){#j=1951
+      print(paste(i,j))
+      
+      # select year's layer
+      chillyearsmin<-which(as.numeric(format(as.Date(
+        names(chillsubmin),format="X%Y.%m.%d"),"%Y"))==j)
+      chillyearsmax<-which(as.numeric(format(as.Date(
+        names(chillsubmax),format="X%Y.%m.%d"),"%Y"))==j)
+      
+      yearschillmin<-subset(chillsubmin,chillyearsmin)
+      yearschillmax<-subset(chillsubmax,chillyearsmax)
+      
+      # extract values and format to compute means
+      tempschillsmin<-raster::extract(yearschillmin,points.min)
+      tempschillsmax<-raster::extract(yearschillmax,points.max)
+      
+      #turn into data frame and remove NAs
+      chmin<-as.data.frame(tempschillsmin)
+      chmin<-subset(chmin,!is.na(rowSums(chmin)))
+      chmax<-as.data.frame(tempschillsmax)
+      chmax<-subset(chmax,!is.na(rowSums(chmax)))
+      
+      ## calculate chilling
+      chillunitseachcelleachdaymin<-apply(chmin,2,function(x){
+        Tmin<-x
+        return(Tmin)})
+      tminchill<-chillunitseachcelleachdaymin[(as.numeric(rownames(chillunitseachcelleachdaymin))==i)]
+      
+      chillunitseachcelleachdaymax<-apply(chmax,2,function(x){
+        Tmax<-x
+        return(Tmax)})
+      tmaxchill<-chillunitseachcelleachdaymax[(as.numeric(rownames(chillunitseachcelleachdaymax))==i)]
+      
+      meandaily <- (tminchill + tmaxchill)/2
+      
+      x <- as.Date(substr(colnames(chillunitseachcelleachdaymin), 2, 11),format="%Y.%m.%d")
+      
+      hrly.temp=
+        data.frame(
+          Temp = c(rep(meandaily, each = 24)),
+          Year = c(rep(as.numeric(substr(colnames(chillunitseachcelleachdaymin), 2, 5)), times=24)),
+          #JDay = sort(c(rep(seq(1:length(colnames(meandaily))), times = 24)))
+          JDay = sort(c(rep(yday(x), times=24)))
+        )
+      
+      
+      # select year's layer
+      warmyearsmin<-which(as.numeric(format(as.Date(
+        names(warmsubmin),format="X%Y.%m.%d"),"%Y"))==j)
+      warmyearsmax<-which(as.numeric(format(as.Date(
+        names(warmsubmax),format="X%Y.%m.%d"),"%Y"))==j)
+      
+      yearswarmmin<-subset(warmsubmin,warmyearsmin)
+      yearswarmmax<-subset(warmsubmax,warmyearsmax)
+      
+      # extract values and format to compute means and sdevs
+      tempswarmsmin<-raster::extract(yearswarmmin,points.min)
+      tempswarmsmax<-raster::extract(yearswarmmax,points.max)
+      
+      #turn into data frame and remove NAs
+      wamin<-as.data.frame(tempswarmsmin)
+      wamin<-subset(wamin,!is.na(rowSums(wamin)))
+      wamax<-as.data.frame(tempswarmsmax)
+      wamax<-subset(wamax,!is.na(rowSums(wamax)))
+      
+      
+      ## calculate forcing (GDD)
+      warmunitseachcelleachdaymin<-apply(wamin,2,function(x){
+        Tmin.warm<-x
+        return(Tmin.warm)})
+      tminwarm<-warmunitseachcelleachdaymin[(as.numeric(rownames(warmunitseachcelleachdaymin))==i)]
+      
+      warmunitseachcelleachdaymax<-apply(wamax,2,function(x){
+        Tmax.warm<-x
+        return(Tmax.warm)})
+      tmaxwarm<-warmunitseachcelleachdaymax[(as.numeric(rownames(warmunitseachcelleachdaymax))==i)]
+      
+      meandaily.warm <- (tminwarm + tmaxwarm)/2
+      
+      
+      x.warm <- as.Date(substr(colnames(warmunitseachcelleachdaymin), 2, 11),format="%Y.%m.%d")
+      
+      hrly.temp.warm =
+        data.frame(
+          Temp = c(rep(meandaily.warm, each = 24)),
+          Year = c(rep(as.numeric(substr(colnames(warmunitseachcelleachdaymin), 2, 5)), times=24)),
+          JDay = sort(c(rep(yday(x.warm), times = 24)))
+        )
+      
+      lopersite <- lositeyear[(lositeyear$siteslist==i & lositeyear$year==j),]
+      lo <- as.numeric(lopersite$lo)
+      hrly.temp.warm <- hrly.temp.warm[(hrly.temp.warm$JDay<=lo & hrly.temp.warm$JDay>=lo-30),]
+      
+      chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])])
+      warmcalc.mn<-chilling(hrly.temp.warm, hrly.temp.warm$JDay[1], hrly.temp.warm$JDay[nrow(hrly.temp.warm[1])])
+      
+      
+      yearlyresults[which(period==j),1]<-chillcalc.mn$Utah_Model[which(chillcalc.mn$End_year==j)]
+      yearlyresults[which(period==j),2]<-chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
+      yearlyresults[which(period==j),3]<-(warmcalc.mn$GDH[which(warmcalc.mn$End_year==j)])/24
+      yearlyresults[which(period==j),4]<-mean(hrly.temp.warm$Temp, na.rm=TRUE)
+      
+      yearlyresults[which(period==j),5]<-sites$siteslist[i]
+      
+    }
+    
+    climateyears[,,i]<-yearlyresults
+    
+  } 
+  
+  return(climateyears)
+  
+}
+
+clim_mid<-extractclimmid(tmin,period) 
+mid<-as.data.frame(clim_mid)
+write.csv(mid, file="/n/wolkovich_lab/Lab/Cat/midfagsyl.csv", row.names=FALSE)
+
+if(FALSE){
 #setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
 #pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("postfagsyl.csv")
 pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prefagsyl.csv")
 post <- read.csv("/n/wolkovich_lab/Lab/Cat/postfagsyl.csv")
+mid <- read.csv("/n/wolkovich_lab/Lab/Cat/midfagsyl.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -720,7 +891,7 @@ mst<-mst[!duplicated(mst),]
 fullsites45 <- left_join(full.site, mst)
 
 write.csv(fullsites45, file="fagsyl_decsens_1950-1970_1990-2000.csv", row.names = FALSE)
-
+}
 ##################################################################################################
 ################################# Now for some plots! ############################################
 ##################################################################################################
