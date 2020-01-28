@@ -20,7 +20,7 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #fspre <- read.csv("output/fs_climatedatapre.csv")
 #fspost <- read.csv("output/fs_climatedatapost.csv")
 
-fs <- read.csv("output/fagsyl_decsens_1950-1970_1990-2000.csv")
+fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -35,7 +35,7 @@ sitez <- unique(fs$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(fs, siteslist==sitez[i])
-  for(ccstate in c(1:2)){ ## ccstate=1
+  for(ccstate in c(1:3)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(fs$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
@@ -50,12 +50,12 @@ for(i in c(1:length(sitez))){ # i <- 1
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
     lmmat <- lm(lo~mat, data=subbycc)
     lmmatse <- summary(lmmat)$coef[2,2]
-    lmmatconfint11 <- confint(lmmat,level=89)[2,1]
-    lmmatconfint89 <- confint(lmmat,level=89)[2,2]
+    lmmatconfint11 <- confint(lmmat,level=0.89)[2,1]
+    lmmatconfint89 <- confint(lmmat,level=0.89)[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lmmatconfintlog11 <- confint(lmmatlog, level=89)[2,1]
-    lmmatconfintlog89 <- confint(lmmatlog, level=89)[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog, level=0.89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog, level=0.89)[2,2]
     fsestadd <- data.frame(siteslist=sitez[i], cc=unique(fs$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
@@ -73,17 +73,15 @@ meanhere <- aggregate(fsest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmat
 sdhere <- aggregate(fsest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
                     fsest["cc"], FUN=sd)
 
-#       cc     meanmat   varmat   sdmat  meanmatlo varmatlo   sdmatlo   meanlo    varlo     sdlo meanutah  meangdd
-# 1950-1970 7.629376 1.237705 1.1112462  7.810838 1.336977 1.1276187 119.4534 63.49537 7.862192 2093.090 91.08116
-# 1990-2010 8.832890 0.901294 0.9488819  7.455157 1.037334 0.9979342 114.0345 31.88875 5.493083 2331.186 79.82799
-#   matslope matslopese matslopelog matslopelogse
-# -4.651015   1.211960  -0.2883085    0.07817823
-# -2.696109   1.182926  -0.2033251    0.09324998
+#      cc    meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo   meanlo    varlo     sdlo meanutah  meangdd  matslope matslopese matslopelog matslopelogse
+# 1950-1970 7.657062 1.2448377 1.1143705  7.613772 1.256694 1.0902151 119.9583 63.35417 7.850431  2099.95 86.01584 -4.522218   1.224786  -0.2801439    0.07880991
+# 1970-1990 7.858652 0.8656629 0.9273273  7.520632 1.401300 1.1626911 120.9875 56.19254 7.256005  2321.65 81.31031 -2.347885   1.726824  -0.1508822    0.11430350
+# 1990-2010 8.866196 0.8969811 0.9467011  7.468091 1.028821 0.9940663 114.0375 32.82193 5.556988  2339.65 79.92338 -2.731600   1.195737  -0.2066306    0.09470079
 
 
 fsest$matslopelog_exp <- exp(fsest$matslopelog)
 
-write.csv(fsest, file="output/fsylestimates_withlog_1950-1970_1990-2010.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsylestimates_withlog_1950-2010.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

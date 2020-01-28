@@ -20,7 +20,8 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #bppre <- read.csv("output/bp_climatedatapre.csv")
 #bppost <- read.csv("output/bp_climatedatapost.csv")
 
-bp <- read.csv("output/betpen_decsens_1950-1970_1990-2000.csv")
+bp <- read.csv("output/betpen_decsens_1950-2000.csv")
+bp <- na.omit(bp)
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -35,7 +36,7 @@ sitez <- unique(bp$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(bp, siteslist==sitez[i])
-  for(ccstate in c(1:2)){ ## ccstate=1
+  for(ccstate in c(1:3)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
@@ -50,12 +51,12 @@ for(i in c(1:length(sitez))){ # i <- 1
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
     lmmat <- lm(lo~mat, data=subbycc)
     lmmatse <- summary(lmmat)$coef[2,2]
-    lmmatconfint11 <- confint(lmmat,level=89)[2,1]
-    lmmatconfint89 <- confint(lmmat,level=89)[2,2]
+    lmmatconfint11 <- confint(lmmat,level=0.89)[2,1]
+    lmmatconfint89 <- confint(lmmat,level=0.89)[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lmmatconfintlog11 <- confint(lmmatlog,level=89)[2,1]
-    lmmatconfintlog89 <- confint(lmmatlog,level=89)[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
@@ -74,16 +75,14 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanl
                     bpest["cc"], FUN=sd)
 
 
-     # cc    meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo  meanlo    varlo     sdlo meanutah  meangdd
-# 1950-1970 7.661285 1.2515107 1.1172600  7.267610 1.076558 0.9952432 114.926 81.65211 8.914409 2038.200 77.86681
-# 1990-2000 8.807405 0.8897012 0.9427715  6.600241 1.010194 0.9970972 106.422 42.46895 6.363890 2287.104 59.19161
-#    matslope matslopese matslopelog matslopelogse
-# -6.042843   1.204039  -0.3978114    0.08225647
-# -2.291221   1.481032  -0.1839502    0.12221731
+#       cc  meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo   meanlo     varlo      sdlo meanutah  meangdd  matslope matslopese matslopelog matslopelogse
+# 1950-1970 7.910215 1.2324478 1.1087819  7.087769 0.725760 0.8395568 113.3676  79.88591  8.799727 2037.141 72.47753 -6.053967   1.184807  -0.4157587    0.08444957
+# 1970-1990 8.120306 0.8399633 0.9145221  7.164344 1.121109 1.0412423 111.5353 104.82786 10.150635 2244.388 72.15105 -6.843966   2.051705  -0.4895361    0.15373991
+# 1990-2010 9.037770 0.8897746 0.9426791  6.674794 1.036566 1.0085297 105.8588  36.21610  5.971164 2287.235 60.03246 -2.115403   1.392456  -0.1773680    0.11782152
 
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
-write.csv(bpest, file="output/bpenestimates_withlog_1950-1970_1990-2010.csv", row.names = FALSE)
+write.csv(bpest, file="output/bpenestimates_withlog_1950-2010.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

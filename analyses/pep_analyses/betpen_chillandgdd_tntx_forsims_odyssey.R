@@ -1002,8 +1002,8 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="betpen_decsens_1950-1970_1990-2000.csv", row.names = FALSE)
-}
+write.csv(fullsites45, file="betpen_decsens_1950-2000.csv", row.names = FALSE)
+
 ##################################################################################################
 ################################# Now for some plots! ############################################
 ##################################################################################################

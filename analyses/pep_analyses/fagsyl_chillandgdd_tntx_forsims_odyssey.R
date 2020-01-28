@@ -582,10 +582,11 @@ clim_mid<-extractclimmid(tmin,period)
 mid<-as.data.frame(clim_mid)
 write.csv(mid, file="/n/wolkovich_lab/Lab/Cat/midfagsyl.csv", row.names=FALSE)
 
-if(FALSE){
+
 #setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
 #pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("postfagsyl.csv")
+#mid <- read.csv("midfagsyl.csv")
 pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prefagsyl.csv")
 post <- read.csv("/n/wolkovich_lab/Lab/Cat/postfagsyl.csv")
 mid <- read.csv("/n/wolkovich_lab/Lab/Cat/midfagsyl.csv")
@@ -803,13 +804,124 @@ site.post$x<-NULL
 site.post$y<-NULL
 
 
+middata<-data.frame(chillutah = c(mid$Mean.Utah.1, mid$Mean.Utah.2,
+                                  mid$Mean.Utah.3, mid$Mean.Utah.4,
+                                  mid$Mean.Utah.5, mid$Mean.Utah.6,
+                                  mid$Mean.Utah.7, mid$Mean.Utah.8,
+                                  mid$Mean.Utah.9, mid$Mean.Utah.10,
+                                  mid$Mean.Utah.11, mid$Mean.Utah.12,
+                                  mid$Mean.Utah.13, mid$Mean.Utah.14,
+                                  mid$Mean.Utah.15, mid$Mean.Utah.16,
+                                  mid$Mean.Utah.17, mid$Mean.Utah.18,
+                                  mid$Mean.Utah.19, mid$Mean.Utah.20,
+                                  mid$Mean.Utah.21, mid$Mean.Utah.22,
+                                  mid$Mean.Utah.23, mid$Mean.Utah.24,
+                                  mid$Mean.Utah.25, mid$Mean.Utah.26,
+                                  mid$Mean.Utah.27, mid$Mean.Utah.28,
+                                  mid$Mean.Utah.29, mid$Mean.Utah.30,
+                                  mid$Mean.Utah.31, mid$Mean.Utah.32,
+                                  mid$Mean.Utah.33, mid$Mean.Utah.34,
+                                  mid$Mean.Utah.35, mid$Mean.Utah.36,
+                                  mid$Mean.Utah.37, mid$Mean.Utah.38),
+                    
+                    chillports = c(mid$Mean.Port.1, mid$Mean.Port.2,
+                                   mid$Mean.Port.3, mid$Mean.Port.4,
+                                   mid$Mean.Port.5, mid$Mean.Port.6,
+                                   mid$Mean.Port.7, mid$Mean.Port.8,
+                                   mid$Mean.Port.9, mid$Mean.Port.10,
+                                   mid$Mean.Port.11, mid$Mean.Port.12,
+                                   mid$Mean.Port.13, mid$Mean.Port.14,
+                                   mid$Mean.Port.15, mid$Mean.Port.16,
+                                   mid$Mean.Port.17, mid$Mean.Port.18,
+                                   mid$Mean.Port.19, mid$Mean.Port.20,
+                                   mid$Mean.Port.21, mid$Mean.Port.22,
+                                   mid$Mean.Port.23, mid$Mean.Port.24,
+                                   mid$Mean.Port.25, mid$Mean.Port.26,
+                                   mid$Mean.Port.27, mid$Mean.Port.28,
+                                   mid$Mean.Port.29, mid$Mean.Port.30,
+                                   mid$Mean.Port.31, mid$Mean.Port.32,
+                                   mid$Mean.Port.33, mid$Mean.Port.34,
+                                   mid$Mean.Port.35, mid$Mean.Port.36,
+                                   mid$Mean.Port.37, mid$Mean.Port.38),
+                    
+                    
+                    gdd = c(mid$Mean.GDD.1, mid$Mean.GDD.2,
+                            mid$Mean.GDD.3, mid$Mean.GDD.4,
+                            mid$Mean.GDD.5, mid$Mean.GDD.6,
+                            mid$Mean.GDD.7, mid$Mean.GDD.8,
+                            mid$Mean.GDD.9, mid$Mean.GDD.10,
+                            mid$Mean.GDD.11, mid$Mean.GDD.12,
+                            mid$Mean.GDD.13, mid$Mean.GDD.14,
+                            mid$Mean.GDD.15, mid$Mean.GDD.16,
+                            mid$Mean.GDD.17, mid$Mean.GDD.18,
+                            mid$Mean.GDD.19, mid$Mean.GDD.20,
+                            mid$Mean.GDD.21, mid$Mean.GDD.22,
+                            mid$Mean.GDD.23, mid$Mean.GDD.24,
+                            mid$Mean.GDD.25, mid$Mean.GDD.26,
+                            mid$Mean.GDD.27, mid$Mean.GDD.28,
+                            mid$Mean.GDD.29, mid$Mean.GDD.30,
+                            mid$Mean.GDD.31, mid$Mean.GDD.32,
+                            mid$Mean.GDD.33, mid$Mean.GDD.34,
+                            mid$Mean.GDD.35, mid$Mean.GDD.36,
+                            mid$Mean.GDD.37, mid$Mean.GDD.38),
+                    
+                    mat.lo = c(mid$Spring.Temp.1, mid$Spring.Temp.2,
+                               mid$Spring.Temp.3, mid$Spring.Temp.4,
+                               mid$Spring.Temp.5, mid$Spring.Temp.6,
+                               mid$Spring.Temp.7, mid$Spring.Temp.8,
+                               mid$Spring.Temp.9, mid$Spring.Temp.10,
+                               mid$Spring.Temp.11, mid$Spring.Temp.12,
+                               mid$Spring.Temp.13, mid$Spring.Temp.14,
+                               mid$Spring.Temp.15, mid$Spring.Temp.16,
+                               mid$Spring.Temp.17, mid$Spring.Temp.18,
+                               mid$Spring.Temp.19, mid$Spring.Temp.20,
+                               mid$Spring.Temp.21, mid$Spring.Temp.22,
+                               mid$Spring.Temp.23, mid$Spring.Temp.24,
+                               mid$Spring.Temp.25, mid$Spring.Temp.26,
+                               mid$Spring.Temp.27, mid$Spring.Temp.28,
+                               mid$Spring.Temp.29, mid$Spring.Temp.30,
+                               mid$Spring.Temp.31, mid$Spring.Temp.32,
+                               mid$Spring.Temp.33, mid$Spring.Temp.34,
+                               mid$Spring.Temp.35, mid$Spring.Temp.36,
+                               mid$Spring.Temp.37, mid$Spring.Temp.38),
+                    
+                    siteslist = c(mid$Site.Num..1, mid$Site.Num..2,
+                                  mid$Site.Num..3, mid$Site.Num..4,
+                                  mid$Site.Num..5, mid$Site.Num..6,
+                                  mid$Site.Num..7, mid$Site.Num..8,
+                                  mid$Site.Num..9, mid$Site.Num..10,
+                                  mid$Site.Num..11, mid$Site.Num..12,
+                                  mid$Site.Num..13, mid$Site.Num..14,
+                                  mid$Site.Num..15, mid$Site.Num..16,
+                                  mid$Site.Num..17, mid$Site.Num..18,
+                                  mid$Site.Num..19, mid$Site.Num..20,
+                                  mid$Site.Num..21, mid$Site.Num..22,
+                                  mid$Site.Num..23, mid$Site.Num..24,
+                                  mid$Site.Num..25, mid$Site.Num..26,
+                                  mid$Site.Num..27, mid$Site.Num..28,
+                                  mid$Site.Num..29, mid$Site.Num..30,
+                                  mid$Site.Num..31, mid$Site.Num..32,
+                                  mid$Site.Num..33, mid$Site.Num..34,
+                                  mid$Site.Num..35, mid$Site.Num..36,
+                                  mid$Site.Num..37, mid$Site.Num..38),
+                    year = (as.numeric(rownames(mid))+1970))
+
+site.mid<-full_join(middata, sites)
+site.mid$x<-NULL
+site.mid$y<-NULL
+
 
 full.site<-full_join(site, site.post)
+full.site<-full_join(full.site, site.mid)
 full.site$year<-as.numeric(full.site$year)
-full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", "1990-2010")
+full.site$cc <- NA
+full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", full.site$cc)
+full.site$cc <- ifelse(full.site$year>1970 & full.site$year<=1990, "1970-1990", full.site$cc)
+full.site$cc <- ifelse(full.site$year>1990 & full.site$year<=2010, "1990-2010", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
+full.site<-na.omit(full.site)
 
 if(FALSE){
   allchillsgdds<-rbind(full.site1, full.site2)
@@ -824,12 +936,13 @@ if(FALSE){
 ##################################################################################################
 #full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
 
-period <- c(1951:1970,1991:2010)
+period <- c(1951:1970, 1971:1990, 1991:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
 sites$y<-sites$lat
 Coords<-subset(sites, select=c(x, y))
+Coords<-na.omit(Coords)
 nsites<-length(sites$lat.long)
 tmin <- rn
 tmax <- rx
@@ -890,8 +1003,8 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="fagsyl_decsens_1950-1970_1990-2000.csv", row.names = FALSE)
-}
+write.csv(fullsites45, file="fagsyl_decsens_1950-2000.csv", row.names = FALSE)
+
 ##################################################################################################
 ################################# Now for some plots! ############################################
 ##################################################################################################
