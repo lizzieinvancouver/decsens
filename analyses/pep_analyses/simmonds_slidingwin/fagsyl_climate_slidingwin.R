@@ -37,11 +37,14 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1951 & df$year<=1970) | (df$year>=1991 & df$year<=2010),]
+allpeps <- df[(df$year>=1950 & df$year<=2011),]
 
-allpeps$cc<-ifelse(allpeps$year>=1950 & allpeps$year<=1970, "apre", "post")
+allpeps$cc <- NA
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "1990-2010", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$lat.long, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=40),]
+mostdata<-allpeps[(allpeps$num.years>=60),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
@@ -138,9 +141,12 @@ tempdata$yday <- yday(tempdata$Date)
 alltemps <- subset(tempdata, select=c("Date", "year", "yday", "day", "month", "temp", "siteslist"))
 names(alltemps)<-c("date", "year", "yday", "day", "month", "temp", "spatial")
 alltemps$date <- as.character(alltemps$date)
+alltemps$date <- as.character(alltemps$date)
 climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1971),]
-climatedatapost <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
+climatedatapost <- alltemps[(alltemps$year>=1970 & alltemps$year<=1991),]
+climatedatamid <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
 
 write.csv(climatedatapre, file="output/fs_climatedatapre.csv", row.names=FALSE)
 write.csv(climatedatapost, file="output/fs_climatedatapost.csv", row.names=FALSE)
+write.csv(climatedatamid, file="output/fs_climatedatamid.csv", row.names=FALSE)
 
