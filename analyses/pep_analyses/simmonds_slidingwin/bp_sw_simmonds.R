@@ -5,8 +5,10 @@
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
 
-library(climwin)
-library(lubridate)
+require(climwin)
+require(lubridate)
+require(dplyr)
+require(tidyr)
 
 # Setting working directory. Add in your own path in an if statement for your file structure
 #setwd("~/Documents/git/decsens/analyses/pep_analyses")
