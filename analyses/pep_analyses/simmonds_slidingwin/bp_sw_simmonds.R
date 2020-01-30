@@ -95,7 +95,7 @@ source("/n/wolkovich_lab/Lab/Cat/Run_SW.R")
 # datafile = biological data
 # default = absolute but can also run relative
 #run_SW <- function(absolute = TRUE, datafile, climate, refday)
-
+if(FALSE){
 ### Now checking Simmond's sliding window approach:
 refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpre
@@ -105,7 +105,7 @@ climate$X <- NA ### needed in order to run...
 Results_SWRpre <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
 write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_bp_mayref.csv")
 write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_bp_mayref.csv")
-
+}
 ### Now checking Simmond's sliding window approach:
 refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpost

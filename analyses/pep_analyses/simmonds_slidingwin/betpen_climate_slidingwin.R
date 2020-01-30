@@ -142,8 +142,8 @@ alltemps <- subset(tempdata, select=c("Date", "year", "yday", "day", "month", "t
 names(alltemps)<-c("date", "year", "yday", "day", "month", "temp", "spatial")
 alltemps$date <- as.character(alltemps$date)
 climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1971),]
-climatedatapost <- alltemps[(alltemps$year>=1970 & alltemps$year<=1991),]
-climatedatamid <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
+climatedatamid <- alltemps[(alltemps$year>=1970 & alltemps$year<=1991),]
+climatedatapost <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
 
 write.csv(climatedatapre, file="output/bp_climatedatapre.csv", row.names=FALSE)
 write.csv(climatedatapost, file="output/bp_climatedatapost.csv", row.names=FALSE)

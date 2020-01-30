@@ -20,6 +20,7 @@ require(tidyr)
 # bp has mat from March 1st to June 1st and mat.lo is 30 days before leafout (uses tg -- aka mean -- data from E-OBS)
 # bpalt is similar, but calculated uses txtm -- aka min and max (and we caculate the mean ourselves from those values) -- data from E-OBS) ... we don't use this currently 
 d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_fagsyl_all.csv", header=TRUE)
+#d<-read.csv("input/pep_fagsyl_all.csv")
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -85,16 +86,20 @@ bbswmid <- bbsw[(bbsw$Year>1970 & bbsw$Year<=1990),]
 
 ### Now get the climate data for 45 sites for BETPEN (from betpen_climate_slidingwin.R)
 climatedatapre <- read.csv("/n/wolkovich_lab/Lab/Cat/fs_climatedatapre.csv")
+#climatedatapre <- read.csv("output/fs_climatedatapre.csv")
 climatedatapost <- read.csv("/n/wolkovich_lab/Lab/Cat/fs_climatedatapost.csv")
+#climatedatapost <- read.csv("output/fs_climatedatapost.csv")
 climatedatamid <- read.csv("/n/wolkovich_lab/Lab/Cat/fs_climatedatamid.csv")
+#climatedatamid <- read.csv("output/fs_climatedatamid.csv")
 
 source("/n/wolkovich_lab/Lab/Cat/Run_SW.R")
+#source("simmonds_slidingwin/Run_SW.R")
 # refday = c(day, mon)
 # climate is a datafile that must include col = temp
 # datafile = biological data
 # default = absolute but can also run relative
 #run_SW <- function(absolute = TRUE, datafile, climate, refday)
-
+if(FALSE){
 ### Now checking Simmond's sliding window approach:
 refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpre
@@ -104,7 +109,7 @@ climate$X <- NA ### needed in order to run...
 Results_SWRpre <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
 write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_fs_mayref.csv")
 write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_fs_mayref.csv")
-
+}
 ### Now checking Simmond's sliding window approach:
 refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpost
