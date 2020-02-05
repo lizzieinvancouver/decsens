@@ -19,7 +19,7 @@ options(stringsAsFactors = FALSE)
 
 # Setting working directory. 
 if(length(grep("ailene", getwd()))>0) { 
-  setwd("C:/Users/ailene.ettinger/Documents/GitHub/decsens/analyses")
+  setwd("~/Documents/GitHub/decsens/analyses")
 } else
   setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
@@ -155,10 +155,9 @@ mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm","propryrschillmet", "fs
 sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm","propryrschillmet", "fstar","meangddsum")], df["degwarm"], FUN=sd)
 
 cexhere <- 0.95
-pdf(file.path("figures/shiftingcuessims_3panels.pdf"), width = 6, height = 8)
+pdf(file.path("figures/shiftingcuessims_2panels.pdf"), width = 6, height = 8)
 #par(xpd=FALSE)
-par(mfrow=c(3,1))
-par(mar=c(5,5,2,2))
+par(mfrow=c(2,1),mar=c(5,5,2,5))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-15, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="")
@@ -181,7 +180,7 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
    cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(0, 1),
-     ylab="Proportion of years when chilling is met",
+     ylab="Proportion years when chilling is met",
      xlab=expression(paste("Warming (", degree, "C)")), main="")
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
@@ -190,16 +189,12 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkgray")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
 }
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,800),
-     ylab="GDD",
-     xlab=expression(paste("Warming (", degree, "C)")), main="")
-for(i in 1:length(unique(mean.sims$degwarm))){
-  pos.x <- mean.sims$degwarm[i]
-  pos.y <- mean.sims$meangddsum[i]
-  sdhere <- sd.sims$meangddsum[i]
-  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darksalmon")
-  points(pos.x, pos.y, cex=cexhere, pch=19, col="darksalmon")
-}
+par(new = TRUE)
+
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,300),yaxt="n", ylab="",xaxt="n", xlab="")
+axis(side = 4)
+mtext(expression(paste("fstar (", degree, "C)"), sep=""),side=4, adj=.5, line=2)
+
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$fstar[i]
@@ -207,10 +202,8 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkred")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkred")
 }
-legend("topleft", pch=c(19, 19), col=c("darksalmon", "darkred"), legend=c("GDD Total", "GDD Required"),
+legend("topright", pch=c(19, 19), col=c("gray", "darkred"), legend=c("Chilling", "Forcing"),
        cex=1, bty="n")
 
 dev.off()
-#Answering Lizzie's questions:
-#Is daily_temp working? But does this do what I think? Am I applying i correctly?
 
