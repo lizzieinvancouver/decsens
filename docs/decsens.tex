@@ -48,6 +48,8 @@ Inferring biological processes from statistical artifacts is not a new problem \
 Research inferring biological processes from differing temperature sensitivities across space and time must look beyond shifting sensitivities with warming as strong evidence. Other fields, focused on temperature sensitivity generally use approaches that avoid the issue we have outlined here, such as the use of $Q_{10}$ in soil science. Researchers have called for more use of process-based models \citep{keenan2019}, which is also beneficial. But many fields, still lack the underlying mechanistic understanding to robustly develop and fit process-based models, and thus many parameters and exact model specification are still unknown \citep{chuine2016}. Thus using more exploratory methods will remain necessary to advance science, but findings from such methods must be interrogated vigorously, confronted with multiple diverse methods of calculating similar metrics, and tested for logical outcomes.Greater use of data simulation and null models is can highlight issues and force greater focus on mechanisms. 
 % Process-based models can help some, but are not an obvious solution given gaps in our understanding that make parameter estimation difficult. We say process models are good, but not the whole answer. Instead we need more people to simulate process and stats and see what the hell they're doing... try lots of methods.
 
+\emph{Acknowledgements:} Thanks to TMG, TJD and others. 
+
 \bibliographystyle{..//refs/bibstyles/amnat.bst}
 \bibliography{..//refs/decsens.bib}
 
@@ -102,6 +104,15 @@ Shen et al. 2014 shows earlier-season vegetation more temperature-sensitive, whi
 
 \begin{figure}[h!]
 \centering
+\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature across a fixed window (top row, similar to estimates of 'spring temperature') or until leafout date (bottom row). While within any small temperature range the relationship may appear linear, is non-linear relationship becomes clear across the range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) linearized the relationship.}
+\label{fig:simslog} % decsensSimsAuerbach.R
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\centering
 \noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsims.pdf}
 \caption{\textbf{Declining sensitivities with warming explained by using linear regression for non-linear processes.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This spurious decline can be removed by performing the regression on logged predictor and response variables (``Using logged variables'').}
 \label{fig:basicsims} % decsensSims.R
@@ -114,6 +125,15 @@ Shen et al. 2014 shows earlier-season vegetation more temperature-sensitive, whi
 \caption{\textbf{Truly declining sensitivities remain even after correction.} Here we used simulations where the biological process shifts at moderate warming levels (basically I made the GDD increase when chilling was low, see the code). }
 \label{fig:biosims} % decsensSimsMo.R
 \end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicpep1950to20002spp2panel.pdf}
+\caption{\textbf{Sensitivities for two species from PEP725 data} using raw data (top) or logged variables (bottom) using 20 year windows of data (lines show 78\% confidence intervals). Amounts of warming are calculated relative to 1950-1970 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. To aid visualization \emph{Fagus sylvatica} are jittered slightly to the right, but warming is approximatly 0.08 C greater for \emph{Fagus sylvatica} in 1990-2010 relative to \emph{Betula pendula}.}
+\label{fig:pepper} % pepplotting.R
+\end{figure}
+
 
 \end{document}
 
