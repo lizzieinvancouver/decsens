@@ -20,7 +20,7 @@ fs <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header
 ## Plotting ##
 ##############
 
-mean.betpen <- aggregate(df[c("matslope", "matslopelog", "meanmat", "varmat", "meangdd",
+mean.betpen <- aggregate(df[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
     df["cc"], FUN=mean)
 
@@ -52,9 +52,9 @@ for(i in 1:length(unique(mean.betpen$cc))){
   }
 for(i in 1:length(unique(mean.betpen$cc))){
   pos.x <- tempdiffplot[i]
-  pos.y <- exp(mean.betpen$matslopelog[i])
-  ciherelo <- exp(mean.betpen$matslopelogconfint11[i])
-  cihereup <- exp(mean.betpen$matslopelogconfint89[i])
+  pos.y <- mean.betpen$matslopelog[i]
+  ciherelo <- mean.betpen$matslopelogconfint11[i]
+  cihereup <- mean.betpen$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -64,7 +64,7 @@ dev.off()
 
 
 ## For Fagus sylvatica
-mean.fs <- aggregate(fs[c("matslope", "matslopelog", "meanmat", "varmat", "meangdd",
+mean.fs <- aggregate(fs[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
     fs["cc"], FUN=mean)
 
@@ -94,9 +94,9 @@ for(i in 1:length(unique(mean.fs$cc))){
   }
 for(i in 1:length(unique(mean.fs$cc))){
   pos.x <- tempdiffplotfs[i]
-  pos.y <- exp(mean.fs$matslopelog[i])
-  ciherelo <- exp(mean.fs$matslopelogconfint11[i])
-  cihereup <- exp(mean.fs$matslopelogconfint89[i])
+  pos.y <- mean.fs$matslopelog[i]
+  ciherelo <- mean.fs$matslopelogconfint11[i]
+  cihereup <- mean.fs$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -104,10 +104,74 @@ legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Usin
    cex=1, bty="n")
 dev.off()
 
-# Four panel with FagSyl
+
+##
+## 2 panel with FagSyl -- showing raw on top panels, and just logged on bottom panels
+fagsyljitter <- 0.04
 cexhere <- 0.5
 cexhereleg <- 0.7
-pdf(file.path("figures/basicpep1950to20002spp.pdf"), width = 9, height = 6)
+pdf(file.path("figures/basicpep1950to20002spp2panel.pdf"), width = 5, height = 7)
+par(xpd=FALSE)
+par(mfrow=c(2,1))
+par(mar=c(5,5,2,2))
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")))
+abline(h=0, lty=2, col="darkgrey")
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslope[i]
+  ciherelo <- mean.betpen$matslopeconfint11[i]
+  cihereup <- mean.betpen$matslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.fs$cc))){
+  pos.x <- tempdiffplotfs[i]
+  pos.y <- mean.fs$matslope[i]
+  ciherelo <- mean.fs$matslopeconfint11[i]
+  cihereup <- mean.fs$matslopeconfint89[i]
+  lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="dodgerblue")
+  points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="dodgerblue")
+  text(pos.x + 0.03, pos.y, labels=unique(mean.fs$cc)[i], cex=cextext, col="black")
+  }
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "dodgerblue"),
+   legend=c("Betula pendula", "Fagus sylvatica"), cex=cexhereleg, bty="n")
+
+# Log-log 
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-0.9, 0.1),
+     ylab=expression(paste("Estimated sensitivity (log(days)/log(", degree, "C))"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")))
+abline(h=0, lty=2, col="darkgrey")
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslopelog[i]
+  ciherelo <- mean.betpen$matslopelogconfint11[i]
+  cihereup <- mean.betpen$matslopelogconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+for(i in 1:length(unique(mean.fs$cc))){
+  pos.x <- tempdiffplotfs[i]
+  pos.y <- mean.fs$matslopelog[i]
+  ciherelo <- mean.fs$matslopelogconfint11[i]
+  cihereup <- mean.fs$matslopelogconfint89[i]
+  lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="pink")
+  points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="pink")
+  text(pos.x + 0.03, pos.y, labels=unique(mean.fs$cc)[i], cex=cextext, col="black")
+  }
+legend("bottomright", pch=c(19, 19), col=c("salmon", "pink"), legend=c("Betula pendula", "Fagus sylvatica"),
+   cex=cexhereleg, bty="n")
+dev.off()
+## END: Two panel with FagSyl
+## 
+
+
+##
+## Four panel with FagSyl -- showing logged and raw on left panels, and just logged on right panels
+cexhere <- 0.5
+cexhereleg <- 0.7
+pdf(file.path("figures/basicpep1950to20002spp4panel.pdf"), width = 9, height = 6)
 par(xpd=FALSE)
 par(mfrow=c(2,2))
 par(mar=c(5,5,2,2))
@@ -126,22 +190,22 @@ for(i in 1:length(unique(mean.betpen$cc))){
   }
 for(i in 1:length(unique(mean.betpen$cc))){
   pos.x <- tempdiffplot[i]
-  pos.y <- exp(mean.betpen$matslopelog[i])
-  ciherelo <- exp(mean.betpen$matslopelogconfint11[i])
-  cihereup <- exp(mean.betpen$matslopelogconfint89[i])
+  pos.y <- mean.betpen$matslopelog[i]
+  ciherelo <- mean.betpen$matslopelogconfint11[i]
+  cihereup <- mean.betpen$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Using raw x, y", "Using logged x, y"),
-   cex=cexhereleg, bty="n")
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(0.3, 1.1),
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
+   legend=c("Using raw x, y", "Using logged x, y"), cex=cexhereleg, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Betpen (logged only)")
 for(i in 1:length(unique(mean.betpen$cc))){
   pos.x <- tempdiffplot[i]
-  pos.y <- exp(mean.betpen$matslopelog[i])
-  ciherelo <- exp(mean.betpen$matslopelogconfint11[i])
-  cihereup <- exp(mean.betpen$matslopelogconfint89[i])
+  pos.y <- mean.betpen$matslopelog[i]
+  ciherelo <- mean.betpen$matslopelogconfint11[i]
+  cihereup <- mean.betpen$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col="salmon")
@@ -162,28 +226,29 @@ for(i in 1:length(unique(mean.fs$cc))){
   }
 for(i in 1:length(unique(mean.fs$cc))){
   pos.x <- tempdiffplotfs[i]
-  pos.y <- exp(mean.fs$matslopelog[i])
-  ciherelo <- exp(mean.fs$matslopelogconfint11[i])
-  cihereup <- exp(mean.fs$matslopelogconfint89[i])
+  pos.y <- mean.fs$matslopelog[i]
+  ciherelo <- mean.fs$matslopelogconfint11[i]
+  cihereup <- mean.fs$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Using raw x, y", "Using logged x, y"),
    cex=cexhereleg, bty="n")
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(0.3, 1.1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Fagsyl (logged only)")
 for(i in 1:length(unique(mean.fs$cc))){
   pos.x <- tempdiffplotfs[i]
-  pos.y <- exp(mean.fs$matslopelog[i])
-  ciherelo <- exp(mean.fs$matslopelogconfint11[i])
-  cihereup <- exp(mean.fs$matslopelogconfint89[i])
+  pos.y <- mean.fs$matslopelog[i]
+  ciherelo <- mean.fs$matslopelogconfint11[i]
+  cihereup <- mean.fs$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col="salmon")
   }
 dev.off()
-
+## END: Four panel with FagSyl -- showing logged and raw on left panels, and just logged on right panels
+## 
 
 
 
