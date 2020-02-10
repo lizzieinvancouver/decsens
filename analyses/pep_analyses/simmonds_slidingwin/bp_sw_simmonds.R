@@ -142,14 +142,14 @@ write.csv(Parameters_SWRpost, "pep_sims/simmonds_slidingwin/output/parameters_sw
 ######################################################################
 
 ### Now let's check out the data
-swapre <- read.csv("simmonds_slidingwin/output/results_swapre_fs_juneref.csv")
+swapre <- read.csv("simmonds_slidingwin/output/results_swapre_bp_aprilref.csv")
 #swapre <- Results_SWRpre[[2]]
-swapost <- read.csv("simmonds_slidingwin/output/results_swapost_fs_juneref.csv")
+swapost <- read.csv("simmonds_slidingwin/output/results_swapost_bp_aprilref.csv")
 #swapost <- Results_SWRpost[[2]]
 
-swapre_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapre_fs_juneref.csv")
+swapre_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_aprilref.csv")
 #swapre_stat <- Results_SWRpre[[1]]
-swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_fs_juneref.csv")
+swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_aprilref.csv")
 #swapost_stat <- Results_SWRpost[[1]]
 
 if(FALSE){
