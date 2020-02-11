@@ -62,8 +62,8 @@ rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
 period<-1951:1970
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
-badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
-sites<-sites[!(sites$lat.long%in%badsites),]
+#badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
+#sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
@@ -76,9 +76,8 @@ lositeyear <- lositeyear[!duplicated(lositeyear),]
 lositeyear <- left_join(lositeyear, sites)
 lositeyear<-na.omit(lositeyear)
 
-leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
+leaps<-seq(from=1952, to=2010, by=4)
 
-if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
   #extractclimpost<-function(tmin,period){
@@ -415,7 +414,7 @@ extractclimpost<-function(tmin,period){
 clim_post<-extractclimpost(tmin,period) 
 post<-as.data.frame(clim_post)
 write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postbetpen.csv", row.names=FALSE)
-}
+
 
 period<-1971:1990
 extractclimmid<-function(tmin,period){
@@ -583,7 +582,7 @@ clim_mid<-extractclimmid(tmin,period)
 mid<-as.data.frame(clim_mid)
 write.csv(mid, file="/n/wolkovich_lab/Lab/Cat/midbetpen.csv", row.names=FALSE)
 
-
+if(FALSE){
 #setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
 pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
 #pre <- read.csv("prebetpen.csv")
@@ -1129,4 +1128,5 @@ if(FALSE){
     scale_color_manual(name="Climate Change", labels=c("1950-1960"="1950-1960","2000-2010" ="2000-2010"),
                        values=c("navyblue", "red4"))
   
+}
 }

@@ -48,7 +48,7 @@ mostdata<-allpeps[(allpeps$num.years>=60),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
-bestsites<-bestsites[(bestsites$Freq>1),]
+bestsites<-bestsites[(bestsites$Freq>2),]
 bestsites <- bestsites$Var1
 
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
@@ -62,8 +62,8 @@ period<-1951:1970
 #period<-2001:2010
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
-badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
-sites<-sites[!(sites$lat.long%in%badsites),]
+#badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
+#sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
@@ -76,7 +76,7 @@ lositeyear <- lositeyear[!duplicated(lositeyear),]
 lositeyear <- left_join(lositeyear, sites)
 lositeyear<-na.omit(lositeyear)
 
-leaps<-c(1952, 1956, 1960, 2000, 2004, 2008)
+leaps<-seq(from=1952, to=2010, by=4)
 
 bb<-sites
 bb$lat.long<-paste(bb$lat, bb$long, sep=",")

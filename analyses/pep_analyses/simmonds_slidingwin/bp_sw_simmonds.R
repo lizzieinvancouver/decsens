@@ -50,15 +50,15 @@ mostdata<-allpeps[(allpeps$num.years>=60),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
-bestsites<-bestsites[(bestsites$Freq>1),]
+bestsites<-bestsites[(bestsites$Freq>2),]
 bestsites <- bestsites$Var1
 
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
-badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
-sites<-sites[!(sites$lat.long%in%badsites),]
+#badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
+#sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
@@ -86,8 +86,11 @@ bbswmid <- bbsw[(bbsw$Year>1970 & bbsw$Year<=1990),]
 
 ### Now get the climate data for 45 sites for BETPEN (from betpen_climate_slidingwin.R)
 climatedatapre <- read.csv("/n/wolkovich_lab/Lab/Cat/bp_climatedatapre.csv")
+#climatedatapre <- read.csv("output/bp_climatedatapre.csv")
 climatedatapost <- read.csv("/n/wolkovich_lab/Lab/Cat/bp_climatedatapost.csv")
+#climatedatapost <- read.csv("output/bp_climatedatapost.csv")
 climatedatamid <- read.csv("/n/wolkovich_lab/Lab/Cat/bp_climatedatamid.csv")
+#climatedatamid <- read.csv("output/bp_climatedatamid.csv")
   
 source("/n/wolkovich_lab/Lab/Cat/Run_SW.R")
 # refday = c(day, mon)
@@ -97,14 +100,14 @@ source("/n/wolkovich_lab/Lab/Cat/Run_SW.R")
 #run_SW <- function(absolute = TRUE, datafile, climate, refday)
 
 ### Now checking Simmond's sliding window approach:
-refday <- c(01, 04) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
+refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpre
 climate <- climatedatapre
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRpre <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_bp_aprilref.csv")
-write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_bp_aprilref.csv")
+write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_bp_mayref.csv")
+write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_bp_mayref.csv")
 
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
@@ -113,8 +116,8 @@ climate <- climatedatapost
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRpost <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRpost[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapost_bp_aprilref.csv")
-write.csv(Results_SWRpost[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapost_bp_aprilref.csv")
+write.csv(Results_SWRpost[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapost_bp_mayref.csv")
+write.csv(Results_SWRpost[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapost_bp_mayref.csv")
 
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 04) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
@@ -123,8 +126,8 @@ climate <- climatedatamid
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRmid <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRmid[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swamid_bp_aprilref.csv")
-write.csv(Results_SWRmid[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swamid_bp_aprilref.csv")
+write.csv(Results_SWRmid[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swamid_bp_mayref.csv")
+write.csv(Results_SWRmid[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swamid_bp_mayref.csv")
 
 if(FALSE){
 ## Get data and parameters for prediction

@@ -101,14 +101,14 @@ source("/n/wolkovich_lab/Lab/Cat/Run_SW.R")
 #run_SW <- function(absolute = TRUE, datafile, climate, refday)
 
 ### Now checking Simmond's sliding window approach:
-refday <- c(01, 04) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
+refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
 datafile <- bbswpre
 climate <- climatedatapre
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRpre <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_fs_aprilref.csv")
-write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_fs_aprilref.csv")
+write.csv(Results_SWRpre[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapre_fs_mayref.csv")
+write.csv(Results_SWRpre[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapre_fs_mayref.csv")
 
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
@@ -117,8 +117,8 @@ climate <- climatedatapost
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRpost <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRpost[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapost_fs_aprilref.csv")
-write.csv(Results_SWRpost[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapost_fs_aprilref.csv")
+write.csv(Results_SWRpost[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swapost_fs_mayref.csv")
+write.csv(Results_SWRpost[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swapost_fs_mayref.csv")
 
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
@@ -127,8 +127,8 @@ climate <- climatedatamid
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRmid <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
-write.csv(Results_SWRmid[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swamid_fs_aprilref.csv")
-write.csv(Results_SWRmid[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swamid_fs_aprilref.csv")
+write.csv(Results_SWRmid[[2]], file="/n/wolkovich_lab/Lab/Cat/results_swamid_fs_mayref.csv")
+write.csv(Results_SWRmid[[1]], file="/n/wolkovich_lab/Lab/Cat/sumstats_swamid_fs_mayref.csv")
 
 if(FALSE){
 ## Get data and parameters for prediction
