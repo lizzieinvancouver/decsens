@@ -1,0 +1,69 @@
+\documentclass[11pt, letter]{article}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage{Sweave}
+\renewcommand{\baselinestretch}{1.1}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{xr-hyper}
+\externaldocument{decsens}
+
+\def\labelitemi{--}
+\parindent=0pt
+
+\begin{document}
+\SweaveOpts{concordance=FALSE}
+\renewcommand{\refname}{\CHead{}}
+
+\title{Supplemental materials: The illusion of declining temperature sensitivity with warming} 
+
+\author{the lab \& friends}
+\date{} 
+\maketitle  %put the fancy title on
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+
+\section{More on PEP725}
+
+
+ 
+\clearpage 
+\section{Tables \& Figures}
+\vspace{-3ex}
+<<label=xtablez, echo=FALSE, results=tex>>=
+library(xtable)
+source("..//analyses/pep_analyses/pepplotting.R")
+
+print(xtable(mean2spp.forpaper,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-2010. MST is spring temperature from March 1 to May 31, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. {\\bf Side note: Why is my hline.after command not working?}", label="tab:pep"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
+@
+
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature across a fixed window (top row, similar to estimates of 'spring temperature') or until leafout date (bottom row). While within any small temperature range the relationship may appear linear, is non-linear relationship becomes clear across the range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) linearized the relationship.}
+\label{fig:simslog} % decsensSimsAuerbach.R
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=0.8\textwidth]{..//analyses/figures/shiftingcuessims_2panels.pdf}
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures with shifts in underlying cues.} Here we simulated sets of data where leafout occurs at 200 growing degree days (`fstar') when chilling is met, and requires additional growing degree days when chilling is not met. We show estimates sensitivities in the top panel, and the shifting cues on the bottom panel.}
+\label{fig:simsshiftcues} % need R file here!
+\end{figure}
+
+
+\clearpage
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicpep1950to20002spp2panel.pdf}
+\caption{\textbf{Sensitivities for two species from PEP725 data} using raw data (top) or logged variables (bottom) using 20 year windows of data (lines show 78\% confidence intervals). Amounts of warming are calculated relative to 1950-1970 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. To aid visualization \emph{Fagus sylvatica} are jittered slightly to the right, but warming is approximatly 0.08 C greater for \emph{Fagus sylvatica} in 1990-2010 relative to \emph{Betula pendula}.}
+\label{fig:pepper} % pepplotting.R
+\end{figure}
+
+
+\end{document}
+
+

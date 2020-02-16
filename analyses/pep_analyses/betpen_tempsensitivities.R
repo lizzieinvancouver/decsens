@@ -10,7 +10,7 @@ library(dplyr)
 library(tidyr)
 
 # Setting working directory. Add in your own path in an if statement for your file structure
-setwd("~/Documents/git/decsens/analyses/pep_analyses") 
+setwd("~/Documents/git/decsens/analyses/pep_analyses") # setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses")
 
 # get some data
 # Betula puendula data from PEP (both have has GDD from 1 Jan to leafout)
@@ -83,6 +83,67 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanl
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
 write.csv(bpest, file="output/bpenestimates_withlog_1950-2010.csv", row.names = FALSE)
+
+## Now do as above, but for 10-year windows  ....
+bp10yr <- bp
+bp10yr$cc[which(bp10yr$year>1950 & bp10yr$year<1961)] <- "1950-1960"
+bp10yr$cc[which(bp10yr$year>1960 & bp10yr$year<1971)] <- "1960-1970"
+bp10yr$cc[which(bp10yr$year>1970 & bp10yr$year<1981)] <- "1970-1980"
+bp10yr$cc[which(bp10yr$year>1980 & bp10yr$year<1991)] <- "1980-1990"
+bp10yr$cc[which(bp10yr$year>1990 & bp10yr$year<2001)] <- "1990-2000"
+bp10yr$cc[which(bp10yr$year>2000 & bp10yr$year<2011)] <- "2000-2010"
+
+bpest.10yr <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
+                    sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
+                    matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
+                    meanmatlo=numeric(), 
+                    matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
+                    varmatlo=numeric(), sdmatlo=numeric())
+
+sitez <- unique(bp10yr$siteslist)
+
+for(i in c(1:length(sitez))){ # i <- 1
+  subby <- subset(bp10yr, siteslist==sitez[i])
+  for(ccstate in c(1:6)){ ## ccstate=1
+    subbycc <- subset(subby, cc==unique(bp10yr$cc)[ccstate])
+    meanmat <- mean(subbycc$mat, na.rm=TRUE)
+    varmat <- var(subbycc$mat, na.rm=TRUE)
+    sdmat <- sd(subbycc$mat, na.rm=TRUE)
+    meanmatlo <- mean(subbycc$mat.lo, na.rm=TRUE)
+    varmatlo <- var(subbycc$mat.lo, na.rm=TRUE)
+    sdmatlo <- sd(subbycc$mat.lo, na.rm=TRUE)
+    meanlo <- mean(subbycc$lo, na.rm=TRUE)
+    varlo <- var(subbycc$lo, na.rm=TRUE)
+    sdlo <- sd(subbycc$lo, na.rm=TRUE)
+    meanutah <- mean(subbycc$chillutah, na.rm=TRUE)
+    meangdd <- mean(subbycc$gdd, na.rm=TRUE)
+    lmmat <- lm(lo~mat, data=subbycc)
+    lmmatse <- summary(lmmat)$coef[2,2]
+    lmmatconfint11 <- confint(lmmat,level=0.89)[2,1]
+    lmmatconfint89 <- confint(lmmat,level=0.89)[2,2]
+    lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
+    lmmatlogse <- summary(lmmatlog)$coef[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
+    bpestadd.10yr <- data.frame(siteslist=sitez[i], cc=unique(bp10yr$cc)[ccstate], meanmat=meanmat, 
+                           varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
+                           meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
+                           matslopeconfint89=lmmatconfint89,
+                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
+                           matslopelogconfint89=lmmatconfintlog89,
+                           meanmatlo=meanmatlo,
+                           varmatlo=varmatlo, sdmatlo=sdmatlo)
+    bpest.10yr <- rbind(bpest.10yr, bpestadd.10yr)
+  }
+}    
+
+meanhere.10yr <- aggregate(bpest.10yr[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo",
+    "varlo", "sdlo", "meanutah", "meangdd","matslope", "matslopese", "matslopelog", "matslopelogse")], bpest.10yr["cc"], FUN=mean)
+                              
+sdhere.10yr <- aggregate(bpest.10yr[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
+    bpest.10yr["cc"], FUN=sd)
+
+
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

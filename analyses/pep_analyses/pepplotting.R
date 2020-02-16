@@ -12,6 +12,7 @@ setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 # Get data ...
 df <- read.csv("pep_analyses/output/bpenestimates_withlog_1950-2010.csv", header=TRUE)
+df.old <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE) # earlier 10-year estimates
 dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
 fs <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header=TRUE)
 
@@ -20,9 +21,12 @@ fs <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header
 ## Plotting ##
 ##############
 
-mean.betpen <- aggregate(df[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd",
+mean.betpen <- aggregate(df[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
     df["cc"], FUN=mean)
+
+mean.betpen.old <- aggregate(df.old[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
+    df.old["cc"], FUN=mean)
 
 tempdiff1 <- mean.betpen$meanmat[which(mean.betpen$cc=="1970-1990")]-
     mean.betpen$meanmat[which(mean.betpen$cc=="1950-1970")]
@@ -30,7 +34,6 @@ tempdiff2 <- mean.betpen$meanmat[which(mean.betpen$cc=="1990-2010")]-
     mean.betpen$meanmat[which(mean.betpen$cc=="1950-1970")]
 
 tempdiffplot <- c(0, tempdiff1, tempdiff2)
-
 
 cexhere <- 0.95
 cextext <- 0.5
@@ -64,7 +67,7 @@ dev.off()
 
 
 ## For Fagus sylvatica
-mean.fs <- aggregate(fs[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd",
+mean.fs <- aggregate(fs[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
     fs["cc"], FUN=mean)
 
@@ -288,3 +291,15 @@ for(i in 1:length(unique(mean.betpenswa$cc))){
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Using raw x, y", "Using logged x, y"),
    cex=1, bty="n")
 dev.off()
+
+
+##############
+## Tables ##
+##############
+
+mean.betpen$species <- rep("Betpen", nrow(mean.betpen))
+mean.fs$species <- rep("Fagsyl", nrow(mean.fs))
+mean.betpen.forpaper <- subset(mean.betpen, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
+mean.fs.forpaper <- subset(mean.fs, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
+mean2spp.forpaper <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+names(mean2spp.forpaper) <- c("when", "species", "mean(MST)", "mean(MST.LO)", "var(MST)", "var(LO)", "mean(GDD)")

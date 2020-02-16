@@ -5,7 +5,9 @@
 \usepackage{natbib}
 \usepackage{amsmath}
 \usepackage{amssymb} 
-\usepackage{hyperref} 
+\usepackage{xr-hyper}
+\externaldocument{decsens_supp}
+% \usepackage{hyperref}
 
 \def\labelitemi{--}
 \parindent=0pt
@@ -25,7 +27,7 @@ $^a$Corresponding author.
 
 \section{Main text}
 \begin{abstract}
-The concept of temperature sensitivity is fundamental to many disciplines, especially in biology, where temperature determines the rate of diverse plant, animal and ecosystem processes. Recently, a growing body of literature has found declining temperature sensitivities with global warming \citep{fu2015,gusewell2017,dai2019ag}. Such declines are predicted if warming causes fundamental shifts in underlying biological processes, but to date researchers have not conclusively documented changes in the underlying biology. Here we show a far more simple explanation for observed declining sensitivities: the use of linear methods to describe non-linear temperature responses. Simple corrections for the non-linearity of temperature response in simulated (and probably real---working on that) data remove the apparent decline. By accelerating biological time climate change thus makes methods and approaches that may work in stationary systems problematic for inferring mechanism from measurements today.
+The concept of temperature sensitivity is fundamental across scientific disciplines, especially in biology, where temperature determines the rate of many plant, animal and ecosystem processes. Recently, a growing body of literature has found declining temperature sensitivities with global warming \citep{fu2015,gusewell2017,dai2019ag}. Such declines are predicted if warming causes fundamental shifts in underlying biological processes, but to date researchers have not conclusively documented changes in the underlying biology. Here we show a far more simple explanation for observed declining sensitivities: the use of linear methods to describe non-linear temperature responses. Simple corrections for the non-linearity of temperature response in simulated data remove the apparent decline. By accelerating biological time climate change thus makes methods and approaches that may work in stationary systems problematic for inferring mechanism from measurements today.
 \end{abstract}
 
 Climate change has already reshaped biological processes around the globe, with shifts in the timing of major life history events (phenology), in carbon dynamics and other ecosystem processes \citep{IPCC:2014sm}. With increasing warming,  a growing body of literature has documented a suite of changes in temperature sensitivity---the magnitude of a response scaled per $^{\circ}$C---including apparently declining responses to temperature in recent decades \citep{fu2015,gusewell2017,piao2017,dai2019ag}, and more uniform sensitivities across elevation \citep{vitasse2018}. Researchers generally suggest these shifts in temperature sensitivity are driven by fundamental shifts in underlying biological processes. For example, fundamental science suggests that warm temperatures (`forcing') are the main controller on many temperate phenological events (e.g., leafout, insect emergence), but cool temperatures (referred to often as `chilling' and generally associated with dormancy processes) or photoperiod can also play a role, especially given warmer winters. Thus, observed declines in the temperature sensitivity of temperate plant phenology with warming are generally attributed to the increasing role of photoperiod or chilling  \citep[e.g.,][]{fu2015,gauzere2019}. Yet, providing strong evidence of this mechanistic link is difficult given that the underlying model of exactly how these other factors control phenological events is unknown \citep{chuine2016}, and that the cues are generally correlated in nature given long-term trends in warming \citep[e.g.,][]{fu2015}. \\
@@ -55,7 +57,7 @@ Research inferring biological processes from differing temperature sensitivities
 
 \section{Outline \& notes}
 
-Need to work on this, notes to date on \href{https://github.com/lizzieinvancouver/decsens/wiki/Statistical-artifacts-in-sensitivities}{here}.\\
+Need to work on this, notes to date on % \href{https://github.com/lizzieinvancouver/decsens/wiki/Statistical-artifacts-in-sensitivities}{here}.\\
 
 \emph{Meeting with Jonathan Auerbach \& Andrew Gelman on 18 December 2019:} 
 
@@ -102,13 +104,6 @@ Shen et al. 2014 shows earlier-season vegetation more temperature-sensitive, whi
 
 \section* {Figures}
 
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
-\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature across a fixed window (top row, similar to estimates of 'spring temperature') or until leafout date (bottom row). While within any small temperature range the relationship may appear linear, is non-linear relationship becomes clear across the range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) linearized the relationship.}
-\label{fig:simslog} % decsensSimsAuerbach.R
-\end{figure}
-
 
 
 \begin{figure}[h!]
@@ -127,12 +122,6 @@ Shen et al. 2014 shows earlier-season vegetation more temperature-sensitive, whi
 \end{figure}
 
 
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicpep1950to20002spp2panel.pdf}
-\caption{\textbf{Sensitivities for two species from PEP725 data} using raw data (top) or logged variables (bottom) using 20 year windows of data (lines show 78\% confidence intervals). Amounts of warming are calculated relative to 1950-1970 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. To aid visualization \emph{Fagus sylvatica} are jittered slightly to the right, but warming is approximatly 0.08 C greater for \emph{Fagus sylvatica} in 1990-2010 relative to \emph{Betula pendula}.}
-\label{fig:pepper} % pepplotting.R
-\end{figure}
 
 
 \end{document}
