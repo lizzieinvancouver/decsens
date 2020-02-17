@@ -15,25 +15,52 @@ df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950-2010.csv", h
 df.10yr <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
 fs.20yr <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header=TRUE)
+fs.10yr <- read.csv("pep_analyses/output/fsylestimates_withlog_1950_1990_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 
 
-##############
-## Plotting ##
-##############
+#################
+## Format data ##
+#################
 
 mean.betpen.20yr <- aggregate(df.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
     df.20yr["cc"], FUN=mean)
 
-mean.betpen.20yr.10yr <- aggregate(df.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
+mean.betpen.10yr <- aggregate(df.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
     df.10yr["cc"], FUN=mean)
 
 tempdiff1.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1970-1990")]-
     mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
 tempdiff2.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1990-2010")]-
     mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
-
 tempdiffplot.20yr <- c(0, tempdiff1.20yr, tempdiff2.20yr)
+
+tempdiff1.10yr <- mean.betpen.10yr$meanmat[which(mean.betpen.10yr$cc=="2000-2010")]-
+    mean.betpen.10yr$meanmat[which(mean.betpen.10yr$cc=="1950-1960")]
+tempdiffplot.10yr <- c(0, tempdiff1.10yr)
+
+## For Fagus sylvatica
+mean.fs.20yr <- aggregate(fs.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
+    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
+    fs.20yr["cc"], FUN=mean)
+
+mean.fs.10yr <- aggregate(fs.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
+    fs.10yr["cc"], FUN=mean)
+
+tempdiff1fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1970-1990")]-
+    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
+tempdiff2fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1990-2010")]-
+    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
+
+tempdiffplotfs.20yr <- c(0, tempdiff1fs.20yr, tempdiff2fs.20yr)
+
+tempdiff1fs.10yr <- mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="2000-2010")]-
+    mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="1950-1960")]
+tempdiffplotfs.10yr <- c(0, tempdiff1fs.10yr)
+
+##############
+## Plotting ##
+##############
 
 cexhere <- 0.95
 cextext <- 0.5
@@ -65,18 +92,6 @@ legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Usin
    cex=1, bty="n")
 dev.off()
 
-
-## For Fagus sylvatica
-mean.fs.20yr <- aggregate(fs.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
-    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
-    fs.20yr["cc"], FUN=mean)
-
-tempdiff1fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1970-1990")]-
-    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
-tempdiff2fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1990-2010")]-
-    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
-
-tempdiffplotfs.20yr <- c(0, tempdiff1fs.20yr, tempdiff2fs.20yr)
 
 cexhere <- 0.95
 pdf(file.path("figures/basicpep1950to2000fs.pdf"), width = 6, height = 4)
@@ -171,7 +186,93 @@ dev.off()
 
 
 ##
-## Four panel with FagSyl -- showing logged and raw on left panels, and just logged on right panels
+## Four panel with FagSyl 10 yr -- showing logged and raw on left panels, and just logged on right panels
+cexhere <- 0.5
+cexhereleg <- 0.7
+pdf(file.path("figures/basicpep195020102spp4panel.pdf"), width = 9, height = 6)
+par(xpd=FALSE)
+par(mfrow=c(2,2))
+par(mar=c(5,5,2,2))
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Betpen")
+abline(h=0, lty=2, col="darkgrey")
+for(i in 1:length(unique(mean.betpen.10yr$cc))){
+  pos.x <- tempdiffplot.10yr[i]
+  pos.y <- mean.betpen.10yr$matslope[i]
+  ciherelo <- mean.betpen.10yr$matslopeconfint11[i]
+  cihereup <- mean.betpen.10yr$matslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
+  text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.betpen.10yr$cc))){
+  pos.x <- tempdiffplot.10yr[i]
+  pos.y <- mean.betpen.10yr$matslopelog[i]
+  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
+   legend=c("Using raw x, y", "Using logged x, y"), cex=cexhereleg, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Betpen (logged only)")
+for(i in 1:length(unique(mean.betpen.10yr$cc))){
+  pos.x <- tempdiffplot.10yr[i]
+  pos.y <- mean.betpen.10yr$matslopelog[i]
+  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="salmon")
+  }
+# FagSyl 
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Fagsyl")
+abline(h=0, lty=2, col="darkgrey")
+for(i in 1:length(unique(mean.fs.10yr$cc))){
+  pos.x <- tempdiffplotfs.10yr[i]
+  pos.y <- mean.fs.10yr$matslope[i]
+  ciherelo <- mean.fs.10yr$matslopeconfint11[i]
+  cihereup <- mean.fs.10yr$matslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="darkblue")
+  }
+for(i in 1:length(unique(mean.fs.10yr$cc))){
+  pos.x <- tempdiffplotfs.10yr[i]
+  pos.y <- mean.fs.10yr$matslopelog[i]
+  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
+  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Using raw x, y", "Using logged x, y"),
+   cex=cexhereleg, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Fagsyl (logged only)")
+for(i in 1:length(unique(mean.fs.10yr$cc))){
+  pos.x <- tempdiffplotfs.10yr[i]
+  pos.y <- mean.fs.10yr$matslopelog[i]
+  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
+  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="salmon")
+  }
+dev.off()
+## END: Four panel with FagSyl 10 yr -- showing logged and raw on left panels, and just logged on right panels
+## 
+
+
+
+
+##
+## Four panel with FagSyl 20 yr -- showing logged and raw on left panels, and just logged on right panels
 cexhere <- 0.5
 cexhereleg <- 0.7
 pdf(file.path("figures/basicpep1950to20002spp4panel.pdf"), width = 9, height = 6)
@@ -250,10 +351,8 @@ for(i in 1:length(unique(mean.fs.20yr$cc))){
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="salmon")
   }
 dev.off()
-## END: Four panel with FagSyl -- showing logged and raw on left panels, and just logged on right panels
+## END: Four panel with FagSyl 20yr -- showing logged and raw on left panels, and just logged on right panels
 ## 
-
-
 
 
 ## Now with the moving windows ...
