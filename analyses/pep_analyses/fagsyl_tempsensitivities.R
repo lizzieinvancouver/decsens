@@ -20,12 +20,12 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #fspre <- read.csv("output/fs_climatedatapre.csv")
 #fspost <- read.csv("output/fs_climatedatapost.csv")
 
-fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
+fs <- read.csv("output/fagsyl_decsens_1950_1990.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
-fsest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
-                    sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
+fsest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  varlogmat=numeric(),
+                    sdmat=numeric(), meanlo=numeric(), varlo=numeric(), varloglo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
                     matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
                     meanmatlo=numeric(), 
                     matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
@@ -35,16 +35,18 @@ sitez <- unique(fs$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(fs, siteslist==sitez[i])
-  for(ccstate in c(1:3)){ ## ccstate=1
+  for(ccstate in c(1:2)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(fs$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
+    varlogmat <- var(log(subbycc$mat), na.rm=TRUE)
     sdmat <- sd(subbycc$mat, na.rm=TRUE)
     meanmatlo <- mean(subbycc$mat.lo, na.rm=TRUE)
     varmatlo <- var(subbycc$mat.lo, na.rm=TRUE)
     sdmatlo <- sd(subbycc$mat.lo, na.rm=TRUE)
     meanlo <- mean(subbycc$lo, na.rm=TRUE)
     varlo <- var(subbycc$lo, na.rm=TRUE)
+    varloglo <- var(log(subbycc$lo), na.rm=TRUE)
     sdlo <- sd(subbycc$lo, na.rm=TRUE)
     meanutah <- mean(subbycc$chillutah, na.rm=TRUE)
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
@@ -54,13 +56,13 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatconfint89 <- confint(lmmat,level=0.89)[2,2]
     lmmatlog <- lm(log(lo)~log(mat), data=subbycc)
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lmmatconfintlog11 <- confint(lmmatlog, level=0.89)[2,1]
-    lmmatconfintlog89 <- confint(lmmatlog, level=0.89)[2,2]
+    lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
+    lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
     fsestadd <- data.frame(siteslist=sitez[i], cc=unique(fs$cc)[ccstate], meanmat=meanmat, 
-                           varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
+                           varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
                            matslopeconfint89=lmmatconfint89,
-                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11,
+                           matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
                            matslopelogconfint89=lmmatconfintlog89,
                            meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
@@ -68,20 +70,23 @@ for(i in c(1:length(sitez))){ # i <- 1
   }
 }    
 
-meanhere <- aggregate(fsest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "sdlo", "meanutah", "meangdd",
-                              "matslope", "matslopese", "matslopelog", "matslopelogse")], fsest["cc"], FUN=mean)
-sdhere <- aggregate(fsest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
+meanhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "varloglo", "sdlo", "meanutah", "meangdd",
+                              "matslope", "matslopese", "matslopeconfint11", "matslopeconfint89",  "matslopelog", "matslopelogse", "matslopelogconfint11", "matslopelogconfint89")], fsest["cc"], FUN=mean)
+sdhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "varloglo", "meanutah", "meangdd", "matslope")],
                     fsest["cc"], FUN=sd)
 
-#      cc    meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo   meanlo    varlo     sdlo meanutah  meangdd  matslope matslopese matslopelog matslopelogse
-# 1950-1970 7.657062 1.2448377 1.1143705  7.613772 1.256694 1.0902151 119.9583 63.35417 7.850431  2099.95 86.01584 -4.522218   1.224786  -0.2801439    0.07880991
-# 1970-1990 7.858652 0.8656629 0.9273273  7.520632 1.401300 1.1626911 120.9875 56.19254 7.256005  2321.65 81.31031 -2.347885   1.726824  -0.1508822    0.11430350
-# 1990-2010 8.866196 0.8969811 0.9467011  7.468091 1.028821 0.9940663 114.0375 32.82193 5.556988  2339.65 79.92338 -2.731600   1.195737  -0.2066306    0.09470079
 
+#     cc    meanmat   varmat  varlogmat     sdmat meanmatlo varmatlo   sdmatlo   meanlo    varlo    varloglo
+# 1950-1970 7.629376 1.237705 0.02278839 1.1112462  7.810838 1.336977 1.1276187 119.4534 63.49537 0.004566349
+# 1990-2010 8.832890 0.901294 0.01227455 0.9488819  7.455157 1.037334 0.9979342 114.0345 31.88875 0.002603073
+
+#   sdlo meanutah  meangdd  matslope matslopese matslopelog matslopelogse
+# 7.862192 2093.090 91.08116 -4.651015   1.211960  -0.2883085    0.07817823
+# 5.493083 2331.186 79.82799 -2.696109   1.182926  -0.2033251    0.09324998
 
 fsest$matslopelog_exp <- exp(fsest$matslopelog)
 
-write.csv(fsest, file="output/fsylestimates_withlog_1950-2010.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsestimates_withlog_1950_1990.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

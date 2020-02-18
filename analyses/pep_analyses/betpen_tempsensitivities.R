@@ -20,13 +20,13 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses") # setwd("~/Documents/git/
 #bppre <- read.csv("output/bp_climatedatapre.csv")
 #bppost <- read.csv("output/bp_climatedatapost.csv")
 
-bp <- read.csv("output/betpen_decsens_1950-2000.csv")
+bp <- read.csv("output/betpen_decsens_1950_1990.csv")
 bp <- na.omit(bp)
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
-bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  
-                    sdmat=numeric(), meanlo=numeric(), varlo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
+bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  varlogmat=numeric(),
+                    sdmat=numeric(), meanlo=numeric(), varlo=numeric(), varloglo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
                     matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
                     meanmatlo=numeric(), 
                     matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
@@ -36,16 +36,18 @@ sitez <- unique(bp$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(bp, siteslist==sitez[i])
-  for(ccstate in c(1:3)){ ## ccstate=1
+  for(ccstate in c(1:2)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
+    varlogmat <- var(log(subbycc$mat), na.rm=TRUE)
     sdmat <- sd(subbycc$mat, na.rm=TRUE)
     meanmatlo <- mean(subbycc$mat.lo, na.rm=TRUE)
     varmatlo <- var(subbycc$mat.lo, na.rm=TRUE)
     sdmatlo <- sd(subbycc$mat.lo, na.rm=TRUE)
     meanlo <- mean(subbycc$lo, na.rm=TRUE)
     varlo <- var(subbycc$lo, na.rm=TRUE)
+    varloglo <- var(log(subbycc$lo), na.rm=TRUE)
     sdlo <- sd(subbycc$lo, na.rm=TRUE)
     meanutah <- mean(subbycc$chillutah, na.rm=TRUE)
     meangdd <- mean(subbycc$gdd, na.rm=TRUE)
@@ -58,7 +60,7 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
     lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
-                           varmat=varmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, sdlo=sdlo, meanutah=meanutah, 
+                           varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
                            matslopeconfint89=lmmatconfint89,
                            matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
@@ -82,7 +84,7 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanl
 
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
-write.csv(bpest, file="output/bpenestimates_withlog_1950-2010.csv", row.names = FALSE)
+write.csv(bpest, file="output/bpenestimates_withlog_1950_1990.csv", row.names = FALSE)
 
 ## Now do as above, but for 10-year windows  ....
 bp10yr <- bp
