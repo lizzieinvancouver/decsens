@@ -71,17 +71,21 @@ for(i in c(1:length(sitez))){ # i <- 1
   }
 }    
 
-meanhere <- aggregate(bpest[c("meanmat", "varmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "sdlo", "meanutah", "meangdd",
-                              "matslope", "matslopese", "matslopelog", "matslopelogse")], bpest["cc"], FUN=mean)
-sdhere <- aggregate(bpest[c("meanmat", "varmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "meanutah", "meangdd", "matslope")],
+meanhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "varloglo", "sdlo", "meanutah", "meangdd",
+                              "matslope", "matslopese", "matslopeconfint11", "matslopeconfint89",  "matslopelog", "matslopelogse", "matslopelogconfint11", "matslopelogconfint89")], bpest["cc"], FUN=mean)
+sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "varloglo", "meanutah", "meangdd", "matslope")],
                     bpest["cc"], FUN=sd)
 
 
-#       cc  meanmat    varmat     sdmat meanmatlo varmatlo   sdmatlo   meanlo     varlo      sdlo meanutah  meangdd  matslope matslopese matslopelog matslopelogse
-# 1950-1970 7.910215 1.2324478 1.1087819  7.087769 0.725760 0.8395568 113.3676  79.88591  8.799727 2037.141 72.47753 -6.053967   1.184807  -0.4157587    0.08444957
-# 1970-1990 8.120306 0.8399633 0.9145221  7.164344 1.121109 1.0412423 111.5353 104.82786 10.150635 2244.388 72.15105 -6.843966   2.051705  -0.4895361    0.15373991
-# 1990-2010 9.037770 0.8897746 0.9426791  6.674794 1.036566 1.0085297 105.8588  36.21610  5.971164 2287.235 60.03246 -2.115403   1.392456  -0.1773680    0.11782152
-
+#      cc     meanmat    varmat  varlogmat     sdmat meanmatlo varmatlo   sdmatlo  meanlo    varlo    varloglo
+# 1950-1970 7.661285 1.2515107 0.02308514 1.1172600  7.267610 1.076558 0.9952432 114.926 81.65211 0.006449103
+# 1990-2010 8.807405 0.8897012 0.01224291 0.9427715  6.600241 1.010194 0.9970972 106.422 42.46895 0.003875612
+#     sdlo meanutah  meangdd  matslope matslopese matslopeconfint11 matslopeconfint89 matslopelog matslopelogse
+# 8.914409 2038.200 77.86681 -6.042843   1.204039         -8.067031        -4.0186559  -0.3978114    0.08225647
+# 6.363890 2287.104 59.19161 -2.291221   1.481032         -4.781080         0.1986369  -0.1839502    0.12221731
+#      matslopelogconfint11 matslopelogconfint89
+#           -0.5360981          -0.25952477
+#           -0.3894176           0.02151724
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
 write.csv(bpest, file="output/bpenestimates_withlog_1950_1990.csv", row.names = FALSE)
