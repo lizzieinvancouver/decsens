@@ -11,16 +11,19 @@ options(stringsAsFactors = FALSE)
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 # Get data ...
-df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950-2010.csv", header=TRUE)
+df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_1990.csv", header=TRUE) 
 df.10yr <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
 fs.20yr <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header=TRUE)
-fs.10yr <- read.csv("pep_analyses/output/fsylestimates_withlog_1950_1990_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
+fs.10yr <- read.csv("pep_analyses/output/fsestimates_withlog_1950_1990.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 
 
 #################
 ## Format data ##
 #################
+
+length(unique(df.20yr$siteslist))
+length(unique(fs.20yr$siteslist))
 
 mean.betpen.20yr <- aggregate(df.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
     "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],

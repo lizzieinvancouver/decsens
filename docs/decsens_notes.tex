@@ -11,6 +11,41 @@
 \parindent=0pt
 \begin{document}
 
+\emph{Original from J. Auerbach on 2 February 2020} ...\\
+I figured the first step was to write n as a function of $S_a^b$. (Dividing by (b-a) shouldn't make a difference.) Then you can calculate variances, covariances, the regression slope, etc. (Although it's not obvious to me how to do this in closed form.)\\
+
+It's actually easier to write $S_a^b$ as a polynomial in $n$.\\
+
+We defined n to be the day such that the cumulative temperature hit $\beta$:\\
+
+$\beta \approx \sum_{i=a}^n X_i$\\
+
+Assuming $n$ is large, we can replace this sum with its average\\
+
+$\sum_{i=a}^n X_i = \sum_{i=a}^n \mu * i$\\
+
+So,\\
+
+$\beta \approx \sum_{i=a}^n \mu * i =  \mu * \sum_{i=a}^n * i$
+
+and,\\
+
+$S_a^b = \mu * \sum_{i=a}^b * i  = \mu * \sum_{i=a}^n * i  + \mu * \sum_{i=n}^b * i  = \beta + \mu * \sum_{i=n}^b * i $\\
+
+But $\sum_{i=n}^b * i$ is just the sum of the integers from n to b which is the sum of integers from 1 to b minus the sum of integers from 1 to n\\
+
+$b * (b + 1) / 2 - n * (n + 1) / 2 $\\
+
+So,\\
+
+$S_a^b  = \beta + \mu * (b * (b + 1) / 2 - n * (n + 1) / 2)$
+
+Letting $\alpha_1 = \beta + \mu * b * (b + 1) / 2 and \alpha_2 = \mu/2$\\
+
+$S_a^b = \alpha_1 -  \alpha_2 * n * (n + 1)$\\
+
+which is clearly not a straight line, and OLS (either $S_a^b$  on $n$ or $n$ on $S_a^b$) is not a good idea.
+
 \emph{Original from J. Auerbach on 22 January 2020} ...\\
 
 Sorry, I'm confused by the additional notation. Is it correct to deonte the time window $[a, b]$ and $S_a^b = \sum_{i = a}^b X_i $?
