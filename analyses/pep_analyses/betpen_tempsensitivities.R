@@ -89,6 +89,7 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
 write.csv(bpest, file="output/bpenestimates_withlog_1950_1990.csv", row.names = FALSE)
+write.csv(meanhere, file="output/bpestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Now do as above, but for 10-year windows  ....
 bp10yr <- bp
