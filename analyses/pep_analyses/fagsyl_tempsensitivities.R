@@ -87,6 +87,7 @@ sdhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 fsest$matslopelog_exp <- exp(fsest$matslopelog)
 
 write.csv(fsest, file="output/fsestimates_withlog_1950_1990.csv", row.names = FALSE)
+write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better
