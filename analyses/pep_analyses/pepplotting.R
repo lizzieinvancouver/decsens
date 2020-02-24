@@ -11,11 +11,12 @@ options(stringsAsFactors = FALSE)
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
 # Get data ...
-df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_1990.csv", header=TRUE) 
-df.10yr <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
-dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
-fs.20yr <- read.csv("pep_analyses/output/fsylestimates_withlog_1950-2010.csv", header=TRUE)
-fs.10yr <- read.csv("pep_analyses/output/fsestimates_withlog_1950_1990.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
+df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950to2010.csv", header=TRUE) 
+df.10yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010) 
+df.old <- read.csv("pep_analyses/output/zarchive/bpenestimates_withlog.csv", header=TRUE)
+# dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
+fs.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950to2010.csv", header=TRUE) # older version: fsylestimates_withlog_1950-2010
+fs.10yr <- read.csv("pep_analyses/output/fsestimates_withlog_1950_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 
 
 #################
@@ -31,6 +32,9 @@ mean.betpen.20yr <- aggregate(df.20yr[c("matslope", "matslopelog", "meanmat", "v
 
 mean.betpen.10yr <- aggregate(df.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
     df.10yr["cc"], FUN=mean)
+
+mean.betpen.10yr.old <- aggregate(df.old[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo")],
+    df.old["cc"], FUN=mean)
 
 tempdiff1.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1970-1990")]-
     mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
