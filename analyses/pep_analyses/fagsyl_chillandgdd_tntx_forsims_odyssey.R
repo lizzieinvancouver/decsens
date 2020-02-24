@@ -586,7 +586,7 @@ if(FALSE){
 }
 
 #if(FALSE){
-#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
+#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
 #pre <- read.csv("prefagsylten.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
@@ -968,9 +968,9 @@ full.site<-full_join(site, site.post)
 #full.site<-full_join(full.site, site.mid)
 full.site$year<-as.numeric(full.site$year)
 full.site$cc <- NA
-full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", full.site$cc)
+full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
 #full.site$cc <- ifelse(full.site$year>1970 & full.site$year<=1990, "1970-1990", full.site$cc)
-full.site$cc <- ifelse(full.site$year>1990 & full.site$year<=2010, "1990-2010", full.site$cc)
+full.site$cc <- ifelse(full.site$year>2000 & full.site$year<=2010, "2000-2010", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -1055,7 +1055,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="fagsyl_decsens_1950_2000.csv", row.names = FALSE)
+write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/fagsyl_decsens_1950_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################
