@@ -37,15 +37,15 @@ df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
 allpeps <- df[(df$year>=1951 & df$year<=2010),]
-allpeps <- allpeps[!(allpeps$year<=1990 & allpeps$year>=1971),]
+allpeps <- allpeps[!(allpeps$year<=2000 & allpeps$year>=1961),]
 #allpeps <- allpeps[!(allpeps$year<=1970 & allpeps$year>=1961),]
 
 allpeps$cc<-NA
-allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "1990-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1960, "1950-1960", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>2000 & allpeps$year<=2010, "2000-2010", allpeps$cc)
 #allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1980, "1970-1990", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=40),]
+mostdata<-allpeps[(allpeps$num.years>=20),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
@@ -61,7 +61,7 @@ rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
-period<-1951:1970
+period<-1951:1960
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 #badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
@@ -79,7 +79,7 @@ lositeyear <- left_join(lositeyear, sites)
 lositeyear<-na.omit(lositeyear)
 
 leaps<-seq(from=1952, to=2010, by=4)
-
+if(FALSE){
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
   #extractclimpost<-function(tmin,period){
@@ -248,10 +248,10 @@ extractclimpre<-function(tmin,period){
 clim_pre<-extractclimpre(tmin,period)
 
 pre<-as.data.frame(clim_pre)
-write.csv(pre, file="/n/wolkovich_lab/Lab/Cat/prefagsyl.csv", row.names=FALSE)
+write.csv(pre, file="/n/wolkovich_lab/Lab/Cat/prefagsylten.csv", row.names=FALSE)
+}
 
-
-period<-1991:2010
+period<-2001:2010
 extractclimpost<-function(tmin,period){
   #extractclim90s<-function(tmin,period){
   
@@ -415,7 +415,7 @@ extractclimpost<-function(tmin,period){
 
 clim_post<-extractclimpost(tmin,period) 
 post<-as.data.frame(clim_post)
-write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postfagsyl.csv", row.names=FALSE)
+write.csv(post, file="/n/wolkovich_lab/Lab/Cat/postfagsylten.csv", row.names=FALSE)
 
 if(FALSE){
   period<-1971:1990
@@ -588,9 +588,9 @@ if(FALSE){
 #if(FALSE){
 #setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
-#pre <- read.csv("prefagsyl.csv")
+#pre <- read.csv("prefagsylten.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
-#post <- read.csv("postfagsyl.csv")
+#post <- read.csv("postfagsylten.csv")
 #mid <- read.csv("midbetpen.csv")
 
 
@@ -608,11 +608,16 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.23, pre$Mean.Utah.24,
                                   pre$Mean.Utah.25, pre$Mean.Utah.26,
                                   pre$Mean.Utah.27, pre$Mean.Utah.28,
-                                  pre$Mean.Utah.29), #pre$Mean.Utah.30,
-                    #pre$Mean.Utah.31, pre$Mean.Utah.32,
-                    #pre$Mean.Utah.33, pre$Mean.Utah.34,
-                    #pre$Mean.Utah.35, pre$Mean.Utah.36,
-                    #pre$Mean.Utah.37, pre$Mean.Utah.38),
+                                  pre$Mean.Utah.29, pre$Mean.Utah.30,
+                                  pre$Mean.Utah.31, pre$Mean.Utah.32,
+                                  pre$Mean.Utah.33, pre$Mean.Utah.34,
+                                  pre$Mean.Utah.35, pre$Mean.Utah.36,
+                                  pre$Mean.Utah.37, pre$Mean.Utah.38,
+                                  pre$Mean.Utah.39, pre$Mean.Utah.40,
+                                  pre$Mean.Utah.41, pre$Mean.Utah.42,
+                                  pre$Mean.Utah.43, pre$Mean.Utah.44,
+                                  pre$Mean.Utah.45, pre$Mean.Utah.46,
+                                  pre$Mean.Utah.47),
                     
                     chillports = c(pre$Mean.Port.1, pre$Mean.Port.2,
                                    pre$Mean.Port.3, pre$Mean.Port.4,
@@ -627,12 +632,17 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                    pre$Mean.Port.21, pre$Mean.Port.22,
                                    pre$Mean.Port.23, pre$Mean.Port.24,
                                    pre$Mean.Port.25, pre$Mean.Port.26,
-                    pre$Mean.Port.27, pre$Mean.Port.28,
-                    pre$Mean.Port.29), #pre$Mean.Port.30,
-                    #pre$Mean.Port.31, pre$Mean.Port.32,
-                    #pre$Mean.Port.33, pre$Mean.Port.34,
-                    #pre$Mean.Port.35, pre$Mean.Port.36,
-                    #pre$Mean.Port.37, pre$Mean.Port.38),
+                                   pre$Mean.Port.27, pre$Mean.Port.28,
+                                   pre$Mean.Port.29, pre$Mean.Port.30,
+                                   pre$Mean.Port.31, pre$Mean.Port.32,
+                                   pre$Mean.Port.33, pre$Mean.Port.34,
+                                   pre$Mean.Port.35, pre$Mean.Port.36,
+                                   pre$Mean.Port.37, pre$Mean.Port.38,
+                                   pre$Mean.Port.39, pre$Mean.Port.40,
+                                   pre$Mean.Port.41, pre$Mean.Port.42,
+                                   pre$Mean.Port.43, pre$Mean.Port.44,
+                                   pre$Mean.Port.45, pre$Mean.Port.46,
+                                   pre$Mean.Port.47),
                     
                     
                     gdd = c(pre$Mean.GDD.1, pre$Mean.GDD.2,
@@ -648,12 +658,17 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                             pre$Mean.GDD.21, pre$Mean.GDD.22,
                             pre$Mean.GDD.23, pre$Mean.GDD.24,
                             pre$Mean.GDD.25, pre$Mean.GDD.26,
-                    pre$Mean.GDD.27, pre$Mean.GDD.28,
-                    pre$Mean.GDD.29), #pre$Mean.GDD.30,
-                    #pre$Mean.GDD.31, pre$Mean.GDD.32,
-                    #pre$Mean.GDD.33, pre$Mean.GDD.34,
-                    #pre$Mean.GDD.35, pre$Mean.GDD.36,
-                    #pre$Mean.GDD.37, pre$Mean.GDD.38),
+                            pre$Mean.GDD.27, pre$Mean.GDD.28,
+                            pre$Mean.GDD.29, pre$Mean.GDD.30,
+                            pre$Mean.GDD.31, pre$Mean.GDD.32,
+                            pre$Mean.GDD.33, pre$Mean.GDD.34,
+                            pre$Mean.GDD.35, pre$Mean.GDD.36,
+                            pre$Mean.GDD.37, pre$Mean.GDD.38,
+                            pre$Mean.GDD.39, pre$Mean.GDD.40,
+                            pre$Mean.GDD.41, pre$Mean.GDD.42,
+                            pre$Mean.GDD.43, pre$Mean.GDD.44,
+                            pre$Mean.GDD.45, pre$Mean.GDD.46,
+                            pre$Mean.GDD.47),
                     
                     mat.lo = c(pre$Spring.Temp.1, pre$Spring.Temp.2,
                                pre$Spring.Temp.3, pre$Spring.Temp.4,
@@ -668,12 +683,17 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                pre$Spring.Temp.21, pre$Spring.Temp.22,
                                pre$Spring.Temp.23, pre$Spring.Temp.24,
                                pre$Spring.Temp.25, pre$Spring.Temp.26,
-                    pre$Spring.Temp.27, pre$Spring.Temp.28,
-                    pre$Spring.Temp.29), #pre$Spring.Temp.30,
-                    #pre$Spring.Temp.31, pre$Spring.Temp.32,
-                    #pre$Spring.Temp.33, pre$Spring.Temp.34,
-                    #pre$Spring.Temp.35, pre$Spring.Temp.36,
-                    #pre$Spring.Temp.37, pre$Spring.Temp.38),
+                               pre$Spring.Temp.27, pre$Spring.Temp.28,
+                               pre$Spring.Temp.29, pre$Spring.Temp.30,
+                               pre$Spring.Temp.31, pre$Spring.Temp.32,
+                               pre$Spring.Temp.33, pre$Spring.Temp.34,
+                               pre$Spring.Temp.35, pre$Spring.Temp.36,
+                               pre$Spring.Temp.37, pre$Spring.Temp.38,
+                               pre$Spring.Temp.39, pre$Spring.Temp.40,
+                               pre$Spring.Temp.41, pre$Spring.Temp.42,
+                               pre$Spring.Temp.43, pre$Spring.Temp.44,
+                               pre$Spring.Temp.45, pre$Spring.Temp.46,
+                               pre$Spring.Temp.47),
                     
                     siteslist = c(pre$Site.Num..1, pre$Site.Num..2,
                                   pre$Site.Num..3, pre$Site.Num..4,
@@ -688,12 +708,17 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..21, pre$Site.Num..22,
                                   pre$Site.Num..23, pre$Site.Num..24,
                                   pre$Site.Num..25, pre$Site.Num..26,
-                    pre$Site.Num..27, pre$Site.Num..28,
-                    pre$Site.Num..29), #pre$Site.Num..30,
-                    #pre$Site.Num..31, pre$Site.Num..32,
-                    #pre$Site.Num..33, pre$Site.Num..34,
-                    #pre$Site.Num..35, pre$Site.Num..36,
-                    #pre$Site.Num..37, pre$Site.Num..38),
+                                  pre$Site.Num..27, pre$Site.Num..28,
+                                  pre$Site.Num..29, pre$Site.Num..30,
+                                  pre$Site.Num..31, pre$Site.Num..32,
+                                  pre$Site.Num..33, pre$Site.Num..34,
+                                  pre$Site.Num..35, pre$Site.Num..36,
+                                  pre$Site.Num..37, pre$Site.Num..38,
+                                  pre$Site.Num..39, pre$Site.Num..40,
+                                  pre$Site.Num..41, pre$Site.Num..42,
+                                  pre$Site.Num..43, pre$Site.Num..44,
+                                  pre$Site.Num..45, pre$Site.Num..46,
+                                  pre$Site.Num..47),
                     year = (as.numeric(rownames(pre))+1950))
 
 site<-full_join(predata, sites)
@@ -713,12 +738,17 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Mean.Utah.21, post$Mean.Utah.22,
                                    post$Mean.Utah.23, post$Mean.Utah.24,
                                    post$Mean.Utah.25, post$Mean.Utah.26,
-                     post$Mean.Utah.27, post$Mean.Utah.28,
-                     post$Mean.Utah.29), #post$Mean.Utah.30,
-                     #post$Mean.Utah.31, post$Mean.Utah.32,
-                     #post$Mean.Utah.33, post$Mean.Utah.34,
-                     #post$Mean.Utah.35, post$Mean.Utah.36,
-                     #post$Mean.Utah.37, post$Mean.Utah.38),
+                                   post$Mean.Utah.27, post$Mean.Utah.28,
+                                   post$Mean.Utah.29, post$Mean.Utah.30,
+                                   post$Mean.Utah.31, post$Mean.Utah.32,
+                                   post$Mean.Utah.33, post$Mean.Utah.34,
+                                   post$Mean.Utah.35, post$Mean.Utah.36,
+                                   post$Mean.Utah.37, post$Mean.Utah.38,
+                                   post$Mean.Utah.39, post$Mean.Utah.40,
+                                   post$Mean.Utah.41, post$Mean.Utah.42,
+                                   post$Mean.Utah.43, post$Mean.Utah.44,
+                                   post$Mean.Utah.45, post$Mean.Utah.46,
+                                   post$Mean.Utah.47),
                      
                      chillports = c(post$Mean.Port.1, post$Mean.Port.2,
                                     post$Mean.Port.3, post$Mean.Port.4,
@@ -733,12 +763,17 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                     post$Mean.Port.21, post$Mean.Port.22,
                                     post$Mean.Port.23, post$Mean.Port.24,
                                     post$Mean.Port.25, post$Mean.Port.26,
-                     post$Mean.Port.27, post$Mean.Port.28,
-                     post$Mean.Port.29), #post$Mean.Port.30,
-                     #post$Mean.Port.31, post$Mean.Port.32,
-                     #post$Mean.Port.33, post$Mean.Port.34,
-                     #post$Mean.Port.35, post$Mean.Port.36,
-                     #post$Mean.Port.37, post$Mean.Port.38),
+                                    post$Mean.Port.27, post$Mean.Port.28,
+                                    post$Mean.Port.29, post$Mean.Port.30,
+                                    post$Mean.Port.31, post$Mean.Port.32,
+                                    post$Mean.Port.33, post$Mean.Port.34,
+                                    post$Mean.Port.35, post$Mean.Port.36,
+                                    post$Mean.Port.37, post$Mean.Port.38,
+                                    post$Mean.Port.39, post$Mean.Port.40,
+                                    post$Mean.Port.41, post$Mean.Port.42,
+                                    post$Mean.Port.43, post$Mean.Port.44,
+                                    post$Mean.Port.45, post$Mean.Port.46,
+                                    post$Mean.Port.47),
                      
                      
                      gdd = c(post$Mean.GDD.1, post$Mean.GDD.2,
@@ -754,12 +789,17 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                              post$Mean.GDD.21, post$Mean.GDD.22,
                              post$Mean.GDD.23, post$Mean.GDD.24,
                              post$Mean.GDD.25, post$Mean.GDD.26,
-                     post$Mean.GDD.27, post$Mean.GDD.28,
-                     post$Mean.GDD.29), #post$Mean.GDD.30,
-                     #post$Mean.GDD.31, post$Mean.GDD.32,
-                     #post$Mean.GDD.33, post$Mean.GDD.34,
-                     #post$Mean.GDD.35, post$Mean.GDD.36,
-                     #post$Mean.GDD.37, post$Mean.GDD.38),
+                             post$Mean.GDD.27, post$Mean.GDD.28,
+                             post$Mean.GDD.29, post$Mean.GDD.30,
+                             post$Mean.GDD.31, post$Mean.GDD.32,
+                             post$Mean.GDD.33, post$Mean.GDD.34,
+                             post$Mean.GDD.35, post$Mean.GDD.36,
+                             post$Mean.GDD.37, post$Mean.GDD.38,
+                             post$Mean.GDD.39, post$Mean.GDD.40,
+                             post$Mean.GDD.41, post$Mean.GDD.42,
+                             post$Mean.GDD.43, post$Mean.GDD.44,
+                             post$Mean.GDD.45, post$Mean.GDD.46,
+                             post$Mean.GDD.47),
                      
                      mat.lo = c(post$Spring.Temp.1, post$Spring.Temp.2,
                                 post$Spring.Temp.3, post$Spring.Temp.4,
@@ -774,12 +814,17 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                 post$Spring.Temp.21, post$Spring.Temp.22,
                                 post$Spring.Temp.23, post$Spring.Temp.24,
                                 post$Spring.Temp.25, post$Spring.Temp.26,
-                     post$Spring.Temp.27, post$Spring.Temp.28,
-                     post$Spring.Temp.29), #post$Spring.Temp.30,
-                     #post$Spring.Temp.31, post$Spring.Temp.32,
-                     #post$Spring.Temp.33, post$Spring.Temp.34,
-                     #post$Spring.Temp.35, post$Spring.Temp.36,
-                     #post$Spring.Temp.37, post$Spring.Temp.38),
+                                post$Spring.Temp.27, post$Spring.Temp.28,
+                                post$Spring.Temp.29, post$Spring.Temp.30,
+                                post$Spring.Temp.31, post$Spring.Temp.32,
+                                post$Spring.Temp.33, post$Spring.Temp.34,
+                                post$Spring.Temp.35, post$Spring.Temp.36,
+                                post$Spring.Temp.37, post$Spring.Temp.38,
+                                post$Spring.Temp.39, post$Spring.Temp.40,
+                                post$Spring.Temp.41, post$Spring.Temp.42,
+                                post$Spring.Temp.43, post$Spring.Temp.44,
+                                post$Spring.Temp.45, post$Spring.Temp.46, 
+                                post$Spring.Temp.47),
                      
                      siteslist = c(post$Site.Num..1, post$Site.Num..2,
                                    post$Site.Num..3, post$Site.Num..4,
@@ -794,13 +839,18 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Site.Num..21, post$Site.Num..22,
                                    post$Site.Num..23, post$Site.Num..24,
                                    post$Site.Num..25, post$Site.Num..26,
-                     post$Site.Num..27, post$Site.Num..28,
-                     post$Site.Num..29), #post$Site.Num..30,
-                     #post$Site.Num..31, post$Site.Num..32,
-                     #post$Site.Num..33, post$Site.Num..34,
-                     #post$Site.Num..35, post$Site.Num..36,
-                     #post$Site.Num..37, post$Site.Num..38),
-                     year = (as.numeric(rownames(post))+1990))
+                                   post$Site.Num..27, post$Site.Num..28,
+                                   post$Site.Num..29, post$Site.Num..30,
+                                   post$Site.Num..31, post$Site.Num..32,
+                                   post$Site.Num..33, post$Site.Num..34,
+                                   post$Site.Num..35, post$Site.Num..36,
+                                   post$Site.Num..37, post$Site.Num..38,
+                                   post$Site.Num..39, post$Site.Num..40,
+                                   post$Site.Num..41, post$Site.Num..42,
+                                   post$Site.Num..43, post$Site.Num..44,
+                                   post$Site.Num..45, post$Site.Num..46,
+                                   post$Site.Num..47),
+                     year = (as.numeric(rownames(post))+2000))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
@@ -938,7 +988,7 @@ if(FALSE){
 ##################################################################################################
 #full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
 
-period <- c(1951:1970, 1991:2010)
+period <- c(1951:1960, 2001:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
@@ -1005,7 +1055,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="fagsyl_decsens_1950_1990.csv", row.names = FALSE)
+write.csv(fullsites45, file="fagsyl_decsens_1950_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################

@@ -20,7 +20,7 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #fspre <- read.csv("output/fs_climatedatapre.csv")
 #fspost <- read.csv("output/fs_climatedatapost.csv")
 
-fs <- read.csv("output/fagsyl_decsens_1950_1990.csv")
+fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -86,7 +86,7 @@ sdhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 
 fsest$matslopelog_exp <- exp(fsest$matslopelog)
 
-write.csv(fsest, file="output/fsestimates_withlog_1950_1990.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsestimates_withlog_1950_2000.csv", row.names = FALSE)
 write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods

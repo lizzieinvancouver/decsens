@@ -20,7 +20,7 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses") # setwd("~/Documents/git/
 #bppre <- read.csv("output/bp_climatedatapre.csv")
 #bppost <- read.csv("output/bp_climatedatapost.csv")
 
-bp <- read.csv("output/betpen_decsens_1950_1990.csv")
+bp <- read.csv("output/betpen_decsens_1950_2000.csv")
 bp <- na.omit(bp)
 
 # loop to extract some model estimates
@@ -88,7 +88,7 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 #           -0.3894176           0.02151724
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
-write.csv(bpest, file="output/bpenestimates_withlog_1950_1990.csv", row.names = FALSE)
+write.csv(bpest, file="output/bpenestimates_withlog_1950_2000.csv", row.names = FALSE)
 write.csv(meanhere, file="output/bpestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Now do as above, but for 10-year windows  ....
