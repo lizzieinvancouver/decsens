@@ -1009,7 +1009,7 @@ climsubmax<-subset(tmax,yearsinperiod)
 
 ## subset climate days
 monthsinclim<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
-mstmonths<-c(3:5)
+mstmonths<-c(3:4)
 monthsinmst<-which(monthsinclim%in%mstmonths)
 mstsubmin<-subset(climsubmin,monthsinmst)
 mstsubmax<-subset(climsubmax,monthsinmst)

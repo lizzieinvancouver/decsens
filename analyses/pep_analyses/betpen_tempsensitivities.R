@@ -20,8 +20,8 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses") # setwd("~/Documents/git/
 #bppre <- read.csv("output/bp_climatedatapre.csv")
 #bppost <- read.csv("output/bp_climatedatapost.csv")
 
-#bp <- read.csv("output/betpen_decsens_1950_2000.csv")
-bp <- read.csv("output/betpen_decsens_1950-2000.csv")
+bp <- read.csv("output/betpen_decsens_1950_2000.csv")
+#bp <- read.csv("output/betpen_decsens_1950-2000.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -36,7 +36,7 @@ sitez <- unique(bp$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(bp, siteslist==sitez[i])
-  for(ccstate in c(1:3)){ ## ccstate=1
+  for(ccstate in c(1:2)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
@@ -88,10 +88,10 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 #           -0.3894176           0.02151724
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
 
-write.csv(bpest, file="output/bpenestimates_withlog_1950to2010.csv", row.names = FALSE)
-#write.csv(bpest, file="output/bpenestimates_withlog_1950_2000.csv", row.names = FALSE)
-write.csv(meanhere, file="output/bpestimates_twentyyrwindows.csv", row.names = FALSE)
-#write.csv(meanhere, file="output/bpestimates_tenyrwindows.csv", row.names = FALSE)
+#write.csv(bpest, file="output/bpenestimates_withlog_1950to2010.csv", row.names = FALSE)
+write.csv(bpest, file="output/bpenestimates_withlog_1950_2000.csv", row.names = FALSE)
+#write.csv(meanhere, file="output/bpestimates_twentyyrwindows.csv", row.names = FALSE)
+write.csv(meanhere, file="output/bpestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Now do as above, but for 10-year windows  ....
 bp10yr <- bp

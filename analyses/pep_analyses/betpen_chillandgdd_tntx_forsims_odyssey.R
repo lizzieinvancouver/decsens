@@ -586,7 +586,7 @@ write.csv(mid, file="/n/wolkovich_lab/Lab/Cat/midbetpen.csv", row.names=FALSE)
 }
 
 #if(FALSE){
-#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/")
+#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
 #pre <- read.csv("prebetpenten.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
@@ -971,7 +971,7 @@ if(FALSE){
   allchillsgdds<-rbind(allchillsgdds, full.site4)
   allchillsgdds<-rbind(allchillsgdds, full.site5)
 }
-write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_nomat.csv", row.names = FALSE)
+#write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/betpen_allchillsandgdds_nomat.csv", row.names = FALSE)
 
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
@@ -999,7 +999,7 @@ climsubmax<-subset(tmax,yearsinperiod)
 
 ## subset climate days
 monthsinclim<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
-mstmonths<-c(3:5)
+mstmonths<-c(3:4)
 monthsinmst<-which(monthsinclim%in%mstmonths)
 mstsubmin<-subset(climsubmin,monthsinmst)
 mstsubmax<-subset(climsubmax,monthsinmst)
@@ -1045,7 +1045,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="betpen_decsens_1950_2000.csv", row.names = FALSE)
+write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/betpen_decsens_1950_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################
