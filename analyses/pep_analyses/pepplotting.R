@@ -470,9 +470,17 @@ dev.off()
 ## Tables ##
 ##############
 
+mean.betpen.10yr$species <- rep("Betpen", nrow(mean.betpen.10yr))
+mean.fs.10yr$species <- rep("Fagsyl", nrow(mean.fs.10yr))
+mean.betpen.forpaper <- subset(mean.betpen.10yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
+mean.fs.forpaper <- subset(mean.fs.10yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
+mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+names(mean2spp.forpaper10yr) <- c("when", "species", "mean(MST)", "mean(MST.LO)", "var(MST)", "var(LO)", "mean(GDD)")
+
+
 mean.betpen.20yr$species <- rep("Betpen", nrow(mean.betpen.20yr))
 mean.fs.20yr$species <- rep("Fagsyl", nrow(mean.fs.20yr))
 mean.betpen.forpaper <- subset(mean.betpen.20yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
 mean.fs.forpaper <- subset(mean.fs.20yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo", "meangdd"))
-mean2spp.forpaper <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
-names(mean2spp.forpaper) <- c("when", "species", "mean(MST)", "mean(MST.LO)", "var(MST)", "var(LO)", "mean(GDD)")
+mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+names(mean2spp.forpaper20yr) <- c("when", "species", "mean(MST)", "mean(MST.LO)", "var(MST)", "var(LO)", "mean(GDD)")

@@ -1,10 +1,11 @@
-\documentclass[11pt, letter]{article}
+\documentclass[11pt]{article}
 \usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
 \usepackage{Sweave}
 \renewcommand{\baselinestretch}{1.1}
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{amsmath}
+\usepackage{xcolor}
 \usepackage{xr-hyper}
 \externaldocument{decsens}
 
@@ -24,18 +25,69 @@
 \renewcommand{\thefigure}{S\arabic{figure}}
 
 
-\section{More on PEP725}
+\section{Models of leafout timing}
+Here we consider how a common process model of leafout day ($n$) varies as a function of average daily temperature ($X_i$). In this model leafout occurs after accumulated daily temperatures ($\sum_{X_1}^{X_n} X_i$) cross a critical threshold ($S_i$). Ideally, researchers would know the date that temperatures generally start to accumulate, and accumulate from that zero point to $n$. In practice researches often accumulate over a fixed window ($[a, b]$ such as March 1 to April 30) that they apply to all species or sites. Thus, let:
+\begin{align*}
+i & = \text{index the days, }  i = 0, 1, ..., N\\
+X_i & = \text{temperature on day $i$, assume } X_0 = 0\\
+\mu & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\ 
+S_i & = \sum_{X_1}^{X_n} X_i,  \text{(for example, GDD)}\\
+M_i & = \text{cumulative mean}, S_i / i \text{ and thus } M_n=S_n/n \\
+\beta & = \text{a threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
+n &  = \text{the first day such that }  \beta < S_n, \text{ (for example, day of year (doy) of budburst)}\\
+[a, b] &  = \text{temporal window over which temperature is measured, thus } S_a^b  = \sum_{i = a}^b X_i\\
+\end{align*} \textcolor{blue}{Q1: Does $X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0$ mean that each day temperature increases by $\mu$? (If yes, what if it is not so linear?)}\\
+Here, $X_i$ is a gaussian random walk with drift and $n$ is a hitting time. While the mean and variance are difficult to work out in closed form, the continuous time generalization would be a Brownian motion with instantaneous variance $\sigma$ and drift $\mu$. The time, $t$, the process hits some threshold $\beta$ is distributed Inverse Gaussian Distribution, having mean $\mu/\beta$ and variance $\mu * \sigma / \beta^3$.  \textcolor{blue}{Q2: Are we still happy with this hitting time model given a=0 and b=n?} \\ % This seems like a more accurate description of the problem anyway since the relationship between temperature and time is not discrete.
+
+Assuming $n$ is large, we can replace this sum with its average:\\
+
+$\sum_{i=a}^n X_i = \sum_{i=a}^n \mu * i$\\
+
+So,\\
+
+$\beta \approx \sum_{i=a}^n \mu * i =  \mu * \sum_{i=a}^n * i$\\
+
+and,\\
+
+$S_a^b = \mu * \sum_{i=a}^b * i  = \mu * \sum_{i=a}^n * i  + \mu * \sum_{i=n}^b * i  = \beta + \mu * \sum_{i=n}^b * i $\\
+
+But $\sum_{i=n}^b * i$ is just the sum of the integers from $n$ to $b$ which is the sum of integers from 1 to b minus the sum of integers from 1 to n\\
+
+$b * (b + 1) / 2 - n * (n + 1) / 2 $ \textcolor{blue}{Q3: I follow the math generally until here, is this some special known solution (that I don't know)?}\\
+
+So,\\
+ 
+$S_a^b  = \beta + \mu * (b * (b + 1) / 2 - n * (n + 1) / 2)$\\
+
+Letting $\alpha_1 = \beta + \mu * b * (b + 1) / 2$  and $\alpha_2 = \mu/2$\\
+
+$S_a^b = \alpha_1 -  \alpha_2 * n * (n + 1)$\\
+
+which is clearly not a straight line, and OLS (either $S_a^b$  on $n$ or $n$ on $S_a^b$) is not a good idea.\\
 
 
+
+
+\section{Results using long-term empirical data from PEP725} %http://www.pep725.eu}
+To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (\emph{Betula pendula} (silver birch) and \emph{Fagus sylvatica} (European beech) ) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. 
+
+% Research suggests substantial declines in chilling---that could lead to observed shifts in sensitivity to warming---should increase variance in leafout timing \emph{\citep{ford2016}}. In contrast, in both the real and simulated data, variance in leafout date declined over time---this would be expected if plants use a thermal sum threshold of forcing to leaf out and warming produces systematically warmer days. In the PEP725 data we found a decline in leafout variance of 58\% (in recent years compared to earlier years), compared to a decline of 37\% in the simulations. Additionally we found little change in accumulated chilling (1 September - 1 March of each year) in the PEP725 data across the two time points (2247$\pm$31 Utah units in 1951-1960, compared to 2236$\pm$20 Utah units in 2001-2010), further suggesting that shifts in chilling do not explain the declining sensitivities. Simple plots of the chilling and forcing required for budburst suggest very low chilling is often required to dramatically increase the forcing required for budburst (Figs. \ref{fig:pep}, \ref{fig:pepgddchill}). 
+
+\bibliographystyle{..//refs/bibstyles/amnat.bst}
+\bibliography{..//refs/decsens.bib}
  
 \clearpage 
 \section{Tables \& Figures}
 \vspace{-3ex}
-<<label=xtablez, echo=FALSE, results=tex>>=
+<<label=xtablez2, echo=FALSE, results=tex>>=
 library(xtable)
 source("..//analyses/pep_analyses/pepplotting.R")
 
-print(xtable(mean2spp.forpaper,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-2010. MST is spring temperature from March 1 to May 31, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. {\\bf Side note: Why is my hline.after command not working?}", label="tab:pep"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
+print(xtable(mean2spp.forpaper10yr, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-1960 and 2000-2010. MST is spring temperature from March 1 to April 30, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 10 year period before taking mean or variance estimates.", label="tab:pep10yr"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
+@
+
+<<label=xtablez2, echo=FALSE, results=tex>>=
+print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-2010. MST is spring temperature from March 1 to April 30, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. {\\bf Side note: Why is my hline.after command not working?}", label="tab:pep20yr"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
 @
 
 \begin{figure}[h!]
