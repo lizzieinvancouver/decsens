@@ -36,7 +36,7 @@ sitez <- unique(bp$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(bp, siteslist==sitez[i])
-  for(ccstate in c(1:2)){ ## ccstate=1
+  for(ccstate in c(1:3)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)

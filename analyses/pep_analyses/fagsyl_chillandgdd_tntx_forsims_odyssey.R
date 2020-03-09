@@ -37,15 +37,15 @@ df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
 allpeps <- df[(df$year>=1951 & df$year<=2010),]
-allpeps <- allpeps[!(allpeps$year<=2000 & allpeps$year>=1961),]
+#allpeps <- allpeps[!(allpeps$year<=2000 & allpeps$year>=1961),]
 #allpeps <- allpeps[!(allpeps$year<=1970 & allpeps$year>=1961),]
 
 allpeps$cc<-NA
-allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1960, "1950-1960", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>2000 & allpeps$year<=2010, "2000-2010", allpeps$cc)
-#allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1980, "1970-1990", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "1990-2010", allpeps$cc)
+#allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=20),]
+mostdata<-allpeps[(allpeps$num.years>=60),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
@@ -588,10 +588,10 @@ if(FALSE){
 #if(FALSE){
 #setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
-#pre <- read.csv("prefagsylten.csv")
+#pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
-#post <- read.csv("postfagsylten.csv")
-#mid <- read.csv("midbetpen.csv")
+#post <- read.csv("postfagsyl.csv")
+#mid <- read.csv("midfagsyl.csv")
 
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
@@ -968,9 +968,9 @@ full.site<-full_join(site, site.post)
 #full.site<-full_join(full.site, site.mid)
 full.site$year<-as.numeric(full.site$year)
 full.site$cc <- NA
-full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
+full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", full.site$cc)
 #full.site$cc <- ifelse(full.site$year>1970 & full.site$year<=1990, "1970-1990", full.site$cc)
-full.site$cc <- ifelse(full.site$year>2000 & full.site$year<=2010, "2000-2010", full.site$cc)
+full.site$cc <- ifelse(full.site$year>1990 & full.site$year<=2010, "1990-2010", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -989,6 +989,7 @@ if(FALSE){
 #full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
 
 period <- c(1951:1960, 2001:2010)
+period <- c(1951:1970, 1971:1990, 1991:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
@@ -1055,7 +1056,7 @@ mst<-mst[!duplicated(mst),]
 
 fullsites45 <- left_join(full.site, mst)
 
-write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/fagsyl_decsens_1950_2000.csv", row.names = FALSE)
+write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/fagsyl_decsens_1950-2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################

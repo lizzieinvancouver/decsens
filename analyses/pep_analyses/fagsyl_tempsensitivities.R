@@ -22,6 +22,7 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 
 fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")
 #fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
+fs<-na.omit(fs)
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -36,7 +37,7 @@ sitez <- unique(fs$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(fs, siteslist==sitez[i])
-  for(ccstate in c(1:2)){ ## ccstate=1
+  for(ccstate in c(1:3)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(fs$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
