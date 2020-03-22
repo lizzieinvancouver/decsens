@@ -25,6 +25,7 @@ $^3$TNC, USA\\
 $^4$Department of Life Sciences, University of Alcal\`a CTRA N-II, KM., 33,600, 28802, Alcal\`a de Henares, Spain\\
 $^a$Corresponding author.
 
+\newpage
 \section{Main text}
 \begin{abstract}
 The concept of temperature sensitivity is fundamental across scientific disciplines, especially in biology, where temperature determines the rate of many plant, animal and ecosystem processes. Recently, a growing body of literature has found declining temperature sensitivities with global warming \citep{fu2015,gusewell2017,dai2019ag}. Such declines are predicted if warming causes fundamental shifts in underlying biological processes, but to date researchers have not conclusively documented changes in the underlying biology. Here we show a far more simple explanation for observed declining sensitivities: the use of linear methods to describe non-linear temperature responses. Simple corrections for the non-linearity of temperature response in simulated data remove the apparent decline. By accelerating biological time climate change thus makes methods and approaches that may work in stationary systems problematic for inferring mechanism from measurements today.
@@ -102,24 +103,16 @@ I noticed as you go back to 2014 and before in my ISI searches, you get a lot of
 
 Shen et al. 2014 shows earlier-season vegetation more temperature-sensitive, which is the same artifact. Do we want to work this in?
 
+\newpage
 \section* {Figures}
 
-
-
 \begin{figure}[h!]
 \centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsims.pdf}
-\caption{\textbf{Declining sensitivities with warming explained by using linear regression for non-linear processes.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This spurious decline can be removed by performing the regression on logged predictor and response variables (``Using logged variables'').}
-\label{fig:basicsims} % decsensSims.R
+\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsimsandpep.pdf}
+\caption{\textbf{Sensitivities with warming occur when using linear regression for a non-linear process.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (`Sims: untransformed,' estimated across 45 sites with with a base temperatue of $\mathcal{N}(6,4)$). This decline disappears when performing the regression on logged predictor and response variables (`Sims: logged ''). Such issues may underlie declining sensitivities calculated from long-term phenological data, such as from PEP725 observations. `PEP: untransformed' shows a declining sensitivity with warming, while `PEP725: logged' shows a similar or increased sensitivity with warming. We used sites with leafout data for \emph{Betula pendula} from PEP725 from 1950-1960 versus 2000-2010 (45 sites). We show means $\pm$ standard deviations of regressions across sites for all points. }
+\label{fig:basicsimswpep} % decsensSims.R
 \end{figure}
 
-
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/shiftingcuessims.pdf}
-\caption{\textbf{Truly declining sensitivities remain even after correction.} Here we used simulations where the biological process shifts at moderate warming levels (basically I made the GDD increase when chilling was low, see the code). }
-\label{fig:biosims} % decsensSimsMo.R
-\end{figure}
 
 
 

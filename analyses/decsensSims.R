@@ -26,7 +26,7 @@ if(length(grep("ailene", getwd()))>0) {
 daysperyr <- 60
 yearz <- 30
 sitez <- 45 # reps
-degreez <- c(0, 0.5, 1, 2, 4, 7)
+degreez <- c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
 sigma <- 4
 basetemp <- 6
 fstar <- 150
@@ -105,7 +105,7 @@ dev.off()
 ########################
 
 # Get data ...
-dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog.csv", header=TRUE)
+dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) 
 
 # Get means and SD
 mean.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"], FUN=mean)
@@ -119,15 +119,15 @@ library(grDevices)
 colz <- c("blue4", "violetred4", "blue1", "violetred1")
 colzalpha <- adjustcolor(colz, alpha.f = 0.5)
 
-cexhere <- 0.95
-pdf(file.path("figures/basicsimsandpep.pdf"), width = 6, height = 4)
+cexhere <- 0.75
+pdf(file.path("figures/basicsimsandpep.pdf"), width = 5, height = 3.75)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.5, 3), ylim=c(-6, -0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6, -0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="")
 # abline(h=0, lty=2, col="darkgrey")
-tempsteps <- 4
+tempsteps <- 5
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$simplelm[i]
@@ -157,7 +157,7 @@ for(i in 1:length(unique(mean.betpen$cc))){
   points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[4])
   }
 # par(xpd=TRUE) # so I can plot legend outside
-legend("bottomright", pch=c(19, 17, 19, 17), col=colzalpha,
-       legend=c("Simple linear regression sims", "Using logged variables PEP725",
-       "Using logged variables sims", "Using logged variables PEP725"), cex=0.5, bty="n")
+legend("bottomright", pch=c(19, 17, 19, 17), col=colzalpha[c(1,3,2,4)],
+       legend=c("Sims: untransformed", "PEP725: untransformed",
+       "Sims: logged", "PEP725: logged"), cex=0.75, bty="n") # xjust=1 is not working, arghh
 dev.off()
