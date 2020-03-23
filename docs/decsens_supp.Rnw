@@ -5,6 +5,9 @@
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{amsmath}
+\usepackage{rotating}
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
 \usepackage{xcolor}
 \usepackage{xr-hyper}
 \externaldocument{decsens}
@@ -48,19 +51,26 @@ To examine how estimated sensitivities shift over time, we selected sites of two
 \bibliographystyle{..//refs/bibstyles/amnat.bst}
 \bibliography{..//refs/decsens.bib}
  
-\clearpage 
-\section{Tables \& Figures}
+\section{Tables}
 \vspace{-3ex}
 <<label=xtablez2, echo=FALSE, results=tex>>=
 library(xtable)
 source("..//analyses/pep_analyses/pepplotting.R")
-
-print(xtable(mean2spp.forpaper10yr, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-1960 and 2000-2010. MST is spring temperature from March 1 to April 30, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 10 year period before taking mean or variance estimates.", label="tab:pep10yr"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
+italic <- function(x){ paste0('{\\emph{', x, '}}')
+}
+print(xtable(mean2spp.forpaper10yr, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 45 and 47 sites respectively) from the PEP725 data across all sites with continuous data from 1950-1960 and 2000-2010. ST is spring temperature from March 1 to April 30, ST.leafout is temperature 30 days before leafout, and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 10 year period before taking mean or variance estimates. See also Fig. \\ref{fig:pepper10yr}.", label="tab:pep10yr", digits=c(0,0, 1, 1, 1, 1, 1, 1, 1, 2), sanitize.rownames.function = italic), include.rownames=FALSE, size="\\small", caption.placement="top", rotate.colnames = TRUE)
 @
+
 
 <<label=xtablez2, echo=FALSE, results=tex>>=
-print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}) from the PEP725 data across all sites with continuous data from 1950-2010. MST is spring temperature from March 1 to April 30, MST.LO is temperature 30 days before leafout, LO is leafout and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. {\\bf Side note: Why is my hline.after command not working?}", label="tab:pep20yr"), include.rownames=FALSE, size="\\footnotesize", caption.placement="top")
+print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 17 and 24 sites respectively) from the PEP725 data across all sites with continuous data from 1950-2010. ST is spring temperature from March 1 to April 30, ST.leafout is temperature 30 days before leafout, and GDD is growing degree days 30 days before leafout. We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. See also Fig. \\ref{fig:pepper20yr}. {\\bf Side note: Need to work on hline.after and italics.}", label="tab:pep20yr", digits=c(0,0, 1, 1, 1, 1, 1, 1, 1, 2)), include.rownames=FALSE, size="\\small", caption.placement="top", rotate.colnames = TRUE)
 @
+
+
+
+\clearpage
+\section{Figures}
+
 
 \begin{figure}[h!]
 \centering
@@ -70,6 +80,12 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \end{figure}
 
 
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsims.pdf}
+\caption{\textbf{A simple model generates declining sensitivities with warming.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This spurious decline disappears using regression on logged predictor and response variables (``Using logged variables'').}
+\label{fig:basicsims} % decsensSims.R
+\end{figure}
 
 \begin{figure}[h!]
 \centering
@@ -82,27 +98,25 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \clearpage
 \begin{figure}[h!]
 \centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicpep1950to20002spp2panel.pdf}
-\caption{\textbf{Sensitivities for two species from PEP725 data} using raw data (top) or logged variables (bottom) using 20 year windows of data (lines show 78\% confidence intervals). Amounts of warming are calculated relative to 1950-1970 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. To aid visualization \emph{Fagus sylvatica} are jittered slightly to the right, but warming is approximatly 0.08 C greater for \emph{Fagus sylvatica} in 1990-2010 relative to \emph{Betula pendula}.}
-\label{fig:pepper} % pepplotting.R
+\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/basicpep195020102spp4paneladj.pdf}
+\caption{\textbf{Sensitivities from PEP725 data using 10 year windows of data} for two species (top -- \emph{Betula pendula}, bottom -- \emph{Fagus sylvatica}; all lines show 78\% confidence intervals from linear regressions). Amounts of warming are calculated relative to 1950-1960 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. See Table \ref{tab:pep10yr} for further details. }
+\label{fig:pepper10yr} % pepplotting.R
+\end{figure}
+
+\clearpage
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/basicpep1950to20002spp4paneladj.pdf}
+\caption{\textbf{Sensitivities from PEP725 data using 20 year windows of data} for two species (top -- \emph{Betula pendula}, bottom -- \emph{Fagus sylvatica}; all lines show 78\% confidence intervals from linear regressions). Amounts of warming are calculated relative to 1950-1970 and we used only sites with leafout data in all years shown here. Both approaches show variation in sensitivity across time. See Table \ref{tab:pep20yr} for further details. }
+\label{fig:pepper20yr} % pepplotting.R
 \end{figure}
 
 
 \end{document}
 
 
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsims.pdf}
-\caption{\textbf{Declining sensitivities with warming explained by using linear regression for non-linear processes.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This spurious decline can be removed by performing the regression on logged predictor and response variables (``Using logged variables'').}
-\label{fig:basicsims} % decsensSims.R
-\end{figure}
 
 
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/shiftingcuessims.pdf}
-\caption{\textbf{Declining sensitivities remain even after correction.} Here we used simulations where the biological process shifts at moderate warming levels (basically I made the GDD increase when chilling was low, see the code). }
-\label{fig:biosims} % decsensSimsMo.R
-\end{figure}
+
+
 
