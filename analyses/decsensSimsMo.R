@@ -89,7 +89,11 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeri
 
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
-
+#plot the simulated data and simple linear models from one site
+site2plot = 11#arbirarily pick a site to plot! 
+figname<-paste("figures/simsiteplots/decsensplot_warm","_site",site2plot,".pdf",sep="_")
+pdf(figname, width = 12, height = 3)
+par(mfrow=c(1, length(degreez)))
 for (i in degreez){
    for (j in 1:sitez){
        yearly_expected_temp <- rep(6, yearz)#what is intention with this?
@@ -126,15 +130,21 @@ for (i in degreez){
                }
            per_leafout_date <- leafout_date/mean(leafout_date)
            per_yearly_temp <- yearly_temp/mean(yearly_temp)
-           plot(yearly_temp, leafout_date, pch=20)
+           #plot(yearly_temp, leafout_date, pch=20)
            dfadd <- data.frame(degwarm=i, rep=j, chill=meanchill, fstar=meanfstar,     
                simplelm=coef(lm(leafout_date~yearly_temp))[2],
                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
                perlm=coef(lm(per_leafout_date~per_yearly_temp))[2], propryrschillmet = chillmet,meangddsum= meangddsum)
-           df <- rbind(df, dfadd)
-       }
+                
+                if(j==site2plot){
+                  plot(yearly_temp, leafout_date,pch=16,col="darkgreen", bty="l",xlab="Temperature",ylab="Leafout", main = paste(i,"warming_site",j, sep=""))
+                  m<-lm(leafout_date~yearly_temp)
+                  if(summary(m)$coef[2,4]<=0.1){abline(m,lwd=2,col="darkgreen")}
+                }
+                
    }
-
+   }
+dev.off()
 plot(simplelm~degwarm, data=df, pch=16, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
 points(loglm~degwarm, data=df, col="dodgerblue")
 points(perlm~degwarm, data=df, col="firebrick")
@@ -207,3 +217,4 @@ legend("topright", pch=c(19, 19), col=c("gray", "darkred"), legend=c("Chilling",
 
 dev.off()
 
+head(df)
