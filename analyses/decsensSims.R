@@ -120,11 +120,13 @@ colz <- c("blue4", "violetred4", "blue1", "violetred1")
 colzalpha <- adjustcolor(colz, alpha.f = 0.5)
 
 cexhere <- 0.75
+cextext <- 0.5
+jitterpep <- -0.01
 pdf(file.path("figures/basicsimsandpep.pdf"), width = 5, height = 3.75)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6, -0.1),
-     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.1),
+     ylab=expression(paste("Estimated sensitivity"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="")
 # abline(h=0, lty=2, col="darkgrey")
 tempsteps <- 5
@@ -143,11 +145,12 @@ for(i in 1:tempsteps){
   points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
   }
 for(i in 1:length(unique(mean.betpen$cc))){
-  pos.x <- tempdiffplot[i]
+  pos.x <- tempdiffplot[i]+jitterpep
   pos.y <- mean.betpen$matslope[i]
   sdhere <- sd.betpen$matslope[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
   points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[3])
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[3])
   }
 for(i in 1:length(unique(mean.betpen$cc))){
   pos.x <- tempdiffplot[i]
@@ -155,9 +158,10 @@ for(i in 1:length(unique(mean.betpen$cc))){
   sdhere <- sd.betpen$matslopelog[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[4])
   points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[4])
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[4])
   }
-# par(xpd=TRUE) # so I can plot legend outside
 legend("bottomright", pch=c(19, 17, 19, 17), col=colzalpha[c(1,3,2,4)],
-       legend=c("Sims: untransformed", "PEP725: untransformed",
-       "Sims: logged", "PEP725: logged"), cex=0.75, bty="n") # xjust=1 is not working, arghh
+       legend=c(expression(paste("Simulations (days/", degree, "C)")), expression(paste("Observations (days/", degree, "C)")),
+       expression(paste("Simulations (log(days)/log(", degree, "C))")),
+       expression(paste("Observations (log(days)/log(", degree, "C))"))), cex=0.75, bty="n") 
 dev.off()
