@@ -29,21 +29,38 @@
 
 
 \section{Model of leafout timing}
-Here we consider how a common process model of leafout day ($n$) varies as a function of observed daily temperature ($X_i$). In this model leafout occurs after accumulated daily temperatures cross a critical threshold ($\beta$). Ideally, researchers would know the date that temperatures generally start to accumulate, and accumulate from that zero point to $n$. In practice researchers often accumulate over a fixed window ($[a, b]$ such as March 1 to April 30) that they apply to all species or sites. Thus, let:
-\begin{align*}
-i & = \text{index the days, }  i = 0, 1, ..., N\\
-X_i & = \text{observed temperature on day $i$, assume } X_0 = 0\\
-\mu * i & = \text{average temperature on day } i = 1; X_i \sim \mathcal{N}(\mu * i, \sigma), i > 0\\ % \mu is the slope or the change in the average daily temperature
-[a, b] &  = \text{temporal window over which temperature is measured, where } 0 <= a < n <= b <= N\\
-S_a^b & = \sum_{i = a}{b}X_i\\ % accumulated daily temperature from time a to b
-% S_i & = \sum_{X_1}^{X_n} X_i,  \text{(for example, GDD)}\\
-% M_i & = \text{cumulative mean}, S_i / i \text{ and thus } M_n=S_n/n \\
-\beta & = \text{a threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
-n &  = \text{the first day such that }  \beta < S_n, \text{ (for example, day of year (doy) of budburst)}
-\end{align*} 
-Here, $X_i$ is a Gaussian random walk with drift and $n$ is a hitting time. Thus, the continuous time generalization is Brownian motion with instantaneous variance $\sigma$ and drift $\mu$. The time, $t$, the process hits some threshold $\beta$ is distributed Inverse Gaussian Distribution, having mean $\mu/\beta$ and variance $\mu * \sigma / \beta^3$. \\
+In our model, leafout day, $n_\beta$, is the day, $n$, that cumulative daily temperature, $S_0^n$, hits the threshold, $\beta$. For simplicity, we assume researchers 
+know the day temperatures start to accumulate, $n=0$. However, our model is easily extended to the case where researchers choose a window of temperatures, for example March 1 to April 30.
 
-Assuming $a=0$ and $n=b$, then regressing $n$ (e.g., day of leafout) against average daily temperature until $n$ (as much research does when calculating temperature sensitivities currently) is equivalent to: $S_a^n/n  \approx \beta/n$. Thus, $log(n) \approx log(\beta) - log(S_a^n/n)$ and $log(n)$ is linear in log-average daily temperature with a slope -1 and intercept $log(\beta)$ (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $log(200)=5.3$).
+\subsection{Random walk model}
+
+We use the following notation:
+\begin{align*}
+n & = \text{day since temperatures start to accumulate, }  n = 0, 1, ..., N\\
+X_n & = \text{observed temperature on day $n$} \\
+S_0^n & = \sum_{i = 0}^{n}X_i, \text{the cumulative daily temperature from day $0$ to day $n$}\\ 
+M_0^n & = \frac{S_0^n}{n}, \text{the average daily temperature from day $0$ to day $n$}\\ 
+\beta & = \text{the threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
+n_{\beta} &  = \underset{n}{\text{argmin}} \ S_n > \beta, \text{the first day the cumulative daily temperature passes the threshold} \\
+& \ \ \ \text{(for example, day of year (doy) of budburst).}
+\end{align*} 
+
+We model $X_n$ as a Gaussian random walk, $X_n \overset{\text{i.i.d}}{\sim} \mathcal{N}(n \Delta, \sigma)$, where $\Delta > 0$ is the day-over-day increase in average temperatures and $\sigma$ is the standard deviation. Note that this model differs from the typical Gaussian random walk because of the factor $n$.
+
+\subsection{The inverse relationship between leafout time and average temperature at leafout time}
+
+Under this model, $M_0^{n_{\beta}}$ and $n_{\beta}$ are inversely proportional. To see why, assume for the moment that the cumulative daily temperature hits the threshold exactly on leafout day. That is, $S_0^{n_\beta} = \beta$.
+Then $$M_0^{n_{\beta}} = \frac{S_0^{n_{\beta}}}{{n_{\beta}}} = \frac{\beta}{{n_{\beta}}}$$ rearranging yields $${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$$
+
+Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship can be linearized with a logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$ (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$).
+
+\subsection{Declining sensitivity is explained by the declining variance of the average temperature}
+
+Under the model, the mean and variance of $M_0^n$ is E$(M_0^n) = \frac{1}{n} \sum_{i=0}^n i \Delta = \frac{(n + 1)}{2} \Delta $ and Var$(M_0^n) = \frac{\sigma^2}{n}$.\\
+
+Consider two years, $A$ and $B$, where $A_0^n$ denotes the average temperature in year $A$ by day $n$ with increase $\Delta_A$ and $B_0^n$ the average temperature in year $B$ with increase $\Delta_B$. Suppose year $B$ is warmer than year $A$, $\Delta_A < \Delta_B$, so that $A_0^n$ typically gets to $\beta$ in $n_A$ steps and $B_0^n$ gets to $\beta$ in $n_B$ steps, $n_A  > n_B$. \\
+
+Then Var$(A_0^{n_A}) =  \frac{\sigma^2}{n_A} < \frac{\sigma^2}{n_B}$ = Var$(B_0^{n_B})$.
 
 \section{Results using long-term empirical data from PEP725} %http://www.pep725.eu}
 To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. We used sites with leafout across our full temporal windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species x window). \\

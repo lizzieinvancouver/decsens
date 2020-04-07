@@ -40,3 +40,86 @@ plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temper
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
      ylab="log(Leafout date)", main="", cex=cexhere)
 dev.off()
+
+
+## From Jonathan's email (5 April 2020) ##
+
+#part 1
+data <- data.frame(leaf_date = numeric(0),
+                   cum_temp  = numeric(0),
+                   mean_temp = numeric(0),
+                   threshold = numeric(0),
+                   delta     = numeric(0))
+
+threshold <- 1000
+for(delta in c(5, 10, 15, 20)) {
+  for(sim in 1:1000) {
+    temp <- delta * (1:100) + rnorm(100, 0, 50)
+    leaf_date <- which.min(cumsum(temp) < threshold)
+    cum_temp <- sum(temp[1:leaf_date])
+    mean_temp <- mean(temp[1:leaf_date])
+    data <- rbind(data, data.frame(leaf_date, cum_temp, mean_temp, threshold, delta))
+  }
+}
+
+sapply(unique(data$delta), function(i) sd(data$leaf_date[data$delta == i]))
+MASS::boxcox(lm(leaf_date ~ cum_temp, data))
+
+#part 2
+library(ggplot2)
+ggplot() +
+  aes(mean_temp, leaf_date) + # leaf ~ temp
+  geom_point(data = data) +
+  theme_bw() +
+  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
+              data = data[data$mean_temp < 100, ]) +
+  geom_smooth(method = "glm", formula = y~log(x), color = "red",
+              fullrange=TRUE,
+              method.args = list(family = gaussian(link = 'log')),
+              data = data[data$mean_temp < 100, ]) +
+  coord_cartesian(ylim = c(5, 30), xlim = c(30, 160)) # coord_cartesian
+
+ggplot() +
+  aes(leaf_date, mean_temp) + # temp ~ leaf
+  geom_point(data = data) +
+  theme_bw() +
+  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
+              data = data[data$mean_temp < 100, ]) +
+  geom_smooth(method = "glm", formula = y~log(x), color = "red",
+              fullrange=TRUE,
+              method.args = list(family = gaussian(link = 'log')),
+              data = data[data$mean_temp < 100, ]) +
+  coord_flip(xlim = c(5, 30), ylim = c(30, 160)) # coord_flip
+
+# below is identical to the one above ... 
+ggplot() +
+  aes(leaf_date, mean_temp) + # temp ~ leaf
+  geom_point(data = data) +
+  theme_bw() +
+  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
+              data = data[data$mean_temp < 100, ]) +
+  geom_smooth(method = "glm", formula = y~log(x), color = "red",
+              fullrange=TRUE,
+              method.args = list(family = gaussian(link = 'log')),
+              data = data[data$mean_temp < 100, ]) +
+  coord_flip(xlim = c(5, 30), ylim = c(30, 160)) # coord_flip
+
+
+
+
+ggplot() +
+  aes(leaf_date, mean_temp) + # temp ~ leaf
+  geom_point(data = data) +
+  theme_bw() +
+  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
+              data = data[data$mean_temp < 100, ]) +
+      geom_smooth(method = "glm", formula = y~log(x), color = "red",
+              fullrange=TRUE,
+              method.args = list(family = gaussian(link = 'log')),
+              data = data[data$mean_temp < 100, ]) +
+  geom_smooth(method = "glm", formula = log(y)~log(x), color = "green",
+              fullrange=TRUE,
+              method.args = list(family = gaussian(link = 'log')),
+              data = data[data$mean_temp < 100, ]) +
+  coord_flip(xlim = c(5, 30), ylim = c(30, 160)) # coord_flip
+
