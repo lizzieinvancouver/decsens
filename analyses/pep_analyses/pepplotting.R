@@ -617,6 +617,8 @@ mean.betpen.forpaper <- subset(mean.betpen.10yr, select=c("cc", "species", "mean
 mean.fs.forpaper <- subset(mean.fs.10yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
     "meangdd", "matslope", "matslopelog"))
 mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+mean2spp.forpaper10yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper10yr$species)
+mean2spp.forpaper10yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper10yr$species)
 names(mean2spp.forpaper10yr) <- c("", "", "mean(ST)", "mean(ST.leafout)", "var(ST)", "var(leafout)", "mean(GDD)",
     "slope", "log-slope")
 
@@ -628,5 +630,9 @@ mean.betpen.forpaper <- subset(mean.betpen.20yr, select=c("cc", "species", "mean
 mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
     "meangdd", "matslope", "matslopelog"))
 mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+mean2spp.forpaper20yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper20yr$species)
+mean2spp.forpaper20yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper20yr$species)
 names(mean2spp.forpaper20yr) <-  c("", "", "mean(ST)", "mean(ST.leafout)", "var(ST)", "var(leafout)", "mean(GDD)",
     "slope", "log-slope")
+
+
