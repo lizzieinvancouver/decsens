@@ -62,6 +62,36 @@ plot(abs(simplelm)~degwarm, data=df, col="lightgrey",
 df$degwarmJitter <- df$degwarm + 0.05
 points(abs(loglm)~degwarmJitter, data=df, col="dodgerblue", cex=0.8)
 
+# Step 2a: Build the data and calculate sensitivities with correlations instead of regression
+dfcorr <- data.frame(degwarm=numeric(), rep=numeric(), simplecorr=numeric(), logcorr=numeric(), percorr=numeric())
+
+for (i in degreez){
+   for (j in 1:sitez){
+       yearly_expected_temp <- rep(6, yearz)
+       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
+       leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
+       yearly_temp <- colMeans(daily_temp)
+       # yearly_temp <- rnorm(length(yearly_temp), yearly_temp, 1) # add noise to reduce slopes
+       per_leafout_date <- leafout_date/mean(leafout_date)
+       per_yearly_temp <- yearly_temp/mean(yearly_temp)
+       plot(yearly_temp, leafout_date, pch=20)
+       # yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x]))
+       dfcorradd <- data.frame(degwarm=i, rep=j, simplecorr=cor(yearly_temp,leafout_date),
+           logcorr=cor(log(yearly_temp),log(leafout_date)),
+           percorr=cor(per_yearly_temp, per_leafout_date))
+       dfcorr <- rbind(dfcorr, dfcorradd)
+    }
+}
+
+plot(simplecorr~degwarm, data=dfcorr, pch=16, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
+points(logcorr~degwarm, data=dfcorr, col="dodgerblue")
+points(percorr~degwarm, data=dfcorr, col="firebrick")
+
+plot(abs(simplecorr)~degwarm, data=dfcorr, col="lightgrey",
+    ylab="Abs(Sensitivity (days/C or log(days)/log(C))", xlab="Degree warming")
+dfcorr$degwarmJitter <- dfcorr$degwarm + 0.05
+points(abs(logcorr)~degwarmJitter, data=dfcorr, col="dodgerblue", cex=0.8)
+
 
 ##############
 ## Plotting ##
