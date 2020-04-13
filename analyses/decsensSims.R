@@ -15,7 +15,7 @@ if(length(grep("ailene", getwd()))>0) {
 } else if(length(grep("lizzie", getwd()))>0) {
   setwd("~/Documents/git/projects/treegarden/budreview/ospree/analyses/decsens")
 } else if(length(grep("Ignacio", getwd()))>0) { 
-  setwd("~/GitHub/ospree/analyses/decsens") 
+  setwd("~/GitHub/decsens") 
 } else if(length(grep("catchamberlain", getwd()))>0) { 
   setwd("~/Documents/git/ospree/analyses/bb_analysis/pep_sims")
 } else setwd("~/Documents/git/projects/treegarden/decsens/analyses")
@@ -136,6 +136,8 @@ dev.off()
 
 # Get data ...
 dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) 
+dfpep <- read.csv("analyses/pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) 
+
 
 # Get means and SD
 mean.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"], FUN=mean)
@@ -147,51 +149,67 @@ tempdiffplot <- c(0, tempdiff)
 
 library(grDevices)
 colz <- c("blue4", "violetred4", "blue1", "violetred1")
-colzalpha <- adjustcolor(colz, alpha.f = 0.5)
+colzalpha <- adjustcolor(colz, alpha.f = 0.7)
 
 cexhere <- 0.75
-cextext <- 0.5
-jitterpep <- -0.01
+cexhere <- 1.2
+cextext <- 0.75
+jitterpep <- -0.04
 pdf(file.path("figures/basicsimsandpep.pdf"), width = 5, height = 3.75)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.1),yaxt="n",
      ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     xlab=expression(paste("Warming (", degree, "C)")), main="",cex.lab=1.2)
+axis(2,seq(-6,0,1),las=2)
 # abline(h=0, lty=2, col="darkgrey")
 tempsteps <- 5
+tempdiffplot <- c(0,1)
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$simplelm[i]
   sdhere <- sd.sims$simplelm[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[1])
   points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[1])
-  }
+}
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$loglm[i]
   sdhere <- sd.sims$loglm[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[2])
   points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
-  }
-for(i in 1:length(unique(mean.betpen$cc))){
+}
+for(i in 1:length(unique(mean.betpen$cc))){#i=2
   pos.x <- tempdiffplot[i]+jitterpep
   pos.y <- mean.betpen$matslope[i]
   sdhere <- sd.betpen$matslope[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
   points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[3])
-  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[3])
-  }
+  text(pos.x + 0.15, pos.y-1.1, labels=unique(mean.betpen$cc)[i], 
+       cex=cextext, col=colzalpha[3])
+}
 for(i in 1:length(unique(mean.betpen$cc))){
   pos.x <- tempdiffplot[i]
   pos.y <- mean.betpen$matslopelog[i]
   sdhere <- sd.betpen$matslopelog[i]
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[4])
   points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[4])
-  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[4])
-  }
-legend("bottomright", pch=c(19, 17, 19, 17), col=colzalpha[c(1,3,2,4)],
-       legend=c(expression(paste("Simulations (days/", degree, "C)")), expression(paste("Observations (days/", degree, "C)")),
-       expression(paste("Simulations (log(days)/log(", degree, "C))")),
-       expression(paste("Observations (log(days)/log(", degree, "C))"))), cex=0.75, bty="n") 
+  text(pos.x + 0.17, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[4])
+}
+
+text(1.1,-6,"Simulations",col="darkgrey")
+text(1.1,-6.4,"Observations",col="darkgrey")
+text(1.5,-5.5,expression(paste("days / ", degree, "C")),col="darkgrey")
+text(2,-5.5,expression(paste("log(days) / log(", degree, "C)")),col="darkgrey")
+
+points(1.5, -6, cex=1.7, pch=19, col=colzalpha[1])
+points(1.5, -6.4, cex=1.7, pch=17, col=colzalpha[3])
+points(2, -6, cex=1.7, pch=19, col=colzalpha[2])
+points(2, -6.4, cex=1.7, pch=17, col=colzalpha[4])
+
+lines(c(1.32,1.32),c(-6.6,-5.3),col="darkgrey")
+lines(c(1.7,1.7),c(-6.6,-5.3),col="darkgrey")
+lines(c(0.85,2.3),c(-5.75,-5.75),col="darkgrey")
+lines(c(0.85,2.3),c(-6.2,-6.2),col="darkgrey")
+
 dev.off()
