@@ -19,7 +19,7 @@
 \SweaveOpts{concordance=FALSE}
 \renewcommand{\refname}{\CHead{}}
 
-\title{Supplemental materials: The illusion of declining temperature sensitivity with warming} 
+\title{Supplemental materials: A simple explanation for declining temperature sensitivity with warming} 
 
 \author{the lab \& friends}
 \date{} 
@@ -29,8 +29,7 @@
 
 
 \section{Model of leafout timing}
-In our model, leafout day, $n_\beta$, is the day, $n$, that cumulative daily temperature, $S_0^n$, hits the threshold, $\beta$. For simplicity, we assume researchers 
-know the day temperatures start to accumulate, $n=0$. However, our model is easily extended to the case where researchers choose a window of temperatures, for example March 1 to April 30.
+Following a general understanding of how forcing triggers leafout in temperate deciduous trees \citep{chuineJTB}, we define leafout day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S_0^n$, hits the threshold, $\beta$. Here we assume researchers know the day temperatures start to accumulate, $n=0$ (below we extend to the case where researchers choose a window of temperatures).
 
 \subsection{Random walk model}
 
@@ -47,20 +46,65 @@ n_{\beta} &  = \underset{n}{\text{argmin}} \ S_n > \beta, \text{the first day th
 
 We model $X_n$ as a Gaussian random walk, $X_n \overset{\text{i.i.d}}{\sim} \mathcal{N}(n \Delta, \sigma)$, where $\Delta > 0$ is the day-over-day increase in average temperatures and $\sigma$ is the standard deviation. Note that this model differs from the typical Gaussian random walk because of the factor $n$.
 
-\subsection{The inverse relationship between leafout time and average temperature at leafout time}
+This model yields two important points: \\
+
+(1) Leafout time is inversely related to average temperature at leafout time.\\
 
 Under this model, $M_0^{n_{\beta}}$ and $n_{\beta}$ are inversely proportional. To see why, assume for the moment that the cumulative daily temperature hits the threshold exactly on leafout day. That is, $S_0^{n_\beta} = \beta$.
 Then $$M_0^{n_{\beta}} = \frac{S_0^{n_{\beta}}}{{n_{\beta}}} = \frac{\beta}{{n_{\beta}}}$$ rearranging yields $${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$$
 
-Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship can be linearized with a logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$ (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$).
+Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship can be approximately linearized with a logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$ (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$). In this example, where we stop accumulating $X$ based on $n_{\beta}$, an inverse would be more appropriate, and would be especially important if results are extrapolated (see Fig. \ref{fig:compareyxxy}). \\
 
-\subsection{Declining sensitivity is explained by the declining variance of the average temperature}
+(2) Declining sensitivity is explained by the declining variance of the average temperature (which, given the relationship between leafout time and average temperature also leads to declining variance in leafout date).\\
 
 Under the model, the mean and variance of $M_0^n$ is E$(M_0^n) = \frac{1}{n} \sum_{i=0}^n i \Delta = \frac{(n + 1)}{2} \Delta $ and Var$(M_0^n) = \frac{\sigma^2}{n}$.\\
 
 Consider two years, $A$ and $B$, where $A_0^n$ denotes the average temperature in year $A$ by day $n$ with increase $\Delta_A$ and $B_0^n$ the average temperature in year $B$ with increase $\Delta_B$. Suppose year $B$ is warmer than year $A$, $\Delta_A < \Delta_B$, so that $A_0^n$ typically gets to $\beta$ in $n_A$ steps and $B_0^n$ gets to $\beta$ in $n_B$ steps, $n_A  > n_B$. \\
 
 Then Var$(A_0^{n_A}) =  \frac{\sigma^2}{n_A} < \frac{\sigma^2}{n_B}$ = Var$(B_0^{n_B})$.
+
+
+\subsection{Adjusted random walk model for a temporal window of measured temperature}
+% See email from J Auerbach on 13 Apr 2020 ... The distribution of the average temperature over the window, and the distribution of leafout given the average temperature over a window
+
+Here we consider a scenario where researchers choose a window of temperatures, for example March 1 to April 30. Let:
+\begin{align*}
+n & = \text{day since temperatures start to accumulate, }  n = 0, \ldots, a, \ldots, b\\
+X_n & = \text{observed temperature on day $n$} \\
+S_a^n & = \sum_{i = a}^{n}X_i, \text{the cumulative daily temperature from day $a$ to day $n$}\\ 
+M_a^n & = \frac{S_a^n}{n-a}, \text{the average daily temperature from day $a$ to day $n$}\\ 
+\beta & = \text{the threshold of interest, } \beta > 0, \text{ (for example, F* or required GDD)}\\
+n_{\beta} &  = \underset{n}{\text{argmin}} \ S_0^n > \beta, \text{the first day the cumulative daily temperature passes the threshold} \\
+& \ \ \ \text{(for example, day of year (doy) of budburst).}
+\end{align*} 
+
+We model $X_n$ as a Gaussian random walk, $X_n \overset{\text{i.i.d}}{\sim} \mathcal{N} \left ( \alpha_0 + \alpha_1 n , \sigma \right )$. We assume $X_n > 0$ for all $n$ and $a < n_{\beta} < b$. \\ % Note: This is an important assumption ... I started to add text about this, but decided to skip it. We could, and probably best to reference \citep{gusewell2017} if do.
+
+Then \\
+
+$S_a^b \sim \mathcal{N} \left ( \alpha_0 (b - a) + \frac{\alpha_1}{2} (b-a)(b+a+1), \sigma \sqrt{b - a} \right )$ \\
+
+$M_a^b \sim \mathcal{N} \left ( \alpha_0 + \frac{\alpha_1}{2} (b+a+1), \frac{\sigma}{\sqrt{b - a}} \right )$ \\ % average daily temp
+
+$S_n^b - S_a^b  \sim \mathcal{N} \left ( \alpha_0 (b - a - n) + \frac{\alpha_1}{2} (b-n)(b+n+1) - a(a+1), \sigma \sqrt{b + a - n} \right )$ \\ % sum of n to b (post leafout sum) - sum full window
+
+and
+
+\begin{align*}
+Pr \left ( n_{\beta} \leq n \ \big |  \ M_{a}^b = m \right ) &= Pr \left ( n_{\beta} \leq n \ \big |  \ S_a^b = (b-a) m \right ) \\ % m is the (observed) average temperature in the time window a,b
+&= Pr \left ( S_0^n \geq \beta \ \big |  \ S_a^b = (b-a) m \right ) \\
+&= Pr \left ( S_n^b \leq (b-a) m + S_0^a - \beta \right ) \\
+&= Pr \left ( S_n^b - S_0^a \leq (b-a) m - \beta \right ) \\
+&= \Phi \left ( \frac{(b-a) m - \beta -    [\alpha_0 (b - a - n) + \frac{\alpha_1}{2} (b-n)(b+n+1) - a(a+1) ]}{\sigma \sqrt{b + a - n}} \right )
+\end{align*}
+
+The mean and variance can be found from the identities \\
+
+$E \left ( n_{\beta} \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ \\
+
+$E \left ( n_{\beta}^2 \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} \ n \  Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ \\
+
+In this scenario, leafout time is no longer directly inversely related to average temperature at leafout time, but the relationship is sigmoidal rather than linear, thus issues will remain in using linear regression or forecasting from correlation analysis using linearity assumptions. Transformations, such as log, can lessen these issues; as noted above, however, they will not effectively `fix' the problem and will provide poor forecasts.\\
 
 \section{Results using long-term empirical data from PEP725} %http://www.pep725.eu}
 To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. We used sites with leafout across our full temporal windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species x window). \\
@@ -103,6 +147,12 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \label{fig:simslog} % decsensSimsAuerbach.R
 \end{figure}
 
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=0.9\textwidth]{..//analyses/figures/compareyxxy.pdf}
+\caption{\textbf{Extrapolation of regression from simulated data given models of leafout day versus average daily temperature} where leafout day is regressed against log(average daily temperature), shown on left, gives poorer predictions than when modeling the inverse (log(leafout day) against mean average daily temperature).}
+\label{fig:compareyxxy} % decsensSimsAuerbach.R
+\end{figure}
 
 \begin{figure}[h!]
 \centering
@@ -117,7 +167,6 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \caption{\textbf{Simulated leafout as a function of temperature across different temperatures with shifts in underlying cues.} Here we simulated sets of data where leafout occurs at 200 growing degree days (`fstar') when chilling is met, and requires additional growing degree days when chilling is not met. We show estimates sensitivities in the top panel, and the shifting cues on the bottom panel. Note that this model is non-identifiable as the same response data could come from a forcing-only model or a chilling and forcing model. }
 \label{fig:simsshiftcues} % need R file here!
 \end{figure}
-
 
 \clearpage
 \begin{figure}[h!]

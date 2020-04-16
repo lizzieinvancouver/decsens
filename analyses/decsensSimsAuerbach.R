@@ -67,10 +67,11 @@ MASS::boxcox(lm(leaf_date ~ cum_temp, data))
 
 #part 2
 library(ggplot2)
-ggplot() +
+yxplot<- ggplot() +
   aes(mean_temp, leaf_date) + # leaf ~ temp
   geom_point(data = data) +
   theme_bw() +
+  xlab("Mean temperature") + ylab("Leafout date") +
   geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
               data = data[data$mean_temp < 100, ]) +
   geom_smooth(method = "glm", formula = y~log(x), color = "red",
@@ -79,23 +80,11 @@ ggplot() +
               data = data[data$mean_temp < 100, ]) +
   coord_cartesian(ylim = c(5, 30), xlim = c(30, 160)) # coord_cartesian
 
-ggplot() +
+xyplot <- ggplot() +
   aes(leaf_date, mean_temp) + # temp ~ leaf
   geom_point(data = data) +
   theme_bw() +
-  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
-              data = data[data$mean_temp < 100, ]) +
-  geom_smooth(method = "glm", formula = y~log(x), color = "red",
-              fullrange=TRUE,
-              method.args = list(family = gaussian(link = 'log')),
-              data = data[data$mean_temp < 100, ]) +
-  coord_flip(xlim = c(5, 30), ylim = c(30, 160)) # coord_flip
-
-# below is identical to the one above ... 
-ggplot() +
-  aes(leaf_date, mean_temp) + # temp ~ leaf
-  geom_point(data = data) +
-  theme_bw() +
+  ylab("Mean temperature") + xlab("Leafout date") +
   geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
               data = data[data$mean_temp < 100, ]) +
   geom_smooth(method = "glm", formula = y~log(x), color = "red",
@@ -106,20 +95,15 @@ ggplot() +
 
 
 
+# Setting working directory. 
+if(length(grep("ailene", getwd()))>0) { 
+  setwd("~/Documents/GitHub/decsens/analyses")
+} else
+  setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
-ggplot() +
-  aes(leaf_date, mean_temp) + # temp ~ leaf
-  geom_point(data = data) +
-  theme_bw() +
-  geom_smooth(method = "lm", color = "blue", fullrange = TRUE,
-              data = data[data$mean_temp < 100, ]) +
-      geom_smooth(method = "glm", formula = y~log(x), color = "red",
-              fullrange=TRUE,
-              method.args = list(family = gaussian(link = 'log')),
-              data = data[data$mean_temp < 100, ]) +
-  geom_smooth(method = "glm", formula = log(y)~log(x), color = "green",
-              fullrange=TRUE,
-              method.args = list(family = gaussian(link = 'log')),
-              data = data[data$mean_temp < 100, ]) +
-  coord_flip(xlim = c(5, 30), ylim = c(30, 160)) # coord_flip
+library(gridExtra)
+plotsave <- grid.arrange(yxplot, xyplot, nrow = 1)
+
+ggsave("figures/compareyxxy.pdf", plot=plotsave, width = 7, height = 4)
+
 

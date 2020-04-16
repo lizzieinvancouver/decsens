@@ -136,7 +136,6 @@ dev.off()
 
 # Get data ...
 dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) 
-dfpep <- read.csv("analyses/pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE) 
 
 
 # Get means and SD
@@ -155,7 +154,7 @@ cexhere <- 0.75
 cexhere <- 1.2
 cextext <- 0.75
 jitterpep <- -0.04
-pdf(file.path("figures/basicsimsandpep.pdf"), width = 5, height = 3.75)
+pdf(file.path("figures/basicsimsandpep.pdf"), width = 7.5, height = 5.5)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.1),yaxt="n",
@@ -200,7 +199,7 @@ for(i in 1:length(unique(mean.betpen$cc))){
 text(1.1,-6,"Simulations",col="darkgrey")
 text(1.1,-6.4,"Observations",col="darkgrey")
 text(1.5,-5.5,expression(paste("days / ", degree, "C")),col="darkgrey")
-text(2,-5.5,expression(paste("log(days) / log(", degree, "C)")),col="darkgrey")
+text(2.02,-5.5,expression(paste("log(days) / log(", degree, "C)")),col="darkgrey")
 
 points(1.5, -6, cex=1.7, pch=19, col=colzalpha[1])
 points(1.5, -6.4, cex=1.7, pch=17, col=colzalpha[3])
