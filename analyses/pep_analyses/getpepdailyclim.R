@@ -95,7 +95,7 @@ dailyclimdata$lat.lon <- paste(dailyclimdata$lat, dailyclimdata$lon)
 
 dailyclimdata <- dailyclimdata[!duplicated(dailyclimdata),]
 
-#fullsites45 <- left_join(full.site, mst)
+dailyandlo <- left_join(dailyclimdata, lositeyear)
 
-write.csv(dailyclimdata, file="~/Documents/git/decsens/analyses/pep_analyses/output/betpen_dailytempsJantoApr_1950to2010.csv", row.names = FALSE)
+write.csv(dailyandlo, file="~/Documents/git/decsens/analyses/pep_analyses/output/betpen_dailytempsandlo_1950to2010.csv", row.names = FALSE)
 
