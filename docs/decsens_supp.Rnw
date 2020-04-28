@@ -63,7 +63,11 @@ Under the model, the mean and variance of $M_0^n$ is E$(M_0^n | \alpha_0, \alpha
 
 By the law of total variance,
 
-MISSING TEXT HERE % Need to add back in 
+\begin{align*}
+\text{Var}(M_0^n)& = \text{E}(\text{Var}(M_0^n | \alpha_0, \alpha_1)) + \text{Var}(\text{E}(M_0^n | \alpha_0, \alpha_1))\\
+& = \frac{\sigma^2}{n} + \text{Var}(\alpha_0 + \alpha_1 \frac{n+1}{2})\\
+& = \frac{\sigma^2}{n} + \text{Var}(\alpha_0) + \frac{(n+1)^2}{4} \text{Var}(\alpha_1) + (n+1) \text{Cov}(\alpha_0, \alpha_1)
+\end{align*}
 
 As temperatures rise and leaf-out date becomes earlier, the variance of the average temperature will decline---provided the variation in temperatures, $\sigma^2$, is sufficiently small. 
 
