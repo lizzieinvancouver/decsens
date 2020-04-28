@@ -22,7 +22,7 @@ if(length(grep("ailene", getwd()))>0) {
 
 # Make some data ...
 
-# Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
+# Step 1: Set up years, days per year, temperatures, required GDD (fstar)
 daysperyr <- 60
 yearz <- 30
 sitez <- 45 # reps
