@@ -30,13 +30,14 @@ bpest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varm
                     matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
                     meanmatlo=numeric(), 
                     matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
+                    lomatslopelog=numeric(), lomatslopelogse=numeric(), lomatslopelogconfint11=numeric(), lomatslopelogconfint89=numeric(),
                     varmatlo=numeric(), sdmatlo=numeric())
 
 sitez <- unique(bp$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(bp, siteslist==sitez[i])
-  for(ccstate in c(1:3)){ ## ccstate=1
+  for(ccstate in c(1:2)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(bp$cc)[ccstate])
     meanmat <- mean(subbycc$mat, na.rm=TRUE)
     varmat <- var(subbycc$mat, na.rm=TRUE)
@@ -59,12 +60,18 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
     lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
     lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
+    lolmmatlog <- lm(log(lo)~log(mat.lo), data=subbycc)
+    lolmmatlogse <- summary(lmmatlog)$coef[2,2]
+    lolmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
+    lolmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
                            matslopeconfint89=lmmatconfint89,
                            matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
                            matslopelogconfint89=lmmatconfintlog89,
+                           lomatslopelog=coef(lolmmatlog)["log(mat.lo)"], lomatslopelogse=lolmmatlogse, lomatslopelogconfint11=lolmmatconfintlog11, 
+                           lomatslopelogconfint89=lolmmatconfintlog89,
                            meanmatlo=meanmatlo,
                            varmatlo=varmatlo, sdmatlo=sdmatlo)
     bpest <- rbind(bpest, bpestadd)
@@ -72,7 +79,8 @@ for(i in c(1:length(sitez))){ # i <- 1
 }    
 
 meanhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "varloglo", "sdlo", "meanutah", "meangdd",
-                              "matslope", "matslopese", "matslopeconfint11", "matslopeconfint89",  "matslopelog", "matslopelogse", "matslopelogconfint11", "matslopelogconfint89")], bpest["cc"], FUN=mean)
+                              "matslope", "matslopese", "matslopeconfint11", "matslopeconfint89",  "matslopelog", "matslopelogse", "matslopelogconfint11", "matslopelogconfint89",
+                              "lomatslopelog", "lomatslopelogse")], bpest["cc"], FUN=mean)
 sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "varloglo", "meanutah", "meangdd", "matslope")],
                     bpest["cc"], FUN=sd)
 
@@ -87,6 +95,7 @@ sdhere <- aggregate(bpest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varm
 #           -0.5360981          -0.25952477
 #           -0.3894176           0.02151724
 bpest$matslopelog_exp <- exp(bpest$matslopelog)
+bpest$lomatslopelog_exp <- exp(bpest$lomatslopelog)
 
 #write.csv(bpest, file="output/bpenestimates_withlog_1950to2010.csv", row.names = FALSE)
 write.csv(bpest, file="output/bpenestimates_withlog_1950_2000.csv", row.names = FALSE)
