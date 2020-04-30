@@ -63,9 +63,9 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
     lolmmat <- lm(lo~mat.lo, data=subbycc)
     lolmmatlog <- lm(log(lo)~log(mat.lo), data=subbycc)
-    lolmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lolmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
-    lolmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
+    lolmmatlogse <- summary(lolmmatlog)$coef[2,2]
+    lolmmatconfintlog11 <- confint(lolmmatlog,level=0.89)[2,1]
+    lolmmatconfintlog89 <- confint(lolmmatlog,level=0.89)[2,2]
     bpestadd <- data.frame(siteslist=sitez[i], cc=unique(bp$cc)[ccstate], meanmat=meanmat, 
                            varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 

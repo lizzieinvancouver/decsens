@@ -29,10 +29,9 @@ fs<-na.omit(fs)
 fsest <- data.frame(siteslist=numeric(), cc=character(), meanmat=numeric(), varmat=numeric(),  varlogmat=numeric(),
                     sdmat=numeric(), meanlo=numeric(), varlo=numeric(), varloglo=numeric(), sdlo=numeric(), meanutah=numeric(), meangdd=numeric(), 
                     matslope=numeric(), matslopese=numeric(), matslopeconfint11=numeric(), matslopeconfint89=numeric(),
-                    meanmatlo=numeric(), 
+                    meanmatlo=numeric(), varmatlo=numeric(), sdmatlo=numeric(),
                     matslopelog=numeric(), matslopelogse=numeric(), matslopelogconfint11=numeric(), matslopelogconfint89=numeric(),
-                    lomatslopelog=numeric(), lomatslopelogse=numeric(), lomatslopelogconfint11=numeric(), lomatslopelogconfint89=numeric(),
-                    varmatlo=numeric(), sdmatlo=numeric())
+                    lomatslopelog=numeric(), lomatslopelogse=numeric(), lomatslopelogconfint11=numeric(), lomatslopelogconfint89=numeric())
 
 sitez <- unique(fs$siteslist)
 
@@ -61,27 +60,32 @@ for(i in c(1:length(sitez))){ # i <- 1
     lmmatlogse <- summary(lmmatlog)$coef[2,2]
     lmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
     lmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
+    lolmmat <- lm(lo~mat.lo, data=subbycc)
+    lolmmatse <- summary(lolmmat)$coef[2,2]
+    lolmmatconfint11 <- confint(lolmmat,level=0.89)[2,1]
+    lolmmatconfint89 <- confint(lolmmat,level=0.89)[2,2]
     lolmmatlog <- lm(log(lo)~log(mat.lo), data=subbycc)
-    lolmmatlogse <- summary(lmmatlog)$coef[2,2]
-    lolmmatconfintlog11 <- confint(lmmatlog,level=0.89)[2,1]
-    lolmmatconfintlog89 <- confint(lmmatlog,level=0.89)[2,2]
+    lolmmatlogse <- summary(lolmmatlog)$coef[2,2]
+    lolmmatconfintlog11 <- confint(lolmmatlog,level=0.89)[2,1]
+    lolmmatconfintlog89 <- confint(lolmmatlog,level=0.89)[2,2]
     fsestadd <- data.frame(siteslist=sitez[i], cc=unique(fs$cc)[ccstate], meanmat=meanmat, 
-                           varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
+                           varmat=varmat, varlogmat=varlogmat, sdmat=sdmat, meanmatlo=meanmatlo, varmatlo=varmatlo, sdmatlo=sdmatlo,
+                           meanlo=meanlo, varlo=varlo, varloglo=varloglo, sdlo=sdlo, meanutah=meanutah, 
                            meangdd=meangdd, matslope=coef(lmmat)["mat"], matslopese=lmmatse, matslopeconfint11=lmmatconfint11, 
                            matslopeconfint89=lmmatconfint89,
                            matslopelog=coef(lmmatlog)["log(mat)"], matslopelogse=lmmatlogse, matslopelogconfint11=lmmatconfintlog11, 
                            matslopelogconfint89=lmmatconfintlog89,
+                           lomatslope=coef(lolmmat)["mat.lo"], lomatslopese=lolmmatse, lomatslopeconfint11=lolmmatconfint11, 
+                           lomatslopeconfint89=lolmmatconfint89,
                            lomatslopelog=coef(lolmmatlog)["log(mat.lo)"], lomatslopelogse=lolmmatlogse, lomatslopelogconfint11=lolmmatconfintlog11, 
-                           lomatslopelogconfint89=lolmmatconfintlog89,
-                           meanmatlo=meanmatlo,
-                           varmatlo=varmatlo, sdmatlo=sdmatlo)
+                           lomatslopelogconfint89=lolmmatconfintlog89)
     fsest <- rbind(fsest, fsestadd)
   }
 }    
 
 meanhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "sdmat", "meanmatlo", "varmatlo", "sdmatlo", "meanlo", "varlo", "varloglo", "sdlo", "meanutah", "meangdd",
                               "matslope", "matslopese", "matslopeconfint11", "matslopeconfint89",  "matslopelog", "matslopelogse", "matslopelogconfint11", "matslopelogconfint89",
-                              "lomatslopelog", "lomatslopelogse")], fsest["cc"], FUN=mean)
+                              "lomatslope", "lomatslopese","lomatslopelog", "lomatslopelogse")], fsest["cc"], FUN=mean)
 sdhere <- aggregate(fsest[c("meanmat", "varmat", "varlogmat", "meanmatlo", "varmatlo", "meanlo", "varlo", "varloglo", "meanutah", "meangdd", "matslope")],
                     fsest["cc"], FUN=sd)
 
