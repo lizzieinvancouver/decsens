@@ -208,7 +208,7 @@ for(i in 1:tempsteps){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[2])
   points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
 }
-for(i in 1:length(unique(mean.betpen$cc))){#i=2
+for(i in 1:length(unique(mean.betpen$cc))){ # i=2
   pos.x <- tempdiffplot[i]+jitterpep
   pos.y <- mean.betpen$matslope[i]
   sdhere <- sd.betpen$matslope[i]
@@ -226,15 +226,19 @@ for(i in 1:length(unique(mean.betpen$cc))){
   text(pos.x + 0.17, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[4])
 }
 
-text(1.1,-6,"Simulations",col="darkgrey")
-text(1.1,-6.4,"Observations",col="darkgrey")
-text(1.5,-5.5,expression(paste("days / ", degree, "C")),col="darkgrey")
-text(2.02,-5.5,expression(paste("log(days) / log(", degree, "C)")),col="darkgrey")
+cexlegend <- 0.85
+text(1.1,-6,"Simulations",col="darkgrey", cex=cexlegend)
+text(1.1,-6.4,"Observations",col="darkgrey", cex=cexlegend)
+text(1.5,-5.2, "linear", col="darkgrey", cex=cexlegend)
+text(1.5,-5.5, expression(paste("(days/", degree, "C)")), col="darkgrey", cex=cexlegend)
+text(2.0,-5.2, "non-linear",col="darkgrey", cex=cexlegend)
+text(2.02,-5.5, expression(paste("(log(days)/log(", degree, "C))")), col="darkgrey", cex=cexlegend)
 
-points(1.5, -6, cex=1.7, pch=19, col=colzalpha[1])
-points(1.5, -6.4, cex=1.7, pch=17, col=colzalpha[3])
-points(2, -6, cex=1.7, pch=19, col=colzalpha[2])
-points(2, -6.4, cex=1.7, pch=17, col=colzalpha[4])
+cexpoint <- 1.5
+points(1.5, -6, cex=cexpoint, pch=19, col=colzalpha[1])
+points(1.5, -6.4, cex=cexpoint, pch=17, col=colzalpha[3])
+points(2, -6, cex=cexpoint, pch=19, col=colzalpha[2])
+points(2, -6.4, cex=cexpoint, pch=17, col=colzalpha[4])
 
 lines(c(1.32,1.32),c(-6.6,-5.3),col="darkgrey")
 lines(c(1.7,1.7),c(-6.6,-5.3),col="darkgrey")
