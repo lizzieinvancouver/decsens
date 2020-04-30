@@ -29,7 +29,7 @@
 
 \section{A first-hitting-time model of leafout}
 
-Our model follows the general understanding of how warm temperatures (forcing) trigger leaf-out in temperate deciduous trees \citep{chuineJTB}. We define leaf-out day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\
+Our model follows the general understanding of how warm temperatures (forcing) trigger leaf-out in temperate deciduous trees \citep{chuineJTB}. We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leaf-out day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
 
 We derive the relationship between daily temperature and leaf-out in two common scenarios. In the first, we take the average daily temperature up until the leaf-out date. In the second, we take the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, research typically measures time in discretized units, such as days, weeks, or months. % We assume the researcher knows the day temperatures start to accumulate, $n=0$. 
 
@@ -96,7 +96,6 @@ $M_a^b \sim \mathcal{N} \left ( \alpha_0 + \frac{\alpha_1}{2} (b+a+1), \frac{\si
 $S_n^b - S_a^b  \sim \mathcal{N} \left ( \alpha_0 (b - a - n) + \frac{\alpha_1}{2} ( (b-n)(b+n+1) - a(a+1) ), \sigma \sqrt{b + a - n} \right )$ \\ % sum of n to b (post leafout sum) - sum full window
 
 so that
-
 \begin{align*}
 Pr \left ( n_{\beta} \leq n \ \big |  \ M_{a}^b = m \right ) &= Pr \left ( n_{\beta} \leq n \ \big |  \ S_a^b = (b-a) m \right ) \\ % m is the (observed) average temperature in the time window a,b
 &= Pr \left ( S_0^n \geq \beta \ \big |  \ S_a^b = (b-a) m \right ) \\
@@ -104,6 +103,7 @@ Pr \left ( n_{\beta} \leq n \ \big |  \ M_{a}^b = m \right ) &= Pr \left ( n_{\b
 &= Pr \left ( S_n^b - S_0^a \leq (b-a) m - \beta \right ) \\
 &= \Phi \left ( \frac{(b-a) m - \beta -    [ \alpha_0 (b - a - n) + \frac{\alpha_1}{2} ( (b-n)(b+n+1) - a(a+1) ) ] }{\sigma \sqrt{b + a - n}} \right )
 \end{align*}
+\vspace{3ex}
 
 The distribution of $M_a^b$ shows that consequence (2) above still holds with this model. Consequence (1) no longer holds directly, but will in many situations where average daily temperature until an event correlates strongly with average daily temperature calculated over a window (Figs. \ref{fig:simslog}-\ref{fig:basicsims}; this correlation is likely common because researchers generally select temporal windows over which to calculate average temperatures to be highly relevant to the event or process). We note two additional consequences: \\
 
@@ -149,7 +149,7 @@ print(xtable(mean2spp.forpaper10yr, caption = "Climate and phenology statistics 
 
 <<label=xtablez2, echo=FALSE, results=tex>>=
 print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 17 and 24 sites respectively) from the PEP725 data across all sites with continuous data from 1950-2010. ST is spring temperature from March 1 to April 30, ST.leafout is temperature 30 days before leafout, and GDD is growing degree days 30 days before leafout. Slope represents the estimated sensitivity using untransformed leafout and ST, while log-slope represents the estimated sensitivity using log(leafout) and log(ST). We calculated all metrics for for each species  x site x 20 year period before taking mean or variance estimates. See also Fig. \\ref{fig:pepper20yr}.", label="tab:pep20yr", digits=c(0,0, 1, 1, 1, 1, 1, 1, 1, 2)), include.rownames=FALSE, size="\\small", caption.placement="top", rotate.colnames = TRUE, sanitize.text.function = identity)
-@
+@average daily
 
 
 
@@ -168,14 +168,14 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=0.75\textwidth]{..//analyses/figures/basicsims.pdf}
-\caption{\textbf{A simple model generates declining sensitivities with warming.} We found declines in estimated sensitivities with warming from simulations with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This decline disappears using regression on logged predictor and response variables (``Using logged variables'').}
+\caption{\textbf{A simple model generates declining sensitivities with warming.} We show declines in estimated sensitivities with warming from simulations (top: using average temperature until leafout, bottom: using a fixed window) with no underlying change in the biological process when sensitivities were estimated with simple linear regression (``Simple linear regressions''). This decline disappears using regression on logged predictor and response variables (``Using logged variables'').}
 \label{fig:basicsims} % decsensSims.R
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=0.8\textwidth]{..//analyses/figures/shiftingcuessims_2panels.pdf}
-\caption{\textbf{Simulated leafout as a function of temperature across different temperatures with shifts in underlying cues.} Here we simulated sets of data where leafout occurs at 200 growing degree days (`fstar') when chilling is met, and requires additional growing degree days when chilling is not met. We show estimates sensitivities in the top panel, and the shifting cues on the bottom panel. Note that this model is non-identifiable as the same response data could come from a forcing-only model or a chilling and forcing model. }
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures with shifts in underlying cues.} Here we simulated sets of data where leafout occurs at 200 growing degree days (`fstar') when chilling is met, and requires additional growing degree days when chilling is not met. We show estimates sensitivities in the top panel, and the shifting cues on the bottom panel. } % Note that this model is non-identifiable as the same response data could come from a forcing-only model or a chilling and forcing model. 
 \label{fig:simsshiftcues} % need R file here!
 \end{figure}
 

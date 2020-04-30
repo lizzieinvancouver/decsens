@@ -181,7 +181,7 @@ jitterpep <- -0.04
 pdf(file.path("figures/basicsimsandpep.pdf"), width = 7.5, height = 5.5)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.1),yaxt="n",
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, 0.2),yaxt="n",
      ylab=expression(paste("Estimated sensitivity"), sep=""),
      xlab=expression(paste("Warming (", degree, "C)")), main="",cex.lab=1.2)
 axis(2,seq(-6,0,1),las=2)
