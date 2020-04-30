@@ -108,11 +108,31 @@ mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "log
 sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=sd)
 
 cexhere <- 0.95
-pdf(file.path("figures/basicsims.pdf"), width = 6, height = 4)
+pdf(file.path("figures/basicsims.pdf"), width = 6, height = 8)
+par(mfrow=c(2,1))
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
-     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C to leafout)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="")
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm.trunc[i]
+  sdhere <- sd.sims$simplelm.trunc[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm.trunc[i]
+  sdhere <- sd.sims$loglm.trunc[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
+   cex=1, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C over window)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="")
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.sims$degwarm))){
@@ -133,32 +153,6 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
    cex=1, bty="n")
 dev.off()
-
-
-pdf(file.path("figures/basicsims.trunc.pdf"), width = 6, height = 4)
-par(xpd=FALSE)
-par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
-     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
-for(i in 1:length(unique(mean.sims$degwarm))){
-  pos.x <- mean.sims$degwarm[i]
-  pos.y <- mean.sims$simplelm.trunc[i]
-  sdhere <- sd.sims$simplelm.trunc[i]
-  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
-  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
-  }
-for(i in 1:length(unique(mean.sims$degwarm))){
-  pos.x <- mean.sims$degwarm[i]
-  pos.y <- mean.sims$loglm.trunc[i]
-  sdhere <- sd.sims$loglm.trunc[i]
-  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
-  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
-  }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
-   cex=1, bty="n")
-dev.off()
-
 
 
 ########################

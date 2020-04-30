@@ -22,7 +22,7 @@
 
 \author{E. M. Wolkovich  J. Auerbach, C. J. Chamberlain, D. M. Buonaiuto, \\ A. K. Ettinger, I. Morales-Castilla \& A. Gelman}
 \date{} 
-\maketitle  %put the fancy title on
+\maketitle  
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 
@@ -31,7 +31,7 @@
 
 Our model follows the general understanding of how warm temperatures (forcing) trigger leaf-out in temperate deciduous trees \citep{chuineJTB}. We define leaf-out day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\
 
-We derive the relationship between daily temperature and leaf-out in two common scenarios. In the first, the researcher records the average daily temperature up until the leaf-out date. We assume the researcher knows the day temperatures start to accumulate, $n=0$. In the second, the researcher records the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, researchers typically measure time in discretized units, such as days, weeks, or months.
+We derive the relationship between daily temperature and leaf-out in two common scenarios. In the first, we take the average daily temperature up until the leaf-out date. In the second, we take the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, research typically measures time in discretized units, such as days, weeks, or months. % We assume the researcher knows the day temperatures start to accumulate, $n=0$. 
 
 \subsection{Scenario 1: Using average daily temperature until the leaf-out date}
 
@@ -55,7 +55,7 @@ This model has two important consequences: \\
 Under this model, $M_0^{n_{\beta}}$ and $n_{\beta}$ are inversely proportional. To see why, assume for the moment that the cumulative daily temperature hits the threshold exactly on leaf-out day. That is, $S_0^{n_\beta} = \beta$.
 Then $$M_0^{n_{\beta}} = \frac{S_0^{n_{\beta}}}{{n_{\beta}}} = \frac{\beta}{{n_{\beta}}}$$ rearranging yields $${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$$
 
-Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship is linearized with the logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$ (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$). \\
+Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship is linearized with the logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$. \\ % (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$)
 
 (2) The variance of the average temperature may decreases as temperatures rise.\\
 
@@ -105,7 +105,7 @@ Pr \left ( n_{\beta} \leq n \ \big |  \ M_{a}^b = m \right ) &= Pr \left ( n_{\b
 &= \Phi \left ( \frac{(b-a) m - \beta -    [ \alpha_0 (b - a - n) + \frac{\alpha_1}{2} ( (b-n)(b+n+1) - a(a+1) ) ] }{\sigma \sqrt{b + a - n}} \right )
 \end{align*}
 
-The distribution of $M_a^b$ shows that consequence (2) above still holds with this model. We note two additional consequences: \\
+The distribution of $M_a^b$ shows that consequence (2) above still holds with this model. Consequence (1) no longer holds directly, but will in many situations where average daily temperature until an event correlates strongly with average daily temperature calculated over a window (Figs. \ref{fig:simslog}-\ref{fig:basicsims}; this correlation is likely common because researchers generally select temporal windows over which to calculate average temperatures to be highly relevant to the event or process). We note two additional consequences: \\
 
 (3) The conditional median is quadratic in $n$: \\
 
@@ -124,7 +124,7 @@ $E \left ( n_{\beta} \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} Pr 
 $E \left ( n_{\beta}^2 \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} \ n \  Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ \\
 
 \section{Results using long-term empirical data from PEP725} %http://www.pep725.eu}
-To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. We used sites with leafout across our full temporal windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species x window). \\
+To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. We used sites with complete leafout data across both our 10-year (and 20-year) windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species x window). \\
 
 Our estimates of temperature sensitivity from a linear model using untransformed variables shows a decline in sensitivity with recent warming for \emph{Betula pendula} over 10 and 20-year windows, but no decline for \emph{Fagus sylvatica}; using logged variables estimates appeared more similar over time or sometimes suggested an increase sensitivity (see Figs. \ref{fig:pepper10yr}-\ref{fig:pepper20yr}, Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). This shift in estimated sensitivity when regressing with untransformed versus logged variables suggests these declining estimates from untransformed variables may not be caused by biological shifts and driven instead by using linear regression for a non-linear process. This hypothesis is supported further by large declines in variance of leafout in recent decades. \\
 
@@ -162,13 +162,6 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
 \caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature across a fixed window (top row, similar to estimates of 'spring temperature') or until leafout date (bottom row). While within any small temperature range the relationship may appear linear, its non-linear relationship becomes clear across the greater range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) further linearizes the relationship.}
 \label{fig:simslog} % decsensSimsAuerbach.R
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\noindent \includegraphics[width=0.9\textwidth]{..//analyses/figures/compareyxxy.pdf}
-\caption{\textbf{Extrapolation of regression from simulated data given models of leafout day versus average daily temperature} where leafout day is regressed against log(average daily temperature), shown on left, gives poorer predictions than when modeling the inverse (log(leafout day) against mean average daily temperature), shown on right.}
-\label{fig:compareyxxy} % decsensSimsAuerbach.R
 \end{figure}
 
 \clearpage
