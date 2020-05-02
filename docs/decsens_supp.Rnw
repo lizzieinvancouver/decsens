@@ -29,11 +29,11 @@
 
 \section{A first-hitting-time model of leafout}
 
-Our model follows the general understanding of how warm temperatures (forcing) trigger leaf-out in temperate deciduous trees \citep{chuineJTB}. We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leaf-out day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
+Our model follows the general understanding of how warm temperatures (forcing) trigger leafout in temperate deciduous trees \citep{chuineJTB}. We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leafout day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
 
-We derive the relationship between daily temperature and leaf-out in two common scenarios. In the first, we take the average daily temperature up until the leaf-out date. In the second, we take the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, research typically measures time in discretized units, such as days, weeks, or months. % We assume the researcher knows the day temperatures start to accumulate, $n=0$. 
+We derive the relationship between daily temperature and leafout in two common scenarios. In the first, we take the average daily temperature up until the leafout date. In the second, we take the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, research typically measures time in discretized units, such as days, weeks, or months. % We assume the researcher knows the day temperatures start to accumulate, $n=0$. 
 
-\subsection{Scenario 1: Using average daily temperature until the leaf-out date}
+\subsection{Scenario 1: Using average daily temperature until the leafout date}
 
 We use the following notation:
 \begin{align*}
@@ -50,9 +50,9 @@ We model $X_n$ as a Gaussian random walk, $X_n \overset{\text{i.i.d}}{\sim} \mat
 
 This model has two important consequences: \\
 
-(1) Leaf-out time is inversely related to average temperature at leaf-out time.\\
+(1) Leafout time is inversely related to average temperature at leafout time.\\
 
-Under this model, $M_0^{n_{\beta}}$ and $n_{\beta}$ are inversely proportional. To see why, assume for the moment that the cumulative daily temperature hits the threshold exactly on leaf-out day. That is, $S_0^{n_\beta} = \beta$.
+Under this model, $M_0^{n_{\beta}}$ and $n_{\beta}$ are inversely proportional. To see why, assume for the moment that the cumulative daily temperature hits the threshold exactly on leafout day. That is, $S_0^{n_\beta} = \beta$.
 Then $$M_0^{n_{\beta}} = \frac{S_0^{n_{\beta}}}{{n_{\beta}}} = \frac{\beta}{{n_{\beta}}}$$ rearranging yields $${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$$
 
 Much research uses linear regression to quantify the relationship between $n_{\beta}$ and $M_0^{n_{\beta}}$. Regressing $n_{\beta}$ on $M_0^{n_{\beta}}$ finds a best fit line to the inverse curve, ${n_{\beta}} = \frac{\beta}{M_0^{n_{\beta}}}$. The relationship is linearized with the logarithm transformation: $\log ({n_{\beta}}) = \log(\beta) - \log (M_0^{n_{\beta}})$. That is, $\log(n_{\beta})$ is linear in log-average daily temperature with slope -1 and intercept $\log(\beta)$. \\ % (e.g., in simulations in Fig. \ref{fig:basicsimswpep} is -1, and intercept is $\log(200)=5.3$)
@@ -69,7 +69,7 @@ By the law of total variance,
 & = \frac{\sigma^2}{n} + \text{Var}(\alpha_0) + \frac{(n+1)^2}{4} \text{Var}(\alpha_1) + (n+1) \text{Cov}(\alpha_0, \alpha_1)
 \end{align*}
 
-As temperatures rise and leaf-out date becomes earlier, the variance of the average temperature will decline---provided the variation in temperatures, $\sigma^2$, is sufficiently small. 
+As temperatures rise and leafout date becomes earlier, the variance of the average temperature will decline---provided the variation in temperatures, $\sigma^2$, is sufficiently small. 
 
 \subsection{Scenario 2: Using average daily temperature over a fixed window}
 % See email from J Auerbach on 13 Apr 2020 ... The distribution of the average temperature over the window, and the distribution of leafout given the average temperature over a window
@@ -126,9 +126,11 @@ $E \left ( n_{\beta}^2 \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} \
 \section{Results using long-term empirical data from PEP725} %http://www.pep725.eu}
 To examine how estimated sensitivities shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We used a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to extract daily minimum and maximum temperature for the grid cells where observations of leafout for these two species were available. We used sites with complete leafout data across both our 10-year (and 20-year) windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species x window). \\
 
-Our estimates of temperature sensitivity from a linear model using untransformed variables shows a decline in sensitivity with recent warming for \emph{Betula pendula} over 10 and 20-year windows, but no decline for \emph{Fagus sylvatica}; using logged variables estimates appeared more similar over time or sometimes suggested an increase sensitivity (see Figs. \ref{fig:pepper10yr}-\ref{fig:pepper20yr}, Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). This shift in estimated sensitivity when regressing with untransformed versus logged variables suggests these declining estimates from untransformed variables may not be caused by biological shifts and driven instead by using linear regression for a non-linear process. This hypothesis is supported further by large declines in variance of leafout in recent decades. \\
+Our estimates of temperature sensitivity from a linear model using untransformed variables shows a decline in sensitivity with recent warming for \emph{Betula pendula} over 10 and 20-year windows, but no decline for \emph{Fagus sylvatica}; using logged variables estimates appeared more similar over time or sometimes suggested an increase sensitivity (see Figs. \ref{fig:pepper10yr}-\ref{fig:pepper20yr}, Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). This shift in estimated sensitivity when regressing with untransformed versus logged variables suggests these declining estimates from untransformed variables may not be caused by changes in the underlying mechanisms of leafout (i.e., reduced winter chilling) and driven instead by using linear regression for a non-linear process. This hypothesis is supported further by large declines in variance of leafout in recent decades. \\
 
 Shifts in variance provide another hurdle to robust estimates of temperature sensitivity. Previous work has highlighted how shifting temperature variance (over space and/or time) could lead to shifting estimates of temperature sensitivities \citep{keenan2019}, but our results stress that variance in both leafout and temperature are shifting. If both shift in step, estimates would not be impacted by changes in temperature variance, but our results suggest variance in temperature---for these data---has declined more than variance in leafout, though both have declined substantially in recent decades (Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). \\
+
+These results highlight how the acceleration of biological time due to climate change requires researchers to clarify their assumptions. Expecting temperature sensitivity to remain constant as temperatures rise assumes the relationship between response and temperature is proportional. But the underlying biological processes suggest this relationship is seldom proportional, or even linear. \\ % Traditional methods that reliably infer mechanisms at historic temperatures may no longer be applicable at higher temperatures.
 
 \emph{References}
 \vspace{-6ex}
@@ -160,7 +162,7 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
-\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature across a fixed window (top row, similar to estimates of 'spring temperature') or until leafout date (bottom row). While within any small temperature range the relationship may appear linear, its non-linear relationship becomes clear across the greater range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) further linearizes the relationship.}
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature or until leafout date (top row) or across a fixed window (bottom row, similar to estimates of 'spring temperature'). While within any small temperature range the relationship may appear linear, its non-linear relationship becomes clear across the greater range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) further linearizes the relationship.}
 \label{fig:simslog} % decsensSimsAuerbach.R
 \end{figure}
 

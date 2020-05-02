@@ -27,17 +27,17 @@ setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue") 
 pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
 par(mfrow=c(2,3))
-plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
-    ylab="Leafout date", main="", cex=cexhere)
-plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
-    ylab="log(Leafout date)", main="", cex=cexhere)
-plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
-     ylab="log(Leafout date)", main="", cex=cexhere)
 plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
      ylab="Leafout date", main="", cex=cexhere)
 plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
      ylab="log(Leafout date)", main="", cex=cexhere)
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
+    ylab="Leafout date", main="", cex=cexhere)
+plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
+    ylab="log(Leafout date)", main="", cex=cexhere)
+plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
      ylab="log(Leafout date)", main="", cex=cexhere)
 dev.off()
 
