@@ -20,6 +20,11 @@ if(length(grep("ailene", getwd()))>0) {
   setwd("~/Documents/git/ospree/analyses/bb_analysis/pep_sims")
 } else setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
+##########################
+# The below sets up data #
+# for Fig 1 in main text #
+##########################
+
 # Make some data ...
 
 # Step 1: Set up years, days per year, temperatures, required GDD (fstar)
@@ -209,3 +214,40 @@ lines(c(0.85,2.3),c(-6.2,-6.2),col="darkgrey")
 dev.off()
 
 
+############################
+# Sims and plotting Fig S1 #
+# Once in decsensAuerbach.R #
+############################
+
+
+# First, build up some simulated climate and leafout (after 200 GDD) data
+yearly_expected_temp <- c(rep(0,20), rep(5,20), rep(10,20), rep(20, 20))  # create holder for three sets of temps, 20 per set (note, these are bigger than we have done -- we have done 1 to 7 degrees, this does 0, 5, 10, and 20 degrees)
+
+daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(30, 10 + x, 4)) # now make some simple daily temps
+leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > 200))) # set leafout date as whenever 200 GDD is reached
+yearly_temp <- colMeans(daily_temp) # estimate the mean temp of each simulated dataset
+yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x])) # estimate the mean temp of each simulated dataset only until leafout 
+
+plot(yearly_temp, leafout_date, pch=20)
+points(yearly_temp_trunc, leafout_date, pch=20, col = "red")
+plot(yearly_temp_trunc, leafout_date, pch=20, col = "red")
+
+# Figure S1 currently
+cexhere <- 0.5
+setwd("~/Documents/git/projects/treegarden/decsens/analyses")
+plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue") 
+pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
+par(mfrow=c(2,3))
+plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
+     ylab="Leafout date", main="", cex=cexhere)
+plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
+    ylab="Leafout date", main="", cex=cexhere)
+plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
+    ylab="log(Leafout date)", main="", cex=cexhere)
+plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+dev.off()

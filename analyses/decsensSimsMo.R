@@ -6,11 +6,6 @@
 # This code requires higher forcing (aka GDD, aka fstar) for leafout when chilling is low #
 # It does not vary when GDD accumulates though, it always just starts accumulating on a certain day (daystostart) #
 
-## To do! ##
-# Check the code, in particular:
-# (a) Make sure daily temp is working correctly
-# (b) Look more at the intermediate output to make sure it makes sense
-
 ## housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
