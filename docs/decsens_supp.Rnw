@@ -8,6 +8,7 @@
 \usepackage{rotating}
 \usepackage{caption} 
 \captionsetup[table]{skip=10pt}
+\usepackage{hyperref}
 \usepackage{xr-hyper}
 \externaldocument{decsens}
 
@@ -162,7 +163,7 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=1\textwidth]{..//analyses/figures/simslogging.pdf}
-\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature or until leafout date (top row) or across a fixed window (bottom row, similar to estimates of 'spring temperature'). While within any small temperature range the relationship may appear linear, its non-linear relationship becomes clear across the greater range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) further linearizes the relationship.}
+\caption{\textbf{Simulated leafout as a function of temperature across different temperatures highlights non-linearity of process.} Here we simulated sets of data where leafout constantly occurs at 200 growing degree days across mean temperatures of 0, 5, 10 and 20C (constant SD of 4), we calculated estimated mean temperature or until leafout date (top row) or across a fixed window (bottom row, similar to estimates of `spring temperature'). While within any small temperature range the relationship may appear linear, its non-linear relationship becomes clear across the greater range shown here (left). Taking the log of leafout (middle) reduces this some, but taking the log of both leafout and temperature (right) further linearizes the relationship.}
 \label{fig:simslog} % % decsensSims.R
 \end{figure}
 
