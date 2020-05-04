@@ -31,7 +31,8 @@ if(length(grep("ailene", getwd()))>0) {
 daysperyr <- 60
 yearz <- 30
 sitez <- 45 # reps
-degreez <- c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
+degreez.maintext <- seq(0, 2, length.out=100)
+degreez.forsupp <- c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
 sigma <- 4
 basetemp <- 6
 fstar <- 150
@@ -40,7 +41,7 @@ fstar <- 150
 df <- data.frame(degwarm=numeric(), rep=numeric(), simplelm=numeric(), loglm=numeric(), perlm=numeric(),
     simplelm.trunc=numeric(), loglm.trunc=numeric())
 
-for (i in degreez){
+for (i in degreez.maintext){
    for (j in 1:sitez){
        yearly_expected_temp <- rep(basetemp, yearz)
        daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
@@ -59,16 +60,39 @@ for (i in degreez){
     }
 }
 
-plot(simplelm.trunc~degwarm, data=df, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
-points(simplelm~degwarm, data=df, pch=16, col="gray")
-points(loglm.trunc~degwarm, data=df, col="dodgerblue")
-points(loglm~degwarm, data=df, col="dodgerblue", pch=16)
-plot(perlm~degwarm, data=df, col="firebrick")
 
-plot(abs(simplelm)~degwarm, data=df, col="lightgrey",
+dfsupp <- data.frame(degwarm=numeric(), rep=numeric(), simplelm=numeric(), loglm=numeric(), perlm=numeric(),
+    simplelm.trunc=numeric(), loglm.trunc=numeric())
+
+for (i in degreez.forsupp){
+   for (j in 1:sitez){
+       yearly_expected_temp <- rep(basetemp, yearz)
+       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
+       leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
+       yearly_temp <- colMeans(daily_temp)
+       yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x]))
+       per_leafout_date <- leafout_date/mean(leafout_date)
+       per_yearly_temp <- yearly_temp/mean(yearly_temp)
+       plot(yearly_temp, leafout_date, pch=20)
+       dfsuppadd <- data.frame(degwarm=i, rep=j, simplelm=coef(lm(leafout_date~yearly_temp))[2],
+           loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
+           perlm=coef(lm(per_leafout_date~per_yearly_temp))[2],
+           simplelm.trunc=coef(lm(leafout_date~yearly_temp_trunc))[2],
+           loglm.trunc=coef(lm(log(leafout_date)~log(yearly_temp_trunc)))[2])
+       dfsupp <- rbind(dfsupp, dfsuppadd)
+    }
+}
+
+plot(simplelm.trunc~degwarm, data=dfsupp, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
+points(simplelm~degwarm, data=dfsupp, pch=16, col="gray")
+points(loglm.trunc~degwarm, data=dfsupp, col="dodgerblue")
+points(loglm~degwarm, data=dfsupp, col="dodgerblue", pch=16)
+plot(perlm~degwarm, data=dfsupp, col="firebrick")
+
+plot(abs(simplelm)~degwarm, data=dfsupp, col="lightgrey",
     ylab="Abs(Sensitivity (days/C or log(days)/log(C))", xlab="Degree warming")
-df$degwarmJitter <- df$degwarm + 0.05
-points(abs(loglm)~degwarmJitter, data=df, col="dodgerblue", cex=0.8)
+dfsupp$degwarmJitter <- dfsupp$degwarm + 0.05
+points(abs(loglm)~degwarmJitter, data=dfsupp, col="dodgerblue", cex=0.8)
 
 
 ##############
@@ -76,8 +100,8 @@ points(abs(loglm)~degwarmJitter, data=df, col="dodgerblue", cex=0.8)
 ##############
 
 # Summarize the sims
-mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=mean)
-sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=sd)
+mean.sims <- aggregate(dfsupp[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], dfsupp["degwarm"], FUN=mean)
+sd.sims <- aggregate(dfsupp[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], dfsupp["degwarm"], FUN=sd)
 
 cexhere <- 0.95
 pdf(file.path("figures/basicsims.pdf"), width = 6, height = 8)
@@ -86,7 +110,8 @@ par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C to leafout)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     xlab=expression(paste("Warming (", degree, "C)")), main="",
+     bty="l", mgp=c(1.5,.5,0), tck=-.01)
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$simplelm.trunc[i]
@@ -101,11 +126,12 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
+legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
    cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C over window)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     xlab=expression(paste("Warming (", degree, "C)")), main="",
+     bty="l", mgp=c(1.5,.5,0), tck=-.01)
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
@@ -121,8 +147,7 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-# par(xpd=TRUE) # so I can plot legend outside
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
+legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
    cex=1, bty="n")
 dev.off()
 
@@ -130,6 +155,10 @@ dev.off()
 ########################
 ## Plotting, plus PEP ##
 ########################
+
+# Summarize the main text sims
+mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=mean)
+sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=sd)
 
 # Get data ...
 dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE)
@@ -155,10 +184,11 @@ par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, 0.2),yaxt="n",
      ylab=expression(paste("Estimated sensitivity"), sep=""),
-     xlab=expression(paste("Warming (", degree, "C)")), main="",cex.lab=1.2)
+     xlab=expression(paste("Warming (", degree, "C)")), main="", cex.lab=1.2,
+     bty="l", mgp=c(1.5,.5,0), tck=-.01)
 axis(2,seq(-6,0,1),las=2)
 # abline(h=0, lty=2, col="darkgrey")
-tempsteps <- 5
+tempsteps <- 100
 tempdiffplot <- c(0,1)
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
@@ -214,6 +244,65 @@ lines(c(0.85,2.3),c(-6.2,-6.2),col="darkgrey")
 dev.off()
 
 
+colz <- c("blue4", "violetred4", "blue1", "violetred1")
+colzalpha <- colz
+colzalpha[1] <- adjustcolor(colzalpha[1], alpha.f=0.3)
+colzalpha[2] <- adjustcolor(colzalpha[2], alpha.f = 0.3)
+
+
+pdf(file.path("figures/basicsimsandpepalt.pdf"), width = 9, height = 4)
+par(xpd=FALSE)
+par(mar=c(5,5,2,2))
+par(mfrow=c(1,2))
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.5), 
+     ylab=expression(paste("Estimated sensitivity"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="Linear (untransformed)", font.main = 1, cex.main = 0.9, 
+     cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+legend("bottomright", pch=c(19, 17), col=c(colzalpha[2], colzalpha[3]), legend=c("simulations", "observations"),
+   cex=1, bty="n")
+# axis(2,seq(-6,0,1), las=2)
+tempsteps <- 100
+tempdiffplot <- c(0,1)
+for(i in 1:tempsteps){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm[i]
+  sdhere <- sd.sims$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[2])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
+}
+for(i in 1:length(unique(mean.betpen$cc))){ # i=2
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslope[i]
+  sdhere <- sd.betpen$matslope[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[3])
+  text(pos.x + 0.35, pos.y-1.1, labels=unique(mean.betpen$cc)[i], 
+       cex=cextext, col=colzalpha[3])
+}
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-1.5, 0.2), 
+     ylab=expression(paste("Estimated sensitivity"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="Non-linear (logged)", font.main = 1, cex.main = 0.9,
+     cex.lab=1.2,
+     bty="l", mgp=c(1.5,.25,0), tck=-.01)
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslopelog[i]
+  sdhere <- sd.betpen$matslopelog[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colzalpha[3])
+  text(pos.x + 0.37, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[3])
+}
+for(i in 1:tempsteps){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm[i]
+  sdhere <- sd.sims$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[2])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
+}
+dev.off()
+
+
 ############################
 # Sims and plotting Fig S1 #
 # Once in decsensAuerbach.R #
@@ -236,18 +325,14 @@ plot(yearly_temp_trunc, leafout_date, pch=20, col = "red")
 cexhere <- 0.5
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue") 
-pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
-par(mfrow=c(2,3))
-plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="Leafout date", main="", cex=cexhere)
-plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="log(Leafout date)", main="", cex=cexhere)
-plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
-     ylab="log(Leafout date)", main="", cex=cexhere)
-plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
-    ylab="Leafout date", main="", cex=cexhere)
-plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
-    ylab="log(Leafout date)", main="", cex=cexhere)
-plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
-     ylab="log(Leafout date)", main="", cex=cexhere)
+pdf(file.path("figures/simslogging.pdf"), width = 8, height = 7)
+par(mfrow=c(2,2))
+plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Mean temperature until leafout",
+     ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01, xlim=c(5, 35), ylim=c(0, 30))
+plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Mean temperature until leafout)",
+     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+plot(yearly_temp, leafout_date, pch=20, xlab="Mean temperature calculated over fixed window",
+    ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01, xlim=c(5, 35), ylim=c(0, 30))
+plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Mean temperature calculated over fixed window)",
+     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
 dev.off()

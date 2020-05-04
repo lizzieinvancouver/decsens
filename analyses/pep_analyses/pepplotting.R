@@ -75,7 +75,7 @@ tempdiffplotfs.10yr <- c(0, tempdiff1fs.10yr)
 ##############
 
 cexhere <- 0.95
-cextext <- 0.5
+cextext <- 0.75
 pdf(file.path("figures/basicpep1950to2000.pdf"), width = 6, height = 4)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
@@ -433,13 +433,14 @@ dev.off()
 ## Four panel with FagSyl 10 yr -- showing just raw on left panels, and just logged on right panels
 cexhere <- 0.5
 cexhereleg <- 0.7
+cex.mainhere <- 0.85
 pdf(file.path("figures/basicpep195020102spp4paneladj.pdf"), width = 7.5, height = 6)
 par(xpd=FALSE)
 par(mfrow=c(2,2))
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
@@ -447,12 +448,12 @@ for(i in 1:length(unique(mean.betpen.10yr$cc))){
   ciherelo <- mean.betpen.10yr$matslopeconfint11[i]
   cihereup <- mean.betpen.10yr$matslopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="") # (days/", degree, "C)
+     ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Logged", cex.main=cex.mainhere)# (days/", degree, "C)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
@@ -461,14 +462,14 @@ for(i in 1:length(unique(mean.betpen.10yr$cc))){
   cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
-   legend=c("BP: untransformed", "BP: logged"), cex=cexhereleg, bty="n")
+# legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
+  #  legend=c("BP: untransformed", "BP: logged"), cex=cexhereleg, bty="n")
 # FagSyl 
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
@@ -477,11 +478,11 @@ for(i in 1:length(unique(mean.fs.10yr$cc))){
   cihereup <- mean.fs.10yr$matslopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   }
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")),  main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
@@ -490,10 +491,8 @@ for(i in 1:length(unique(mean.fs.10yr$cc))){
   cihereup <- mean.fs.10yr$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
-   legend=c("FS: untransformed", "FS: logged"), cex=cexhereleg, bty="n")
 dev.off()
 ## END: Four panel with FagSyl 10 yr -- showing just raw on left panels, and just logged on right panels
 ## 
@@ -508,8 +507,8 @@ par(xpd=FALSE)
 par(mfrow=c(2,2))
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+      ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
@@ -517,12 +516,12 @@ for(i in 1:length(unique(mean.betpen.20yr$cc))){
   ciherelo <- mean.betpen.20yr$matslopeconfint11[i]
   cihereup <- mean.betpen.20yr$matslopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="") # (days/", degree, "C)
+     ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
@@ -531,14 +530,12 @@ for(i in 1:length(unique(mean.betpen.20yr$cc))){
   cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
-   legend=c("BP: untransformed", "BP: logged"), cex=cexhereleg, bty="n")
 # FagSyl 
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+     ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")),  main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
@@ -547,12 +544,13 @@ for(i in 1:length(unique(mean.fs.20yr$cc))){
   cihereup <- mean.fs.20yr$matslopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   }
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
-     ylab=expression(paste("Estimated sensitivity"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+    ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")),  main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
+mean.fs.20yr$matslopelog[2] <- mean.fs.20yr$matslopelog[2] - 0.04 # move text label down
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
   pos.y <- mean.fs.20yr$matslopelog[i]
@@ -560,10 +558,8 @@ for(i in 1:length(unique(mean.fs.20yr$cc))){
   cihereup <- mean.fs.20yr$matslopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
-  text(pos.x + 0.15, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
+  text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
-   legend=c("FS: untransformed", "FS: logged"), cex=cexhereleg, bty="n")
 dev.off()
 ## END: Four panel with FagSyl 20 yr -- showing just raw on left panels, and just logged on right panels
 ## 
