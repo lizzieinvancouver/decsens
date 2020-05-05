@@ -136,7 +136,8 @@ for (i in degreez){
                   m<-lm(leafout_date~yearly_temp)
                   if(summary(m)$coef[2,4]<=0.1){abline(m,lwd=2,col="darkgreen")}
                 }
-                
+           df <- rbind(df, dfadd)
+           
    }
    }
 dev.off()
@@ -165,7 +166,7 @@ pdf(file.path("figures/shiftingcuessims_2panels.pdf"), width = 6, height = 8)
 par(mfrow=c(2,1),mar=c(5,5,2,5))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-15, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
+         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l")
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
@@ -182,11 +183,11 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
 # par(xpd=TRUE) # so I can plot legend outside
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Simple linear regression", "Using logged variables"),
+legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
    cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(0, 1),
      ylab="Proportion years when chilling is met",
-     xlab=expression(paste("Warming (", degree, "C)")), main="")
+     xlab=expression(paste("Warming (", degree, "C)")), bty="u",main="")
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$propryrschillmet[i]
@@ -198,7 +199,7 @@ par(new = TRUE)
 
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,300),yaxt="n", ylab="",xaxt="n", xlab="")
 axis(side = 4)
-mtext(expression(paste("fstar (", degree, "C)"), sep=""),side=4, adj=.5, line=2)
+mtext(expression(paste("Thermal sum required for leafout (", degree, "C)"), sep=""),side=4, adj=.5, line=2)
 
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
