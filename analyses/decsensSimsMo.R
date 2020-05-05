@@ -166,7 +166,7 @@ pdf(file.path("figures/shiftingcuessims_2panels.pdf"), width = 6, height = 8)
 par(mfrow=c(2,1),mar=c(5,5,2,5))
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-15, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l")
+         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
@@ -185,7 +185,7 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 # par(xpd=TRUE) # so I can plot legend outside
 legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
    cex=1, bty="n")
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(0, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(0, 1),mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
      ylab="Proportion years when chilling is met",
      xlab=expression(paste("Warming (", degree, "C)")), bty="u",main="")
 for(i in 1:length(unique(mean.sims$degwarm))){
@@ -197,8 +197,8 @@ for(i in 1:length(unique(mean.sims$degwarm))){
 }
 par(new = TRUE)
 
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,300),yaxt="n", ylab="",xaxt="n", xlab="")
-axis(side = 4)
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim= c(200,300),yaxt="n", ylab="",xaxt="n", xlab="", bty="u",mgp=c(1.5,.5,0), tck=-.01)
+axis(side = 4,mgp=c(1.5,.5,0), tck=-.01)
 mtext(expression(paste("Thermal sum required for leafout (", degree, "C)"), sep=""),side=4, adj=.5, line=2)
 
 for(i in 1:length(unique(mean.sims$degwarm))){
