@@ -438,7 +438,7 @@ pdf(file.path("figures/basicpep195020102spp4paneladj.pdf"), width = 7.5, height 
 par(xpd=FALSE)
 par(mfrow=c(2,2))
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -451,7 +451,7 @@ for(i in 1:length(unique(mean.betpen.10yr$cc))){
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Logged", cex.main=cex.mainhere)# (days/", degree, "C)
 abline(h=0, lty=2, col="darkgrey")
@@ -467,7 +467,7 @@ for(i in 1:length(unique(mean.betpen.10yr$cc))){
 # legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"),
   #  legend=c("BP: untransformed", "BP: logged"), cex=cexhereleg, bty="n")
 # FagSyl 
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -480,7 +480,7 @@ for(i in 1:length(unique(mean.fs.10yr$cc))){
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   }
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")),  main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -506,7 +506,7 @@ pdf(file.path("figures/basicpep1950to20002spp4paneladj.pdf"), width = 7.5, heigh
 par(xpd=FALSE)
 par(mfrow=c(2,2))
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
       ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -519,7 +519,7 @@ for(i in 1:length(unique(mean.betpen.20yr$cc))){
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Betula pendula"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -533,7 +533,7 @@ for(i in 1:length(unique(mean.betpen.20yr$cc))){
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   }
 # FagSyl 
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
      ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")),  main="Untransformed", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -546,7 +546,7 @@ for(i in 1:length(unique(mean.fs.20yr$cc))){
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   }
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1),
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0.25, 0), tck=-.01,
     ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")),  main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
@@ -615,7 +615,7 @@ mean.fs.forpaper <- subset(mean.fs.10yr, select=c("cc", "species", "meanmat", "m
 mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
 mean2spp.forpaper10yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper10yr$species)
 mean2spp.forpaper10yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper10yr$species)
-names(mean2spp.forpaper10yr) <- c("", "", "mean(ST)", "mean(ST.leafout)", "var(ST)", "var(leafout)", "mean(GDD)",
+names(mean2spp.forpaper10yr) <- c("years", "species", "mean (ST)", "mean (ST.leafout)", "var (ST)", "var (leafout)", "mean (GDD)",
     "slope", "log-slope")
 
 
@@ -628,7 +628,7 @@ mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species", "meanmat", "
 mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
 mean2spp.forpaper20yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper20yr$species)
 mean2spp.forpaper20yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper20yr$species)
-names(mean2spp.forpaper20yr) <-  c("", "", "mean(ST)", "mean(ST.leafout)", "var(ST)", "var(leafout)", "mean(GDD)",
+names(mean2spp.forpaper20yr) <-  c("years", "species", "mean (ST)", "mean (ST.leafout)", "var (ST)", "var (leafout)", "mean (GDD)",
     "slope", "log-slope")
 
 

@@ -21,6 +21,9 @@ if(length(grep("ailene", getwd()))>0) {
   setwd("~/Documents/git/ospree/analyses/bb_analysis/pep_sims")
 } else setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
+##################################
+## Sims to look at correlations ##
+##################################
 
 # Step 1: Set up years, days per year, temperatures, required GDD (fstar)
 daysperyr <- 60
@@ -70,9 +73,9 @@ dfcorr$degwarmJitter <- dfcorr$degwarm + 0.05
 points(abs(logcorr)~degwarmJitter, data=dfcorr, col="dodgerblue", cex=0.8)
 
 
-##############
-## Plotting ##
-##############
+#############################
+## Plotting (correlations) ##
+############################
 
 # Summarize the sims
 mean.sims <- aggregate(dfcorr[c("simplelm.trunc", "loglm.trunc")], dfcorr["degwarm"], FUN=mean)
@@ -157,3 +160,96 @@ lines(c(0.85,2.3),c(-6.2,-6.2),col="darkgrey")
 
 dev.off()
 
+
+######################################
+## Sims to look at imperfect models ##
+######################################
+# Below sets up 60 days that could lead to leafout, then cuts out the first 20 days when calculating temp
+# You can also adjust yearz (as I did to create basicsims.test.10yr.pdf)
+
+# Step 1: Set up years, days per year, temperatures, required GDD (fstar)
+daysperyr <- 60
+yearz <- 30
+sitez <- 45 # reps
+degreez.maintext <-  c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
+sigma <- 4
+basetemp <- 6
+fstar <- 150
+
+# Step 2: Build the data and calculate sensitivities (note that alpha_1 -- spring temperature increase is set to 0)
+df <- data.frame(degwarm=numeric(), rep=numeric(), simplelm=numeric(), loglm=numeric(), perlm=numeric(),
+    simplelm.trunc=numeric(), loglm.trunc=numeric())
+
+for (i in degreez.maintext){
+   for (j in 1:sitez){
+       yearly_expected_temp <- rep(basetemp, yearz)
+       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
+       leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
+       daily_temp <- daily_temp[20:60,]
+       yearly_temp <- colMeans(daily_temp)
+       yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x]))
+       per_leafout_date <- leafout_date/mean(leafout_date)
+       per_yearly_temp <- yearly_temp/mean(yearly_temp)
+       plot(yearly_temp, leafout_date, pch=20)
+       dfadd <- data.frame(degwarm=i, rep=j, simplelm=coef(lm(leafout_date~yearly_temp))[2],
+           loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
+           perlm=coef(lm(per_leafout_date~per_yearly_temp))[2],
+           simplelm.trunc=coef(lm(leafout_date~yearly_temp_trunc))[2],
+           loglm.trunc=coef(lm(log(leafout_date)~log(yearly_temp_trunc)))[2])
+       df <- rbind(df, dfadd)
+    }
+}
+
+
+# Step 3: Summarize the sims
+mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=mean)
+sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["degwarm"], FUN=sd)
+
+# Step 4: Plot
+cexhere <- 0.95
+pdf(file.path("figures/basicsims.test.twothirdwindow.pdf"), width = 6, height = 8)
+par(mfrow=c(2,1))
+par(xpd=FALSE)
+par(mar=c(5,5,2,2))
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-5, 0.5),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C to leafout)"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="",
+     bty="l", mgp=c(1.5,.5,0), tck=-.01)
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm.trunc[i]
+  sdhere <- sd.sims$simplelm.trunc[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm.trunc[i]
+  sdhere <- sd.sims$loglm.trunc[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
+   cex=1, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-5, 0.5),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C over window)"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="",
+     bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# abline(h=0, lty=2, col="darkgrey")
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm[i]
+  sdhere <- sd.sims$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm[i]
+  sdhere <- sd.sims$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
+   cex=1, bty="n")
+dev.off()
