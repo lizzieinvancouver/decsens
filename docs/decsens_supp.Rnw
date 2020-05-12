@@ -19,7 +19,7 @@
 \SweaveOpts{concordance=FALSE}
 \renewcommand{\refname}{\CHead{}}
 
-\title{Supplemental materials: A simple explanation for declining temperature sensitivity with warming} 
+\title{Supplementary materials: A simple explanation for declining temperature sensitivity with warming} 
 
 \author{E. M. Wolkovich  J. Auerbach, C. J. Chamberlain, D. M. Buonaiuto, \\ A. K. Ettinger, I. Morales-Castilla \& A. Gelman}
 \date{} 
