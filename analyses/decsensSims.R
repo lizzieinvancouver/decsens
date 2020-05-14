@@ -25,13 +25,15 @@ if(length(grep("ailene", getwd()))>0) {
 # for Fig 1 in main text #
 ##########################
 
-# Make some data ...
+# Make some data ... note that this runs 500 times for 45 sites, via a loop
+# which is to say, it's slow!
 
 # Step 1: Set up years, days per year, temperatures, required GDD (fstar)
 daysperyr <- 60
 yearz <- 30
 sitez <- 45 # reps
-degreez.maintext <- seq(0, 2, length.out=100)
+simsnum.maintext <- 500
+degreez.maintext <- seq(0, 2, length.out=simsnum.maintext)
 degreez.forsupp <- c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
 sigma <- 4
 basetemp <- 6
@@ -188,7 +190,7 @@ plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, 0.2),yaxt="n",
      bty="l", mgp=c(1.5,.5,0), tck=-.01)
 axis(2,seq(-6,0,1),las=2)
 # abline(h=0, lty=2, col="darkgrey")
-tempsteps <- 100
+tempsteps <- simsnum.maintext
 tempdiffplot <- c(0,1)
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
@@ -247,7 +249,7 @@ dev.off()
 colz <- c("blue4", "violetred4", "blue1", "violetred1")
 colzalpha <- colz
 colzalpha[1] <- adjustcolor(colzalpha[1], alpha.f=0.3)
-colzalpha[2] <- adjustcolor(colzalpha[2], alpha.f = 0.3)
+colzalpha[2] <- adjustcolor(colzalpha[2], alpha.f=0.3)
 
 
 pdf(file.path("figures/basicsimsandpepalt.pdf"), width = 9, height = 4)
@@ -262,7 +264,7 @@ plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.5),
 legend("bottomright", pch=c(19, 17), col=c(colzalpha[2], colzalpha[3]), legend=c("simulations", "observations"),
    cex=1, bty="n")
 # axis(2,seq(-6,0,1), las=2)
-tempsteps <- 100
+tempsteps <- simsnum.maintext
 tempdiffplot <- c(0,1)
 for(i in 1:tempsteps){
   pos.x <- mean.sims$degwarm[i]
@@ -301,6 +303,64 @@ for(i in 1:tempsteps){
   points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[2])
 }
 dev.off()
+
+
+# Set up for shading the sims
+# THIS is the figure currently in the main text ...
+simsrange <- seq(min(mean.sims$degwarm), max(mean.sims$degwarm), length.out=simsnum.maintext)
+sdupp <- mean.sims$simplelm + sd.sims$simplelm
+sdlow <- mean.sims$simplelm - sd.sims$simplelm
+
+sdupplog <- mean.sims$loglm + sd.sims$loglm
+sdlowlog <- mean.sims$loglm - sd.sims$loglm
+
+
+pdf(file.path("figures/basicsimsandpepalt1.pdf"), width = 9, height = 4)
+par(xpd=FALSE)
+par(mar=c(5,5,2,2))
+par(mfrow=c(1,2))
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-6.6, -0.5), 
+     ylab=expression(paste("Estimated sensitivity"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="Linear (untransformed)", font.main = 1, cex.main = 0.9, 
+     cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+legend("bottomright", pch=c(19, 19), col=c(colzalpha[2], colzalpha[3]), legend=c("simulations", "observations"),
+   cex=1, bty="n")
+# axis(2,seq(-6,0,1), las=2)
+tempsteps <- simsnum.maintext
+tempdiffplot <- c(0,1)
+polygon(c(rev(simsrange), simsrange), c(rev(sdupp), sdlow), col = colzalpha[2], border = NA)
+for(i in 1:tempsteps){
+  lines(pos.x, pos.y, cex=cexhere, col=colzalpha[2])
+}
+for(i in 1:length(unique(mean.betpen$cc))){ # i=2
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslope[i]
+  sdhere <- sd.betpen$matslope[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[3])
+  text(pos.x + 0.35, pos.y-1.1, labels=unique(mean.betpen$cc)[i], 
+       cex=cextext, col=colzalpha[3])
+}
+plot(x=NULL,y=NULL, xlim=c(-0.25, 2.25), ylim=c(-1.5, 0.2), 
+     ylab=expression(paste("Estimated sensitivity"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="Non-linear (logged)", font.main = 1, cex.main = 0.9,
+     cex.lab=1.2,
+     bty="l", mgp=c(1.5,.25,0), tck=-.01)
+for(i in 1:length(unique(mean.betpen$cc))){
+  pos.x <- tempdiffplot[i]
+  pos.y <- mean.betpen$matslopelog[i]
+  sdhere <- sd.betpen$matslopelog[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col=colzalpha[3])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colzalpha[3])
+  text(pos.x + 0.37, pos.y, labels=unique(mean.betpen$cc)[i], cex=cextext, col=colzalpha[3])
+}
+polygon(c(rev(simsrange), simsrange), c(rev(sdupplog), sdlowlog), col = colzalpha[2], border = NA)
+for(i in 1:tempsteps){
+  lines(pos.x, pos.y, cex=cexhere,col=colzalpha[2])
+}
+dev.off()
+
 
 
 ############################
