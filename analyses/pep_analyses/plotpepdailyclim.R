@@ -1,0 +1,66 @@
+## Started 15 May 2020 ##
+## By Lizzie  ##
+
+## Plotting daily climate data ##
+
+
+# Clear workspace
+rm(list=ls()) # remove everything currently held in the R memory
+options(stringsAsFactors=FALSE)
+graphics.off()
+
+# Load libraries
+require(dplyr)
+require(tidyr)
+require(ggplot2)
+
+
+setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses/")
+
+d <- read.csv("output/betpen_dailytempsandlo_1950to2010.csv")
+d$date <- as.Date(d$Date, format="%Y-%m-%d")
+d$mon <- format(d$date, "%m")
+d$doy <- format(d$date, "%j")
+d$cc <- ifelse(d$year<1981, "pre", "post")
+
+
+ggplot(d, aes(x=doy, y=tmean, group=year, colour=year)) +
+    geom_point() +
+    facet_wrap(.~lat.lon)
+
+spring <- subset(d, as.numeric(doy)>60)
+
+someyears <- subset(spring, year==1953|year==2003)
+ggplot(someyears, aes(x=doy, y=tmean, group=lat.lon, colour=lat.lon)) +
+    geom_point() +
+    facet_wrap(.~cc)
+
+someyears <- subset(spring, year<1970 | year>1990)
+summary(lm(tmean~as.numeric(doy)*cc, data=someyears))
+
+dagg <- aggregate(someyears["tmean"], someyears[c("cc", "year", "doy")], FUN=mean)
+
+ggplot(dagg, aes(x=doy, y=tmean, group=year, colour=year)) +
+    geom_point() +
+    geom_smooth(method="lm") + 
+    facet_wrap(.~cc)
+
+
+if(FALSE){ # slow
+library(rstanarm)
+mod <- stan_lmer(tmean~(cc*as.numeric(doy))|lat.lon, data=spring)
+}
+
+
+## Set up the data to zero our <0 temps ...
+mstmonths<-c(3:4)
+dout <- d[which(as.numeric(d$mon) %in% mstmonths),]
+dout$tempadj <- ifelse(dout$tmean<0, 0, dout$tmean)
+doutagg <- aggregate(dout["tempadj"], dout[c("lo", "year", "lat.lon")], FUN=mean)
+gdd <- aggregate(dout["tempadj"], dout[c("year", "lat.lon")], FUN=sum)
+names(gdd)[names(gdd)=="tempadj"] <- "gdd"
+
+datout <- merge(doutagg, gdd, by=c("year", "lat.lon"))
+datout$site <- as.numeric(as.factor(datout$lat.lon))
+
+write.csv(datout, "output/betpen_decsens_1950-2000base0.csv", row.names=FALSE)
