@@ -26,9 +26,9 @@ $^5$Department of Life Sciences, University of Alcal\`a CTRA N-II, KM., 33,600, 
 $^a$Corresponding author (ORCID: 0000-0001-7653-893X)
 \vspace{3ex}
 
-\emph{Article type}: Report\\
-\emph{Short title:} Declining temperature sensitivity\\
-\emph{One sentence summary:} Declining temperature sensitivity with warming is the expected outcome of current methods, not evidence of changing biology.
+\emph{Article type}: Letter\\
+% \emph{Short title:} Declining temperature sensitivity\\
+% \emph{One sentence summary:} Declining temperature sensitivity with warming is the expected outcome of current methods, not evidence of changing biology.
 % Observations of global declines in temperature sensitivity of biological events with climate change have been used as evidence of fundamental shifts in underlying biological processes, but may more simply be explained by the statistical methods used to calculate temperature sensitivity. 
 
 
@@ -54,7 +54,7 @@ Many observed biological events are the result of continuous non-linear processe
 % calendar time is the same, but the biological time is much greater
 % amount of change that can occur in a day depends on temperature
 
-We show this by deriving the relationship between a biological response and temperature using a simple stochastic model, which describes the first time a random process hits a threshold (see `A first-hitting-time model of leafout' in Supplementary Materials). Our model holds the temperature threshold for leafout constant. Even though the mechanism by which temperature leads to leafout does not change, the model produces declining sensitivity---as measured in days per $^{\circ}$C---with warming. Indeed, under this model constant temperature sensitivity would be evidence that the temperature threshold is not constant and the mechanisms underlying the leafout process have changed. \\ % We consider two common scenarios: one measuring average daily temperature up until the leafout date, and the other measuring average daily temperature over a fixed window (such as March 1st to April 30th). 
+We show this by deriving the relationship between a biological response and temperature using a simple stochastic model, which describes the first time a random process hits a threshold (see `A first-hitting-time model of leafout' in Supplementary Information). Our model holds the temperature threshold for leafout constant. Even though the mechanism by which temperature leads to leafout does not change, the model produces declining sensitivity---as measured in days per $^{\circ}$C---with warming. Indeed, under this model constant temperature sensitivity would be evidence that the temperature threshold is not constant and the mechanisms underlying the leafout process have changed. \\ % We consider two common scenarios: one measuring average daily temperature up until the leafout date, and the other measuring average daily temperature over a fixed window (such as March 1st to April 30th). 
 
 Simulations show that correcting for non-linearity removes apparent declines in temperature sensitivity (Fig. \ref{fig:basicsimswpep}, \ref{fig:basicsims}, \href{https://github.com/temporalecologylab/labgit/tree/master/projects/decsenspost}{code link}). Assuming a model where warming increases the required thermal sum for a biological event---a common hypothesis for declining sensitivities in spring phenological events---yields declining sensitivities that remain after correcting for non-linearity (Fig. \ref{fig:simsshiftcues}). \\
 
@@ -72,11 +72,13 @@ Inferring biological processes from statistical artifacts is not a new problem \
 \vspace{5ex}
 \emph{Acknowledgements:} Thanks to TJ Davies, TM Giants, D. Lipson and C. Rollinson. \\
 
-\emph{List of Supplementary materials:}\\
+\emph{Data \& Code Availability:} Code for simulations and plots is provided \href{https://github.com/temporalecologylab/labgit/tree/master/projects/decsenspost}{here}. For empirical examples, we used \href{http://www.pep725.eu/data.php}{PEP 725 phenological data} and \href{https://surfobs.climate.copernicus.eu/dataaccess/access_eobs.php}{E-OBS climate data}, both of which are freely available via the links.\\
+
+\emph{List of Supplementary Information:}\\
 A first-hitting-time model of leafout\\
 Results using long-term empirical data from PEP725\\
 Table S1-S2\\
-Fig S1-S5\
+Fig S1-S5\\
 
 \newpage
 \section* {Figures}
@@ -84,7 +86,7 @@ Fig S1-S5\
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=1.05\textwidth]{..//analyses/figures/basicsimsandpepalt1.pdf} % 136 words
-\caption{\textbf{Shifts in temperature sensitivities with warming occur when using linear models for non-linear processes.} Estimated sensitivities decline with warming in simulations (shading, estimated across 45 sites with a base temperature of normal(6,4), variation comes from fluctuation in the Monte Carlo simulations) with no underlying change in the biological process when sensitivities were estimated with linear regression (left). This decline disappears when performing the regression on logged predictor and response variables (right). Such issues may underlie declining sensitivities calculated from observational data, including long-term observations of leafout across Europe (for \emph{Betula pendula} from PEP725 from for the 45 sites that had complete data for 1950-1960 and 2000-2010), which show a lower sensitivity with warming when calculated on raw data, but no change in sensitivity using logged data. Shading, symbols and lines represent means $\pm$ standard deviations of regressions across sites. See Supplementary Materials for a discussion of why estimated sensitivities are -1 or lower in non-linear models.} % Estimates of sensitivities from logged variables were generally much lower than -1, suggesting other factors or a better metric of temperature underlie leafout dates.
+\caption{\textbf{Shifts in temperature sensitivities with warming occur when using linear models for non-linear processes.} Estimated sensitivities decline with warming in simulations (shading, estimated across 45 sites with a base temperature of normal(6,4), variation comes from fluctuation in the Monte Carlo simulations) with no underlying change in the biological process when sensitivities were estimated with linear regression (left). This decline disappears when performing the regression on logged predictor and response variables (right). Such issues may underlie declining sensitivities calculated from observational data, including long-term observations of leafout across Europe (for \emph{Betula pendula} from PEP725 from for the 45 sites that had complete data for 1950-1960 and 2000-2010), which show a lower sensitivity with warming when calculated on raw data, but no change in sensitivity using logged data. Shading, symbols and lines represent means $\pm$ standard deviations of regressions across sites. See Supplementary Information for a discussion of why estimated sensitivities are -1 or lower in non-linear models.} % Estimates of sensitivities from logged variables were generally much lower than -1, suggesting other factors or a better metric of temperature underlie leafout dates.
 \label{fig:basicsimswpep} % decsensSims.R
 \end{figure}
 
