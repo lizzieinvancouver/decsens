@@ -1,0 +1,17 @@
+<><><><><><><><><>
+Notes to Lizzie 
+Dealing with late April edits
+<><><><><><><><><>
+
+
+
+
+<><><><><><><><<><>
+Notes to myself on friendly review edits:
+<><><><><><><><><><>
+
+One point Christy made that I liked and wanted to squeeze in is:
+
+"Another point I’ve had to bring up with reviewers that i think you could hit a bit harder is that there is little biological basis for the default assumption to be linear effects — it’s really just an artifact of our standard statistical toolbox. If we think about the basic biophysical processes that drive our observable states — things like enzyme kinetics or assimilation rates — the basic physics and chemistry of how those things work are inherently non-linear. Is there a good explanation why non-linear fundamental processes should magically become linear in our observed states?"
+
+I decided it is kind of implicit in our argument, and Jonathan also pointed out that assuming linearity for lots of non-linear things can work fine, especially in-sample, so now I feel okay leaving it out. I told Christy she should make it in more papers as it's brilliant. 

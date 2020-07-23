@@ -1,0 +1,38 @@
+\documentclass[11pt,letter]{article}
+\usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\renewcommand{\baselinestretch}{1.1}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+
+\def\labelitemi{--}
+\parindent=0pt
+
+\begin{document}
+\bibliographystyle{/Users/Lizzie/Documents/EndnoteRelated/Bibtex/styles/besjournals}
+\renewcommand{\refname}{\CHead{}}
+
+Possible datasets for the paper:
+\begin{enumerate}
+\item PEP-725 data on \emph{Betula pendula}. We should use this as it's used in the first classic paper on declining sensitivities. There are more many more sites ($>$1000 perhaps) for this species, and other species we can add, but the data gets a bit more diverse so we'd need to think more about the hierarchical model structure, which seemed beyond scope to me. But happy to discuss.
+\item Cherry data -- DC. Also seems good to use, especially given its poster child use by the media of spring marching ever forward. 
+\item Cherry data -- Japanese data are available in the new rethinking package so I tracked them down there (used to explain splines):
+\url{http://atmenv.envi.osakafu-u.ac.jp/aono/kyophenotemp4/}. I like this dataset a lot given its longevity and as a complement to the shorter DC dataset.
+\item More cherry data? There's definitely more of it, but not sure we want to go this way. If we do I can track down a few datasets. 
+% Look here for Bonn data? https://link.springer.com/article/10.1007/s41207-020-0146-5
+\item Lilac data (\url{https://www.nature.com/articles/sdata201538}) -- have not used but a famous dataset in phenology and should be fairly complete for a number of sites. These are all clonal lilacs so I suspect will behave similarly to cherry data. There is a Wang \emph{et al.} 2018 paper (`Trends and Variability in Temperature Sensitivity of Lilac Flowering Phenology') using lilacs and showing declining sensitivities (but in Europe). 
+\item Hubbard Brook data (\url{https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-hbr&identifier=51}) which I believe is used in the paper, `On quantifying the apparent temperature sensitivity of plant phenology' (\url{https://nph.onlinelibrary.wiley.com/doi/abs/10.1111/nph.16114}), which works on the issue of why temperature sensitivity may be a bad metric, but doesn't, to me, quite get it. Maybe a good choice for diversity of datasets?
+\item Harvard Forest data (\url{https://harvardforest1.fas.harvard.edu/exist/apps/datasets/showData.html?id=HF003}), not used in any papers I know of on declining temperature sensitivity, but a classic commonly used dataset (that the lab uses a lot) so could be a good choice.
+\item Mikesell data (\url{https://knb.ecoinformatics.org/view/wolkovich.33.3}) has not been used for declining sensitivities and all occurs well before climate change (though a couple cool years from Krakatoa) but is a classic in the field so could be a nice addition.
+\end{enumerate}
+
+Datasets I am not suggesting exactly, but if you're really interested we can work on:
+\begin{enumerate}
+\item `Variations in the temperature sensitivity of spring leaf phenology from 1978 to 2014 in Mudanjiang, China' (Dai \emph{et al.} 2019, (\url(https://link.springer.com/article/10.1007/s00484-017-1489-8)) finds increasing and declining sensitivities, but I don't know the dataset or access to it. I can look into it. 
+\item Lots of papers on declining sensitivity now use NDVI -- this is remotely sensed phenology (e.g., \url{https://onlinelibrary.wiley.com/doi/epdf/10.1111/gcb.15200} or \url{https://www.nature.com/articles/nclimate3277}) which I have never used so I am not sure of starting to use it here, but can look into it if you're really interested. Otherwise I'd prefer to stick with ground observations, which I know and understand well.
+\item Primack-Thoreau data -- I have used these data and they feel `cleaned' to me, if you will, so I have since stopped using them. 
+\end{enumerate}
+
+\end{document}
