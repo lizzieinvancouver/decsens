@@ -157,10 +157,10 @@ mean(fsest$mat30slope) ## -0.17
 mean(fsest$mat45slope) ## 0.06
 mean(fsest$mat60slope) ## -3.02
 
-write.csv(fsest, file="output/fsestimates_withlog_1950to2010.csv", row.names = FALSE)
-#write.csv(fsest, file="output/fsestimates_withlog_1950_2000.csv", row.names = FALSE)
-write.csv(meanhere, file="output/fsestimates_twentyyrwindows.csv", row.names = FALSE)
-#write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
+#write.csv(fsest, file="output/fsestimates_withlog_1950to2010.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsestimates_withlog_1950_2000.csv", row.names = FALSE)
+#write.csv(meanhere, file="output/fsestimates_twentyyrwindows.csv", row.names = FALSE)
+write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

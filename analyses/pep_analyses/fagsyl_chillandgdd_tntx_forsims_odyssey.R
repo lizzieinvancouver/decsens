@@ -37,15 +37,15 @@ df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
 allpeps <- df[(df$year>=1951 & df$year<=2010),]
-#allpeps <- allpeps[!(allpeps$year<=2000 & allpeps$year>=1961),]
+allpeps <- allpeps[!(allpeps$year<=2000 & allpeps$year>=1961),]
 #allpeps <- allpeps[!(allpeps$year<=1970 & allpeps$year>=1961),]
 
 allpeps$cc<-NA
-allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "1990-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1960", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "2000-2010", allpeps$cc)
 #allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=60),]
+mostdata<-allpeps[(allpeps$num.years>=20),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
