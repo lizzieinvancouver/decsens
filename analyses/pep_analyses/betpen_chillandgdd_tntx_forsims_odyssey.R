@@ -595,8 +595,8 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #post <- read.csv("postbetpen.csv")
 #mid <- read.csv("midbetpen.csv")
 
-pre <- read.csv("prebetpen.csv")
-post <- read.csv("postbetpen.csv")
+pre <- read.csv("prebetpenten.csv")
+post <- read.csv("postbetpenten.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
