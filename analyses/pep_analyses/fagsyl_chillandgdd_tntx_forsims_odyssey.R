@@ -15,9 +15,9 @@ require(lubridate)
 require(chillR)
 require(raster)
 
-#setwd("~/Documents/git/decsens/analyses/pep_analyses")
-d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_fagsyl_all.csv", header=TRUE)
-#d<-read.csv("input/pep_fagsyl_all.csv", header=TRUE)
+setwd("~/Documents/git/decsens/analyses/pep_analyses")
+#d<-read.csv("/n/wolkovich_lab/Lab/Cat/pep_fagsyl_all.csv", header=TRUE)
+d<-read.csv("input/pep_fagsyl_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
@@ -54,10 +54,10 @@ bestsites <- bestsites$Var1
 
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
-rn<-brick("/n/wolkovich_lab/Lab/Cat/tn_0.25deg_reg_v16.0.nc", sep="")
-#rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
-rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
-#rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
+#rn<-brick("/n/wolkovich_lab/Lab/Cat/tn_0.25deg_reg_v16.0.nc", sep="")
+rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
+#rx<-brick("/n/wolkovich_lab/Lab/Cat/tx_0.25deg_reg_v16.0.nc", sep="")
+rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
 
 ##### Now to calculate chilling using Chill portions based on Ailene's code `chillcode_snippet.R' #####
 ## Adjust the period you are using below to match the function you want to use (i.e. extractchillpre or extractchillpost)
@@ -586,12 +586,15 @@ if(FALSE){
 }
 
 #if(FALSE){
-#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
+setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
-#pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
+#pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("postfagsyl.csv")
 #mid <- read.csv("midfagsyl.csv")
+
+pre <- read.csv("prefagsylten.csv")
+post <- read.csv("postfagsylten.csv")
 
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
@@ -968,9 +971,11 @@ full.site<-full_join(site, site.post)
 #full.site<-full_join(full.site, site.mid)
 full.site$year<-as.numeric(full.site$year)
 full.site$cc <- NA
-full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", full.site$cc)
+#full.site$cc <- ifelse(full.site$year<=1970, "1950-1970", full.site$cc)
+full.site$cc <- ifelse(full.site$year<=1960, "1950-1960", full.site$cc)
 #full.site$cc <- ifelse(full.site$year>1970 & full.site$year<=1990, "1970-1990", full.site$cc)
-full.site$cc <- ifelse(full.site$year>1990 & full.site$year<=2010, "1990-2010", full.site$cc)
+#full.site$cc <- ifelse(full.site$year>1990 & full.site$year<=2010, "1990-2010", full.site$cc)
+full.site$cc <- ifelse(full.site$year>2000 & full.site$year<=2010, "2000-2010", full.site$cc)
 lodata <- subset(allpeps.subset, select=c("year", "lat", "long", "lo"))
 full.site <- left_join(full.site, lodata)
 full.site.nonas <- full.site[!is.na(full.site$lo),]
@@ -981,15 +986,15 @@ if(FALSE){
   allchillsgdds<-rbind(allchillsgdds, full.site4)
   allchillsgdds<-rbind(allchillsgdds, full.site5)
 }
-#write.csv(full.site.nonas, file="/n/wolkovich_lab/Lab/Cat/fagsyl_allchillsandgdds_nomat.csv", row.names = FALSE)
+write.csv(full.site.nonas, file="fagsyl_allchillsandgdds_nomat_tenyr.csv", row.names = FALSE)
 
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
 ##################################################################################################
-#full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
+#full.site.nonas <- read.csv("fagsyl_allchillsandgdds_nomat_1950&1990.csv", header = TRUE)
 
 period <- c(1951:1960, 2001:2010)
-period <- c(1951:1970, 1971:1990, 1991:2010)
+#period <- c(1951:1970, 1971:1990, 1991:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
@@ -1049,14 +1054,28 @@ dx$date<-NULL
 
 dx$year<-as.numeric(substr(dx$Date, 0, 4))
 dx$lat.long<-paste(dx$lat, dx$long)
-dx$mat<-ave(dx$Tavg, dx$year, dx$lat.long)
+dx$month <- substr(dx$Date, 6,7)
+dx$doy <- as.numeric(strftime(dx$Date, format = "%j"))
 
-mst<-dx%>%dplyr::select(-Tavg, -Date)
-mst<-mst[!duplicated(mst),]
+### Now, let's vary pre-season length. We'll add 30, 45 and 60 days
+dx$mat60<-ave(dx$Tavg, dx$year, dx$lat.long)
+dx$mat30 <- ifelse(dx$month=="03", 
+                   ave(dx$Tavg[dx$month=="03"], dx$year[dx$month=="03"], 
+                       dx$lat.long[dx$month=="03"]), NA)
+
+dx$mat45 <- ifelse(dx$doy>=60 & dx$doy<=105, 
+                   ave(dx$Tavg[dx$doy>=60 & dx$doy<=105], dx$year[dx$doy>=60 & dx$doy<=105], 
+                       dx$lat.long[dx$doy>=60 & dx$doy<=105]), NA)
+
+mst<-dx%>%dplyr::select(-Tavg, -Date, -doy, -month)
+mst$id <- paste(mst$year, mst$lat.long)
+mst<-mst[!duplicated(c(mst$id)),]
+mst$id <- NULL
 
 fullsites45 <- left_join(full.site, mst)
+fullsites45 <- fullsites45[!is.na(fullsites45$lat.long),]
 
-write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/fagsyl_decsens_1950-2000.csv", row.names = FALSE)
+write.csv(fullsites45, file="~/Documents/git/decsens/analyses/pep_analyses/output/fagsyl_decsens_1950_2000.csv", row.names = FALSE)
 
 ##################################################################################################
 ################################# Now for some plots! ############################################
