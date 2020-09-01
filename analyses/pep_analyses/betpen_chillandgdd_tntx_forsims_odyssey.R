@@ -983,9 +983,13 @@ write.csv(full.site.nonas, file="betpen_allchillsandgdds_nomat_tenyrs.csv", row.
 ############################### MEAN TEMP instead of GDD #########################################
 ##################################################################################################
 #full.site <- read.csv("output/betpen_allchillsandgdds_45sites_tntx_forsims.csv", header = TRUE)
+full.site <- read.csv("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive/betpen_allchillsandgdds_nomat_twentyyrs.csv")
 
-period <- c(1951:1960, 2001:2010)
-#period <- c(1951:1970, 1971:1990, 1991:2010)
+rn<-brick("~/Desktop/Big Data Files/tn_0.25deg_reg_v16.0.nc", sep="")
+rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
+
+#period <- c(1951:1960, 2001:2010)
+period <- c(1951:1970, 1971:1990, 1991:2010)
 sites<-subset(full.site, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
@@ -1007,6 +1011,7 @@ climsubmax<-subset(tmax,yearsinperiod)
 ## subset climate days
 monthsinclim<-as.numeric(format(as.Date(names(climsubmin),format="X%Y.%m.%d"),"%m"))
 mstmonths<-c(3:4)
+#mstmonths<-c(1:4) ### for including daily temps from Jan 1 to Apr 30
 monthsinmst<-which(monthsinclim%in%mstmonths)
 mstsubmin<-subset(climsubmin,monthsinmst)
 mstsubmax<-subset(climsubmax,monthsinmst)
@@ -1045,6 +1050,9 @@ dx$date<-NULL
 
 dx$year<-as.numeric(substr(dx$Date, 0, 4))
 dx$lat.long<-paste(dx$lat, dx$long)
+
+#write.csv(dx, file="~/Documents/git/decsens/analyses/pep_analyses/output/dailytemps_jantoapr.csv", row.names = FALSE)
+
 dx$month <- substr(dx$Date, 6,7)
 dx$doy <- as.numeric(strftime(dx$Date, format = "%j"))
 
