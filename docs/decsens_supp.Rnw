@@ -143,6 +143,20 @@ These results highlight how the acceleration of biological time due to climate c
 \clearpage
 \section{Tables}
 \vspace{-3ex}
+\begin{center}
+\captionof{table}{Number of sites for each species used in the study (\\emph{Betula pendula} and \\emph{Fagus sylvatica}) using the PEP725 over 10 and 20-year windows.} \label{tab:bbspp}
+\begin{tabular}{l c c c c c}
+\cline{2-5}
+species & n sites \n(1950-1960) & n sites \n(2000-2010) & 
+n sites \n(1950-1970) & n sites \n(1970-1990) & n sites \n(1990-2010) \\
+\hline
+\textit{Betula pendula} & 17 & 17 & 45 & 45 & 45  \\
+\textit{Fagus sylvatica} & 24 & 24 & 47 & 47 & 47 \\
+\hline
+\end{tabular}
+\end{center}
+
+
 <<label=xtablez2, echo=FALSE, results=tex>>=
 library(xtable)
 source("..//analyses/pep_analyses/pepplotting.R")
