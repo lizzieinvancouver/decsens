@@ -9,6 +9,7 @@ options(stringsAsFactors = FALSE)
 
 # Setting working directory. 
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
+#setwd("~/Documents/git/decsens/analyses")
 
 # Get data ...
 df.20yr <- read.csv("pep_analyses/output/bpenestimates_withlog_1950to2010.csv", header=TRUE) 
@@ -29,16 +30,26 @@ length(unique(df.10yr$siteslist))
 length(unique(fs.10yr$siteslist))
 
 
-mean.betpen.20yr <- aggregate(df.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
-    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
-    df.20yr["cc"], FUN=mean)
+mean.betpen.20yr <- aggregate(df.20yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                        "mat45slope", "mat45slopelog", "meanmat45", "varmat45",
+                                        "mat60slope", "mat60slopelog", "meanmat60", "varmat60",
+                                        "varlo", "meangdd", "meanmatlo",
+                                        "mat30slopeconfint11", "mat30slopeconfint89", "mat30slopelogconfint11", "mat30slopelogconfint89",
+                                        "mat45slopeconfint11", "mat45slopeconfint89", "mat45slopelogconfint11", "mat45slopelogconfint89",
+                                        "mat60slopeconfint11", "mat60slopeconfint89", "mat60slopelogconfint11", "mat60slopelogconfint89")],
+                              df.20yr["cc"], FUN=mean)
 
-mean.betpen.10yr <- aggregate(df.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
-    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
+mean.betpen.10yr <- aggregate(df.10yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                        "mat45slope", "mat45slopelog", "meanmat45", "varmat45",
+                                        "mat60slope", "mat60slopelog", "meanmat60", "varmat60",
+                                        "varlo", "meangdd", "meanmatlo",
+                                        "mat30slopeconfint11", "mat30slopeconfint89", "mat30slopelogconfint11", "mat30slopelogconfint89",
+                                        "mat45slopeconfint11", "mat45slopeconfint89", "mat45slopelogconfint11", "mat45slopelogconfint89",
+                                        "mat60slopeconfint11", "mat60slopeconfint89", "mat60slopelogconfint11", "mat60slopelogconfint89")],
     df.10yr["cc"], FUN=mean)
 
-mean.betpen.10yr.old <- aggregate(df.old[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", 
-    "meanmatlo")], df.old["cc"], FUN=mean)
+mean.betpen.10yr.old <- aggregate(df.old[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
+                                          "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")], df.old["cc"], FUN=mean)
 
 tempdiff1.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1970-1990")]-
     mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
@@ -51,12 +62,22 @@ tempdiff1.10yr <- mean.betpen.10yr$meanmat[which(mean.betpen.10yr$cc=="2000-2010
 tempdiffplot.10yr <- c(0, tempdiff1.10yr)
 
 ## For Fagus sylvatica
-mean.fs.20yr <- aggregate(fs.20yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
-    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
+mean.fs.20yr <- aggregate(fs.20yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                    "mat45slope", "mat45slopelog", "meanmat45", "varmat45",
+                                    "mat60slope", "mat60slopelog", "meanmat60", "varmat60",
+                                    "varlo", "meangdd", "meanmatlo",
+                                    "mat30slopeconfint11", "mat30slopeconfint89", "mat30slopelogconfint11", "mat30slopelogconfint89",
+                                    "mat45slopeconfint11", "mat45slopeconfint89", "mat45slopelogconfint11", "mat45slopelogconfint89",
+                                    "mat60slopeconfint11", "mat60slopeconfint89", "mat60slopelogconfint11", "mat60slopelogconfint89")],
     fs.20yr["cc"], FUN=mean)
 
-mean.fs.10yr <- aggregate(fs.10yr[c("matslope", "matslopelog", "meanmat", "varmat", "varlo", "meangdd", "meanmatlo",
-    "matslopeconfint11", "matslopeconfint89", "matslopelogconfint11", "matslopelogconfint89")],
+mean.fs.10yr <- aggregate(fs.10yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                    "mat45slope", "mat45slopelog", "meanmat45", "varmat45",
+                                    "mat60slope", "mat60slopelog", "meanmat60", "varmat60",
+                                    "varlo", "meangdd", "meanmatlo",
+                                    "mat30slopeconfint11", "mat30slopeconfint89", "mat30slopelogconfint11", "mat30slopelogconfint89",
+                                    "mat45slopeconfint11", "mat45slopeconfint89", "mat45slopelogconfint11", "mat45slopelogconfint89",
+                                    "mat60slopeconfint11", "mat60slopeconfint89", "mat60slopelogconfint11", "mat60slopelogconfint89")],
     fs.10yr["cc"], FUN=mean)
 
 tempdiff1fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1970-1990")]-
@@ -608,27 +629,47 @@ dev.off()
 
 mean.betpen.10yr$species <- rep("Betula pendula", nrow(mean.betpen.10yr))
 mean.fs.10yr$species <- rep("Fagus sylvatica", nrow(mean.fs.10yr))
-mean.betpen.forpaper <- subset(mean.betpen.10yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
-    "meangdd", "matslope", "matslopelog"))
-mean.fs.forpaper <- subset(mean.fs.10yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
-    "meangdd", "matslope", "matslopelog"))
-mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+mean.betpen.forpaper10yr <- subset(mean.betpen.10yr, select=c("cc", "species", 
+                                                              "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30",
+                                                              "varmat45", "varmat60", "varlo",
+                                                              "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
+
+
+mean.fs.forpaper10yr <- subset(mean.fs.10yr,  select=c("cc", "species", 
+                                                   "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30",
+                                                   "varmat45", "varmat60", "varlo",
+                                                   "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
+
+
+
+mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper10yr, mean.fs.forpaper10yr)
 mean2spp.forpaper10yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper10yr$species)
 mean2spp.forpaper10yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper10yr$species)
-names(mean2spp.forpaper10yr) <- c("years", "species", "mean (ST)", "mean (ST.leafout)", "var (ST)", "var (leafout)", "mean (GDD)",
-    "slope", "log-slope")
+names(mean2spp.forpaper10yr) <-  c("years", "species", "30", "45", "60", "mean (ST.leafout)", 
+                                   "30", "45", "60", "var (leafout)", "mean (GDD)",
+                                   "30", "45", "60", "30", "45", "60")
 
 
 mean.betpen.20yr$species <- rep("Betula pendula", nrow(mean.betpen.20yr))
 mean.fs.20yr$species <- rep("Fagus sylvatica", nrow(mean.fs.20yr))
-mean.betpen.forpaper <- subset(mean.betpen.20yr, select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
-    "meangdd", "matslope", "matslopelog"))
-mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species", "meanmat", "meanmatlo", "varmat", "varlo",
-    "meangdd", "matslope", "matslopelog"))
+mean.betpen.forpaper <- subset(mean.betpen.20yr, select=c("cc", "species", 
+                                                          "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30",
+                                                          "varmat45", "varmat60", "varlo",
+                                                          "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
+
+
+
+mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species", 
+                                                   "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30",
+                                                   "varmat45", "varmat60", "varlo",
+                                                   "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
+
 mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
 mean2spp.forpaper20yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula pendula","}"), mean2spp.forpaper20yr$species)
 mean2spp.forpaper20yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus sylvatica","}"), mean2spp.forpaper20yr$species)
-names(mean2spp.forpaper20yr) <-  c("years", "species", "mean (ST)", "mean (ST.leafout)", "var (ST)", "var (leafout)", "mean (GDD)",
-    "slope", "log-slope")
+names(mean2spp.forpaper20yr) <-  c("years", "species", "30", "45", "60", "mean (ST.leafout)", 
+                                   "30", "45", "60", "var (leafout)", "mean (GDD)",
+                                   "30", "45", "60", "30", "45", "60")
+
 
 
