@@ -3,7 +3,41 @@ Notes to Lizzie
 Dealing with late April edits
 <><><><><><><><><>
 
+<><><><><><><><<><>
+Dealing with revisions ...
+<><><><><><><><><><>
 
+
+** Me do next **
+-> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)."
+-> Think on the slides in Auerbach's defense (some_stat_models.pdf)
+
+
+- Address non-identifiability when trying to vary other things in model 
+- Build up simulations in the supp -- to show differences between estimates of models with true declines and with just statistical artifacts (add photoperiod model in addition to chilling, add greater comparison of estimates ...) 
+- Add lilacs or some other long-term data or just add more PEP species? 
+- Add table of species with constant sites across the windows we chose. Then add top two species? 
+- Do something about pre-season length (currently: 1 March to 30 April)
+
+German phenology data: https://link.springer.com/article/10.1007/s00484-013-0650-2
+Russian phenology data: https://www.nature.com/articles/s41597-020-0376-z
+Lilac data: https://www.nature.com/articles/sdata201538
+
+Pre-season:
+- Currently 1 Mar to 30 Apr:
+	- we could shift it back 15 d: 15-ish Feb - 15 Apr 
+	- we could make it 15 days shorter 
+- BETPEN data range is ~80-140, mean is 110 (~mid to late April)
+- FAGSYL data range is ~105-135, mean is 110 (very late April)
+- Fu et al. find a 60 day preseason is most common across species (Ext. Data Fig 2) and for BETPEN, though for FAGSYL it looks to be tied for 15 and 30 d. For BETPEN 45 d is runner-up. They seem to actually calculate the temperature window from leaf unfolding based on their preseason length, but I don't think we want to do that. 
+
+
+Here's what Gusewell did: 
+"The optimal preseason for each species, station and time period was determined as the series of 20–120 days (with 10-day steps) preceding the mean date of the phenological event, whose mean temperatures correlate most negatively with phenology. We initially varied both preseason start and preseason end dates to check that the optimal end date was the mean date of the phenological event in most cases, as assumed by our model. We then fixed preseason end at the mean date of the event and selected the optimal start date, which in turn determined preseason length. The optimal preseason start date and the following statistics were determined for the entire period 1970–2012 (“fixed start date”), separately for 1970–1987 and 1995–2012 (“period-specific start dates”), and separately for cold and warm years, provided that data from at least eight years were available in the data subset considered."
+
+"The start of the preseason advanced on average by 7.68  2.14 days between the two periods (z = 3.58, p < .001, Figure 4b). However, preseason start advanced only for nine species (mainly early- and late-spring events), and hardly changed for the others (Figure 4b)."
+
+"Temperature sensitivity did on average not differ significantly between years with warm and cold winters (z = 1.57, p = .12)."
 
 
 <><><><><><><><<><>
