@@ -10,6 +10,7 @@ options(stringsAsFactors=FALSE)
 graphics.off()
 
 # Load libraries
+require(plyr)
 require(dplyr)
 require(tidyr)
 require(ggplot2)
@@ -26,13 +27,27 @@ bp$date <- as.Date(bp$Date, format="%Y-%m-%d")
 bp$doy <- format(bp$date, "%j")
 bp$mon <- format(bp$date, "%m")
 
-bpsm <- subset(bp, as.numeric(mon)>2)
+bpsm <- subset(bp, as.numeric(doy)>45)
 bpsm.select <- subset(bpsm, year==2007)
 
 ggplot(bpsm.select, aes(x=as.numeric(doy), y=Tavg, group=as.factor(year), colour=as.factor(year))) +
     geom_point() +
    # geom_smooth(method="lm") + 
     facet_wrap(.~as.factor(lat.long))
+
+bpsm$decade <- NA
+bpsm$decade[which(bpsm$year<1971)] <- "1951-1970"
+bpsm$decade[which(bpsm$year>1990)] <- "1991-2010"
+bpsm$decade[which(is.na(bpsm$decade)==TRUE)] <- "1971-1990"
+
+bpsumm <-
+      ddply(bpsm, c("lat.long", "decade", "doy"), summarise,
+      temp = mean(Tavg))
+
+ggplot(bpsumm, aes(x=as.numeric(doy), y=temp, group=as.factor(lat.long ), colour=as.factor(lat.long))) +
+    geom_point() +
+    # geom_smooth(method="lm")
+    facet_wrap(.~as.factor(decade))
 
 ##
 ## Work from Spring 2020 

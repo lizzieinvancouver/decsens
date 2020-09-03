@@ -31,7 +31,7 @@ Pre-season:
 - FAGSYL data range is ~105-135, mean is 110 (very late April)
 - Fu et al. find a 60 day preseason is most common across species (Ext. Data Fig 2) and for BETPEN, though for FAGSYL it looks to be tied for 15 and 30 d. For BETPEN 45 d is runner-up. They seem to actually calculate the temperature window from leaf unfolding based on their preseason length, but I don't think we want to do that. 
 
-Suggested to Cat:
+Suggested to Cat on 3 Sep 2020:
 So we have already:
 (1) 1 Mar to 30 Apr
 We add:
