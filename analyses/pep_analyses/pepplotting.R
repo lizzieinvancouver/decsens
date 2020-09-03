@@ -635,6 +635,27 @@ mean.fs.forpaper10yr <- subset(mean.fs.10yr,  select=c("cc", "species", "meanmat
 mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper10yr, mean.fs.forpaper10yr)
 mean2spp.forpaper10yr$species <- gsub("Betula pendula", paste0("\\\\emph{","B. pendula","}"), mean2spp.forpaper10yr$species)
 mean2spp.forpaper10yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","F. sylvatica","}"), mean2spp.forpaper10yr$species)
+
+mean2spp.forpaper10yr$mat30slope <- ifelse(mean2spp.forpaper10yr$mat30slope>=-0.01 & 
+                                             mean2spp.forpaper10yr$mat30slope<=0, 0.0, 
+                                           mean2spp.forpaper10yr$mat30slope)
+mean2spp.forpaper10yr$mat45slope <- ifelse(mean2spp.forpaper10yr$mat45slope>=-0.01 & 
+                                             mean2spp.forpaper10yr$mat45slope<=0, 0.0, 
+                                           mean2spp.forpaper10yr$mat45slope)
+mean2spp.forpaper10yr$mat60slope <- ifelse(mean2spp.forpaper10yr$mat60slope>=-0.01 & 
+                                             mean2spp.forpaper10yr$mat60slope<=0, 0.0, 
+                                           mean2spp.forpaper10yr$mat60slope)
+
+mean2spp.forpaper10yr$mat30slopelog <- ifelse(mean2spp.forpaper10yr$mat30slopelog>=-0.01 & 
+                                                mean2spp.forpaper10yr$mat30slopelog<=0, 0.0, 
+                                              mean2spp.forpaper10yr$mat30slopelog)
+mean2spp.forpaper10yr$mat45slopelog <- ifelse(mean2spp.forpaper10yr$mat45slopelog>=-0.01 & 
+                                                mean2spp.forpaper10yr$mat45slopelog<=0, 0.0, 
+                                              mean2spp.forpaper10yr$mat45slopelog)
+mean2spp.forpaper10yr$mat60slopelog <- ifelse(mean2spp.forpaper10yr$mat60slopelog>=-0.01 & 
+                                                mean2spp.forpaper10yr$mat60slopelog<=0, 0.0, 
+                                              mean2spp.forpaper10yr$mat60slopelog)
+
 names(mean2spp.forpaper10yr) <-  c("years", "species", "30", "45", "60", "mean (ST.lo)", 
                                    "30", "45", "60", "var (lo)", "mean (GDD)",
                                    "30", "45", "60", "30", "45", "60")
@@ -655,6 +676,28 @@ mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species",
 mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
 mean2spp.forpaper20yr$species <- gsub("Betula pendula", paste0("\\\\emph{","B. pendula","}"), mean2spp.forpaper20yr$species)
 mean2spp.forpaper20yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","F. sylvatica","}"), mean2spp.forpaper20yr$species)
+
+
+mean2spp.forpaper20yr$mat30slope <- ifelse(mean2spp.forpaper20yr$mat30slope>=-0.01 & 
+                                            mean2spp.forpaper20yr$mat30slope<=0, 0.0, 
+                                       mean2spp.forpaper20yr$mat30slope)
+mean2spp.forpaper20yr$mat45slope <- ifelse(mean2spp.forpaper20yr$mat45slope>=-0.01 & 
+                                             mean2spp.forpaper20yr$mat45slope<=0, 0.0, 
+                                           mean2spp.forpaper20yr$mat45slope)
+mean2spp.forpaper20yr$mat60slope <- ifelse(mean2spp.forpaper20yr$mat60slope>=-0.01 & 
+                                             mean2spp.forpaper20yr$mat60slope<=0, 0.0, 
+                                           mean2spp.forpaper20yr$mat60slope)
+
+mean2spp.forpaper20yr$mat30slopelog <- ifelse(mean2spp.forpaper20yr$mat30slopelog>=-0.01 & 
+                                             mean2spp.forpaper20yr$mat30slopelog<=0, 0.0, 
+                                           mean2spp.forpaper20yr$mat30slopelog)
+mean2spp.forpaper20yr$mat45slopelog <- ifelse(mean2spp.forpaper20yr$mat45slopelog>=-0.01 & 
+                                             mean2spp.forpaper20yr$mat45slopelog<=0, 0.0, 
+                                           mean2spp.forpaper20yr$mat45slopelog)
+mean2spp.forpaper20yr$mat60slopelog <- ifelse(mean2spp.forpaper20yr$mat60slopelog>=-0.01 & 
+                                             mean2spp.forpaper20yr$mat60slopelog<=0, 0.0, 
+                                           mean2spp.forpaper20yr$mat60slopelog)
+
 names(mean2spp.forpaper20yr) <-  c("years", "species", "30", "45", "60", "mean (ST.lo)", 
                                    "30", "45", "60", "var (lo)", "mean (GDD)",
                                    "30", "45", "60", "30", "45", "60")
