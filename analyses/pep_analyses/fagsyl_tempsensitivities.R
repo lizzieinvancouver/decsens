@@ -20,8 +20,8 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #fspre <- read.csv("output/fs_climatedatapre.csv")
 #fspost <- read.csv("output/fs_climatedatapost.csv")
 
-fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")
-#fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
+#fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")
+fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
@@ -45,7 +45,7 @@ sitez <- unique(fs$siteslist)
 
 for(i in c(1:length(sitez))){ # i <- 1
   subby <- subset(fs, siteslist==sitez[i])
-  for(ccstate in c(1:2)){ ## ccstate=1
+  for(ccstate in c(1:3)){ ## ccstate=1
     subbycc <- subset(subby, cc==unique(fs$cc)[ccstate])
     meanmat30 <- mean(subbycc$mat30, na.rm=TRUE)
     varmat30 <- var(subbycc$mat30, na.rm=TRUE)
@@ -157,10 +157,10 @@ mean(fsest$mat30slope) ## -0.17
 mean(fsest$mat45slope) ## 0.06
 mean(fsest$mat60slope) ## -3.02
 
-#write.csv(fsest, file="output/fsestimates_withlog_1950to2010.csv", row.names = FALSE)
-write.csv(fsest, file="output/fsestimates_withlog_1950_2000.csv", row.names = FALSE)
-#write.csv(meanhere, file="output/fsestimates_twentyyrwindows.csv", row.names = FALSE)
-write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
+write.csv(fsest, file="output/fsestimates_withlog_1950to2010.csv", row.names = FALSE)
+#write.csv(fsest, file="output/fsestimates_withlog_1950_2000.csv", row.names = FALSE)
+write.csv(meanhere, file="output/fsestimates_twentyyrwindows.csv", row.names = FALSE)
+#write.csv(meanhere, file="output/fsestimates_tenyrwindows.csv", row.names = FALSE)
 
 ## Also get the difference for each site across two time periods
 # This is to compare to sims better

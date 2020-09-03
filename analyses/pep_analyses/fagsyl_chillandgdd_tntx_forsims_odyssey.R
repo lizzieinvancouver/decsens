@@ -45,6 +45,7 @@ allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1960", allpeps$
 allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "2000-2010", allpeps$cc)
 #allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$PEP_ID, FUN=length)
+mostdata<-allpeps[(allpeps$num.years>=60),]
 mostdata<-allpeps[(allpeps$num.years>=20),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
@@ -589,6 +590,7 @@ if(FALSE){
 setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
 #post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
+
 #pre <- read.csv("prefagsyl.csv")
 #post <- read.csv("postfagsyl.csv")
 #mid <- read.csv("midfagsyl.csv")
@@ -995,7 +997,7 @@ write.csv(full.site.nonas, file="fagsyl_allchillsandgdds_nomat_tenyr.csv", row.n
 
 period <- c(1951:1960, 2001:2010)
 #period <- c(1951:1970, 1971:1990, 1991:2010)
-sites<-subset(full.site, select=c(lat, long, lat.long))
+sites<-subset(full.site.nonas, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
 sites$x<-sites$long
 sites$y<-sites$lat
@@ -1059,13 +1061,15 @@ dx$doy <- as.numeric(strftime(dx$Date, format = "%j"))
 
 ### Now, let's vary pre-season length. We'll add 30, 45 and 60 days
 dx$mat60<-ave(dx$Tavg, dx$year, dx$lat.long)
-dx$mat30 <- ifelse(dx$month=="03", 
-                   ave(dx$Tavg[dx$month=="03"], dx$year[dx$month=="03"], 
-                       dx$lat.long[dx$month=="03"]), NA)
+dx$mat30 <- ifelse(dx$doy>=74 & dx$doy<=105, 
+                   ave(dx$Tavg[dx$doy>=74 & dx$doy<=105], dx$year[dx$doy>=74 & dx$doy<=105], 
+                       dx$lat.long[dx$doy>=74 & dx$doy<=105]), NA)
 
 dx$mat45 <- ifelse(dx$doy>=60 & dx$doy<=105, 
                    ave(dx$Tavg[dx$doy>=60 & dx$doy<=105], dx$year[dx$doy>=60 & dx$doy<=105], 
                        dx$lat.long[dx$doy>=60 & dx$doy<=105]), NA)
+
+dx <- na.omit(dx)
 
 mst<-dx%>%dplyr::select(-Tavg, -Date, -doy, -month)
 mst$id <- paste(mst$year, mst$lat.long)
