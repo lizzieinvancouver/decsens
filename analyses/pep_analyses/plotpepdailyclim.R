@@ -17,6 +17,27 @@ require(ggplot2)
 
 setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses/")
 
+##
+## Fall 2020, checking alpha_1 linearity assumption
+##
+# From Cat: daily temps from Jan 1 to Apr 30. Let me know if you'd like me to make a figure! I used the 17 sites from the BETPEN 20-year window
+bp <- read.csv("output/dailytemps_jantoapr.csv")
+bp$date <- as.Date(bp$Date, format="%Y-%m-%d")
+bp$doy <- format(bp$date, "%j")
+bp$mon <- format(bp$date, "%m")
+
+bpsm <- subset(bp, as.numeric(mon)>2)
+bpsm.select <- subset(bpsm, year==2007)
+
+ggplot(bpsm.select, aes(x=as.numeric(doy), y=Tavg, group=as.factor(year), colour=as.factor(year))) +
+    geom_point() +
+   # geom_smooth(method="lm") + 
+    facet_wrap(.~as.factor(lat.long))
+
+##
+## Work from Spring 2020 
+##
+
 d <- read.csv("output/betpen_dailytempsandlo_1950to2010.csv")
 d$date <- as.Date(d$Date, format="%Y-%m-%d")
 d$mon <- format(d$date, "%m")
