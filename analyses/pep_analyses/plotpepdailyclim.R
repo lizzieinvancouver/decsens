@@ -73,7 +73,9 @@ ggplot(bpsumm, aes(x=as.numeric(doy), y=temp)) +
     geom_line(color="dodgerblue") +
     facet_wrap(.~as.factor(lat.long)) +
     geom_text(color="dodgerblue", size=3, data=bpsummr2, aes(x = 57, y = 12, label = r2)) +
-    theme_minimal()
+    xlab("day of year") +
+    ylab("daily temperature (C)") +
+    theme_minimal() 
   
 
 ## tried to see if moving average helped with visualization... no much
@@ -84,7 +86,6 @@ bpma <- bpsumm %>%
   mutate(ma7day = rollmean(temp, 2, na.pad = TRUE))
 ggplot(bpma, aes(x=as.numeric(doy), y=ma7day, group=as.factor(decade), colour=as.factor(decade))) +
     geom_line() +
-    # geom_smooth(method="lm")
     facet_wrap(.~as.factor(lat.long))
 }
 
