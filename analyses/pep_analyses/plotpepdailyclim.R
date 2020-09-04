@@ -12,9 +12,7 @@ graphics.off()
 # Load libraries
 require(plyr)
 require(dplyr)
-require(tidyr)
 require(ggplot2)
-
 
 setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses/")
 
@@ -27,9 +25,10 @@ bp$date <- as.Date(bp$Date, format="%Y-%m-%d")
 bp$doy <- format(bp$date, "%j")
 bp$mon <- format(bp$date, "%m")
 
-bpsm <- subset(bp, as.numeric(doy)>45)
-bpsm.select <- subset(bpsm, year==2007)
 
+bpsm <- subset(bp, as.numeric(doy)>45)
+
+bpsm.select <- subset(bpsm, year==2007)
 ggplot(bpsm.select, aes(x=as.numeric(doy), y=Tavg, group=as.factor(year), colour=as.factor(year))) +
     geom_point() +
    # geom_smooth(method="lm") + 
@@ -40,14 +39,55 @@ bpsm$decade[which(bpsm$year<1971)] <- "1951-1970"
 bpsm$decade[which(bpsm$year>1990)] <- "1991-2010"
 bpsm$decade[which(is.na(bpsm$decade)==TRUE)] <- "1971-1990"
 
-bpsumm <-
+bpsummdec <-
       ddply(bpsm, c("lat.long", "decade", "doy"), summarise,
       temp = mean(Tavg))
 
-ggplot(bpsumm, aes(x=as.numeric(doy), y=temp, group=as.factor(lat.long ), colour=as.factor(lat.long))) +
-    geom_point() +
+ggplot(bpsummdec, aes(x=as.numeric(doy), y=temp, group=as.factor(decade), color=as.factor(decade))) +
+    geom_line() +
+    # geom_smooth(method="lm") +
+    facet_wrap(.~as.factor(lat.long))
+
+bpsumm <-
+      ddply(bpsm, c("lat.long", "doy"), summarise,
+      temp = mean(Tavg))
+
+getrsq <- function(df, x, y, group){
+    dfnew <- data.frame(group=character(), r2=numeric())
+    getgroups <- unlist(unique(df[group]), use.names=FALSE)
+    for(agroup in getgroups){
+    subby <- df[which(df[group]==agroup),]
+    m <- lm(subby[[y]] ~ as.numeric(subby[[x]]))
+    r2 = format(summary(m)$r.squared, digits = 3)
+    dfhere <-  data.frame(group=agroup, r2=r2)
+    dfnew <- rbind(dfnew, dfhere)
+}
+return(dfnew)
+}
+
+bpsummr2 <- getrsq(bpsumm, "doy", "temp", "lat.long")
+names(bpsummr2)[names(bpsummr2)=="group"] <- "lat.long"
+
+# Jonathan's suggested visualization: https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/
+ggplot(bpsumm, aes(x=as.numeric(doy), y=temp)) +
+    geom_line(color="dodgerblue") +
+    facet_wrap(.~as.factor(lat.long)) +
+    geom_text(color="dodgerblue", size=3, data=bpsummr2, aes(x = 57, y = 12, label = r2)) +
+    theme_minimal()
+  
+
+## tried to see if moving average helped with visualization... no much
+if(FALSE){
+require(zoo)
+bpma <- bpsumm %>% 
+  group_by(lat.long) %>% 
+  mutate(ma7day = rollmean(temp, 2, na.pad = TRUE))
+ggplot(bpma, aes(x=as.numeric(doy), y=ma7day, group=as.factor(decade), colour=as.factor(decade))) +
+    geom_line() +
     # geom_smooth(method="lm")
-    facet_wrap(.~as.factor(decade))
+    facet_wrap(.~as.factor(lat.long))
+}
+
 
 ##
 ## Work from Spring 2020 
