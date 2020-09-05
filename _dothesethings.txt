@@ -47,6 +47,14 @@ Here's what Gusewell did:
 "Temperature sensitivity did on average not differ significantly between years with warm and cold winters (z = 1.57, p = .12)."
 
 
+JA wrote about the linear alpha_1 example from PEP
+
+If you want to plot the data, I would consider small multiples (using facet_wrap to give each site its own plot): https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/
+
+However, I think reporting the R^2 is better—looks like it will be > .95 for all sites. You could compare that to the R^2 of leaf-out on mean temperature since if researchers are willing to assume that that relationship is linear, they would have to agree that ours is as well.
+
+
+
 <><><><><><><><<><>
 Notes to myself on friendly review edits:
 <><><><><><><><><><>

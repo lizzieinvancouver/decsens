@@ -36,7 +36,8 @@ simsnum.maintext <- 500
 degreez.maintext <- seq(0, 2, length.out=simsnum.maintext)
 degreez.forsupp <- c(0, 0.5, 1, 1.5, 2, 2.5, 4, 7)
 sigma <- 4
-basetemp <- 6
+basetemp <- 4 # alpha_0
+dailytempchange <- 0.1 # alpha_1
 fstar <- 150
 
 # Step 2: Build the data and calculate sensitivities (note that alpha_1 -- spring temperature increase is set to 0)
@@ -46,7 +47,8 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), simplelm=numeric(), loglm=num
 for (i in degreez.maintext){
    for (j in 1:sitez){
        yearly_expected_temp <- rep(basetemp, yearz)
-       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
+       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma))
+       daily_temp <- daily_temp + c(1:daysperyr)*dailytempchange # add daily temp increase
        leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
        yearly_temp <- colMeans(daily_temp)
        yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x]))
@@ -69,7 +71,8 @@ dfsupp <- data.frame(degwarm=numeric(), rep=numeric(), simplelm=numeric(), loglm
 for (i in degreez.forsupp){
    for (j in 1:sitez){
        yearly_expected_temp <- rep(basetemp, yearz)
-       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma)) 
+       daily_temp <- sapply(yearly_expected_temp, function(x) rnorm(daysperyr, basetemp + i, sigma))
+       daily_temp <- daily_temp + c(1:daysperyr)*dailytempchange  # add daily temp increase
        leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > fstar)))
        yearly_temp <- colMeans(daily_temp)
        yearly_temp_trunc <- sapply(1:ncol(daily_temp), function(x) mean(daily_temp[1:leafout_date[x], x]))
@@ -165,9 +168,16 @@ sd.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm
 # Get data ...
 dfpep <- read.csv("pep_analyses/output/bpenestimates_withlog_1950_2000.csv", header=TRUE)
 
+# Using 60 d as main one, so change names
+names(dfpep)[names(dfpep)=="mat60slope"] <- "matslope"
+names(dfpep)[names(dfpep)=="mat60slopelog"] <- "matslopelog"
+names(dfpep)[names(dfpep)=="meanmat60"] <- "meanmat"
+    
 # Get means and SD
 mean.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"], FUN=mean)
 sd.betpen <- aggregate(dfpep[c("matslope", "matslopelog", "meanmat")], dfpep["cc"],  FUN=sd)
+
+
 
 tempdiff <- mean.betpen$meanmat[which(mean.betpen$cc=="2000-2010")]-
     mean.betpen$meanmat[which(mean.betpen$cc=="1950-1960")]
@@ -385,14 +395,19 @@ plot(yearly_temp_trunc, leafout_date, pch=20, col = "red")
 cexhere <- 0.5
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue") 
-pdf(file.path("figures/simslogging.pdf"), width = 8, height = 7)
-par(mfrow=c(2,2))
-plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Mean temperature until leafout",
-     ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01, xlim=c(5, 35), ylim=c(0, 30))
-plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Mean temperature until leafout)",
-     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
-plot(yearly_temp, leafout_date, pch=20, xlab="Mean temperature calculated over fixed window",
-    ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01, xlim=c(5, 35), ylim=c(0, 30))
-plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Mean temperature calculated over fixed window)",
-     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
+par(mfrow=c(2,3))
+plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
+     ylab="Leafout date", main="", cex=cexhere)
+plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
+     ylab="log(Leafout date)", main="", cex=cexhere)
+plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
+    ylab="Leafout date", main="", cex=cexhere)
+plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
+    ylab="log(Leafout date)", main="", cex=cexhere)
+plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
+     ylab="log(Leafout date)", main="", cex=cexhere)
 dev.off()
+

@@ -53,13 +53,13 @@ bpsumm <-
       temp = mean(Tavg))
 
 getrsq <- function(df, x, y, group){
-    dfnew <- data.frame(group=character(), r2=numeric())
+    dfnew <- data.frame(group=character(), r2=numeric(), slope=numeric())
     getgroups <- unlist(unique(df[group]), use.names=FALSE)
     for(agroup in getgroups){
     subby <- df[which(df[group]==agroup),]
     m <- lm(subby[[y]] ~ as.numeric(subby[[x]]))
     r2 = format(summary(m)$r.squared, digits = 3)
-    dfhere <-  data.frame(group=agroup, r2=r2)
+    dfhere <-  data.frame(group=agroup, r2=r2, slope=coef(m)[2])
     dfnew <- rbind(dfnew, dfhere)
 }
 return(dfnew)
@@ -71,6 +71,7 @@ names(bpsummr2)[names(bpsummr2)=="group"] <- "lat.long"
 # Jonathan's suggested visualization: https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/
 ggplot(bpsumm, aes(x=as.numeric(doy), y=temp)) +
     geom_line(color="dodgerblue") +
+    geom_smooth(method = "lm", linetype = 2, lwd=0.5, color="darkgray", se = FALSE) +
     facet_wrap(.~as.factor(lat.long)) +
     geom_text(color="dodgerblue", size=3, data=bpsummr2, aes(x = 57, y = 12, label = r2)) +
     xlab("day of year") +
