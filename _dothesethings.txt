@@ -3,6 +3,10 @@ Notes to Lizzie
 Dealing with late April edits
 <><><><><><><><><>
 
+** Do before submitting **
+
+(1) Update all the code on labgit to the newer versions!
+
 <><><><><><><><<><>
 Dealing with revisions ...
 <><><><><><><><><><>
