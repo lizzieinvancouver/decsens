@@ -82,25 +82,6 @@ tempdiff1fs.10yr <- mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="2000-2010")]-
     mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="1950-1960")]
 tempdiffplotfs.10yr <- c(0, tempdiff1fs.10yr)
 
-if(FALSE){
-# Using 60 d as main one, so change names, but not fixing the issues ...
-names(mean.betpen.20yr)[names(mean.betpen.20yr)=="mat60slope"] <- "matslope"
-names(mean.betpen.20yr)[names(mean.betpen.20yr)=="mat60slopeconfint11"] <- "matslopeconfint11"
-names(mean.betpen.20yr)[names(mean.betpen.20yr)=="mat60slopeconfint89"] <- "matslopeconfint89"
-
-names(mean.betpen.10yr)[names(mean.betpen.10yr)=="mat60slope"] <- "matslope"
-names(mean.betpen.10yr)[names(mean.betpen.10yr)=="mat60slopeconfint11"] <- "matslopeconfint11"
-names(mean.betpen.10yr)[names(mean.betpen.10yr)=="mat60slopeconfint89"] <- "matslopeconfint89"
-
-names(mean.fs.20yr)[names(mean.fs.20yr)=="mat60slope"] <- "matslope"
-names(mean.fs.20yr)[names(mean.fs.20yr)=="mat60slopeconfint11"] <- "matslopeconfint11"
-names(mean.fs.20yr)[names(mean.fs.20yr)=="mat60slopeconfint89"] <- "matslopeconfint89"
-
-names(mean.fs.10yr)[names(mean.fs.10yr)=="mat60slope"] <- "matslope"
-names(mean.fs.10yr)[names(mean.fs.10yr)=="mat60slopeconfint11"] <- "matslopeconfint11"
-names(mean.fs.10yr)[names(mean.fs.10yr)=="mat60slopeconfint89"] <- "matslopeconfint89"
-    }
-
 ##############
 ## Plotting ##
 ##############
@@ -116,18 +97,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslope[i]
-  ciherelo <- mean.betpen.20yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slope[i]
+  ciherelo <- mean.betpen.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="darkblue")
   }
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslopelog[i]
-  ciherelo <- mean.betpen.20yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -146,18 +127,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 # abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslope[i]
-  ciherelo <- mean.fs.20yr$matslopeconfint11[i]
-  cihereup <- mean.fs.20yr$matslopeconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slope[i]
+  ciherelo <- mean.fs.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="darkblue")
   }
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslopelog[i]
-  ciherelo <- mean.fs.20yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.20yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slopelog[i]
+  ciherelo <- mean.fs.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -181,17 +162,17 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslope[i]
-  ciherelo <- mean.betpen.10yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slope[i]
+  ciherelo <- mean.betpen.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslope[i]
-  ciherelo <- mean.fs.10yr$matslopeconfint11[i]
-  cihereup <- mean.fs.10yr$matslopeconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slope[i]
+  ciherelo <- mean.fs.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="dodgerblue")
   points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="dodgerblue")
   text(pos.x + 0.03, pos.y, labels=unique(mean.fs.10yr$cc)[i], cex=cextext, col="black")
@@ -206,17 +187,17 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-0.9, 0.1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslopelog[i]
-  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslopelog[i]
-  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slopelog[i]
+  ciherelo <- mean.fs.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="pink")
   points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="pink")
   text(pos.x + 0.03, pos.y, labels=unique(mean.fs.10yr$cc)[i], cex=cextext, col="black")
@@ -243,17 +224,17 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslope[i]
-  ciherelo <- mean.betpen.20yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slope[i]
+  ciherelo <- mean.betpen.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslope[i]
-  ciherelo <- mean.fs.20yr$matslopeconfint11[i]
-  cihereup <- mean.fs.20yr$matslopeconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slope[i]
+  ciherelo <- mean.fs.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="dodgerblue")
   points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="dodgerblue")
   text(pos.x + 0.03, pos.y, labels=unique(mean.fs.20yr$cc)[i], cex=cextext, col="black")
@@ -268,17 +249,17 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-0.9, 0.1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslopelog[i]
-  ciherelo <- mean.betpen.20yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslopelog[i]
-  ciherelo <- mean.fs.20yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.20yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slopelog[i]
+  ciherelo <- mean.fs.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x+fagsyljitter, 2), y=c(ciherelo, cihereup), col="pink")
   points(pos.x+fagsyljitter, pos.y, cex=cexhere, pch=19, col="pink")
   text(pos.x + 0.03, pos.y, labels=unique(mean.fs.20yr$cc)[i], cex=cextext, col="black")
@@ -304,18 +285,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslope[i]
-  ciherelo <- mean.betpen.10yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slope[i]
+  ciherelo <- mean.betpen.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslopelog[i]
-  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -326,9 +307,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
          xlab=expression(paste("Warming (", degree, "C)")), main="Betpen (logged only)")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslopelog[i]
-  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="salmon")
@@ -340,18 +321,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslope[i]
-  ciherelo <- mean.fs.10yr$matslopeconfint11[i]
-  cihereup <- mean.fs.10yr$matslopeconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slope[i]
+  ciherelo <- mean.fs.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="darkblue")
   }
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslopelog[i]
-  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slopelog[i]
+  ciherelo <- mean.fs.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -362,9 +343,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
          xlab=expression(paste("Warming (", degree, "C)")), main="Fagsyl (logged only)")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslopelog[i]
-  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slopelog[i]
+  ciherelo <- mean.fs.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext, col="salmon")
@@ -390,18 +371,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslope[i]
-  ciherelo <- mean.betpen.20yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slope[i]
+  ciherelo <- mean.betpen.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   }
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslopelog[i]
-  ciherelo <- mean.betpen.20yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -412,9 +393,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
          xlab=expression(paste("Warming (", degree, "C)")), main="Betpen (logged only)")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslopelog[i]
-  ciherelo <- mean.betpen.20yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="salmon")
@@ -426,18 +407,18 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslope[i]
-  ciherelo <- mean.fs.20yr$matslopeconfint11[i]
-  cihereup <- mean.fs.20yr$matslopeconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slope[i]
+  ciherelo <- mean.fs.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="darkblue")
   }
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslopelog[i]
-  ciherelo <- mean.fs.20yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.20yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slopelog[i]
+  ciherelo <- mean.fs.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
@@ -448,9 +429,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.9, 0.1),
          xlab=expression(paste("Warming (", degree, "C)")), main="Fagsyl (logged only)")
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslopelog[i]
-  ciherelo <- mean.fs.20yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.20yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slopelog[i]
+  ciherelo <- mean.fs.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="salmon")
@@ -475,9 +456,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslope[i]
-  ciherelo <- mean.betpen.10yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slope[i]
+  ciherelo <- mean.betpen.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
@@ -488,9 +469,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.10yr$cc))){
   pos.x <- tempdiffplot.10yr[i]
-  pos.y <- mean.betpen.10yr$matslopelog[i]
-  ciherelo <- mean.betpen.10yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.10yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.10yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
@@ -504,9 +485,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslope[i]
-  ciherelo <- mean.fs.10yr$matslopeconfint11[i]
-  cihereup <- mean.fs.10yr$matslopeconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slope[i]
+  ciherelo <- mean.fs.10yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
@@ -517,9 +498,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.10yr$cc))){
   pos.x <- tempdiffplotfs.10yr[i]
-  pos.y <- mean.fs.10yr$matslopelog[i]
-  ciherelo <- mean.fs.10yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.10yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.10yr$mat60slopelog[i]
+  ciherelo <- mean.fs.10yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.10yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.10yr$cc)[i], cex=cextext)
@@ -543,9 +524,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslope[i]
-  ciherelo <- mean.betpen.20yr$matslopeconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopeconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slope[i]
+  ciherelo <- mean.betpen.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
@@ -556,9 +537,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.betpen.20yr$cc))){
   pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$matslopelog[i]
-  ciherelo <- mean.betpen.20yr$matslopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$matslopelogconfint89[i]
+  pos.y <- mean.betpen.20yr$mat60slopelog[i]
+  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
@@ -570,9 +551,9 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-9, 1), bty="l", mgp=c(1.5, 0.25, 
 abline(h=0, lty=2, col="darkgrey")
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslope[i]
-  ciherelo <- mean.fs.20yr$matslopeconfint11[i]
-  cihereup <- mean.fs.20yr$matslopeconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slope[i]
+  ciherelo <- mean.fs.20yr$mat60slopeconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopeconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
@@ -581,12 +562,12 @@ plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5),  ylim=c(-0.7, 0.1), bty="l", mgp=c(1.5, 0
     ylab=expression(paste("Sensitivity (", italic("Fagus sylvatica"), ")"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")),  main="Logged", cex.main=cex.mainhere)
 abline(h=0, lty=2, col="darkgrey")
-mean.fs.20yr$matslopelog[2] <- mean.fs.20yr$matslopelog[2] - 0.04 # move text label down
+mean.fs.20yr$mat60slopelog[2] <- mean.fs.20yr$mat60slopelog[2] - 0.04 # move text label down
 for(i in 1:length(unique(mean.fs.20yr$cc))){
   pos.x <- tempdiffplotfs.20yr[i]
-  pos.y <- mean.fs.20yr$matslopelog[i]
-  ciherelo <- mean.fs.20yr$matslopelogconfint11[i]
-  cihereup <- mean.fs.20yr$matslopelogconfint89[i]
+  pos.y <- mean.fs.20yr$mat60slopelog[i]
+  ciherelo <- mean.fs.20yr$mat60slopelogconfint11[i]
+  cihereup <- mean.fs.20yr$mat60slopelogconfint89[i]
   lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   text(pos.x + 0.2, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext)
