@@ -37,8 +37,8 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), gdd=numeric(
 
 for (i in degreez){
    for (j in 1:sitez){
-       yearly_expected_temp <- rep(6, yearz)
-       daily_temp <- sapply(yearly_expected_temp, function(x) c(rnorm(daysperseason, 0 + i, sigma),
+       yearly_temp <- rep(0, yearz)
+       daily_temp <- sapply(yearly_temp, function(x) c(rnorm(daysperseason, 0 + i, sigma),
            rnorm(daysperinterseason, 2 + i , sigma), rnorm(daysperinterseason, 4 + i, sigma),
            rnorm(daysperseason, 6 + i, sigma)))
        chill <- daily_temp
@@ -80,21 +80,21 @@ plot(leafout_date~gddreq)
 ## Step 2: Now I put together the seasonal temps, varying fstar (increases when chill is low) and calculate the sensitivities
 
 df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeric(), simplelm=numeric(),
-    loglm=numeric(), perlm=numeric(),propryrschillmet=numeric(),meangddsum=numeric())#add times below cstar- times chilling not met
+    loglm=numeric(), perlm=numeric(),propryrschillmet=numeric(),meangddsum=numeric()) # add times below cstar---times chilling not met
 
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
-#plot the simulated data and simple linear models from one site
-site2plot = 11#arbirarily pick a site to plot! 
+# plot the simulated data and simple linear models from one site
+site2plot = 11 # arbirarily pick a site to plot! 
 figname<-paste("figures/simsiteplots/decsensplot_warm","_site",site2plot,".pdf",sep="_")
 pdf(figname, width = 12, height = 3)
 par(mfrow=c(1, length(degreez)))
 for (i in degreez){
    for (j in 1:sitez){
-       yearly_expected_temp <- rep(6, yearz)#what is intention with this?
-       daily_temp <- sapply(yearly_expected_temp, function(x) c(rnorm(daysperseason, 0 + i, sigma),
+       yearly_temp <- rep(0, yearz) # set up for sapply
+       daily_temp <- sapply(yearly_temp, function(x) c(rnorm(daysperseason, 0 + i, sigma),
            rnorm(daysperinterseason, 2 + i , sigma), rnorm(daysperinterseason, 4 + i, sigma),
-           rnorm(daysperseason, 6 + i, sigma)))#yearly_expected_temp not referenced at all in generating daily temps- is this intentional?
+           rnorm(daysperseason, 6 + i, sigma)))
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
