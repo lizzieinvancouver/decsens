@@ -13,12 +13,21 @@ Dealing with revisions ...
 
 
 ** Me do next **
+-> Try holding warming constant increase FSTAR ...
+
+
+
+
 -> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)."
 -> Think on the slides in Auerbach's defense (some_stat_models.pdf)
 
+Review chilling -- more or less done, if depressing/confusing (see chillunits.pdf)
+
 
 - Address non-identifiability when trying to vary other things in model 
+
 - Build up simulations in the supp -- to show differences between estimates of models with true declines and with just statistical artifacts (add photoperiod model in addition to chilling, add greater comparison of estimates ...) 
+
 - Add lilacs or some other long-term data or just add more PEP species? 
 - Add table of species with constant sites across the windows we chose. Then add top two species? 
 - Do something about pre-season length (currently: 1 March to 30 April)
