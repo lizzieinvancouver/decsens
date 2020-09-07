@@ -17,7 +17,6 @@ use.10yr = TRUE
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
 #d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 #d<-read.csv("input/pep_fagsyl_all.csv", header=TRUE)
-d<-read.csv("input/pep_aeship_all.csv", header=TRUE)
 #d<-read.csv("input/pep_tilcor_all.csv", header=TRUE) ## 0 sites
 #d<-read.csv("input/pep_tilpla_all.csv", header=TRUE) ## 0 sites
 #d<-read.csv("input/pep_betpub_all.csv", header=TRUE)  ## 0 sites
@@ -85,7 +84,6 @@ nsites<-length(sites$lat.long)
 ## alnglu: 20yr = 5 ; 10yr =  19     ### Alnus glutinosa
 ## querob: 20yr = 20 ; 10yr =  45     ### Quercus robur
 ## fraexc: 20yr = 4 ; 10yr =  30     ### Fraxinus excelsior
-## aeship: 20yr = 0 ; 10yr =  0   ### Aesculus hippocastanum
 ## cormas: 20yr = 0 ; 10yr =  0   ### Cornus mas
 ## tilcor: 20yr = 0  ; 10yr =  0   ### Tilia cordata
 
