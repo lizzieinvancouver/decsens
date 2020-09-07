@@ -44,14 +44,14 @@ mean.betpen.10yr <- aggregate(df.10yr[c("mat30slope", "mat30slopelog", "meanmat3
      "mat45slopelogconfint11", "mat45slopelogconfint89", "mat60slopeconfint11", "mat60slopeconfint89",
      "mat60slopelogconfint11", "mat60slopelogconfint89")], df.10yr["cc"], FUN=mean)
 
-tempdiff1.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1970-1990")]-
-    mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
-tempdiff2.20yr <- mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1990-2010")]-
-    mean.betpen.20yr$meanmat[which(mean.betpen.20yr$cc=="1950-1970")]
+tempdiff1.20yr <- mean.betpen.20yr$meanmat60[which(mean.betpen.20yr$cc=="1970-1990")]-
+    mean.betpen.20yr$meanmat60[which(mean.betpen.20yr$cc=="1950-1970")]
+tempdiff2.20yr <- mean.betpen.20yr$meanmat60[which(mean.betpen.20yr$cc=="1990-2010")]-
+    mean.betpen.20yr$meanmat60[which(mean.betpen.20yr$cc=="1950-1970")]
 tempdiffplot.20yr <- c(0, tempdiff1.20yr, tempdiff2.20yr)
 
-tempdiff1.10yr <- mean.betpen.10yr$meanmat[which(mean.betpen.10yr$cc=="2000-2010")]-
-    mean.betpen.10yr$meanmat[which(mean.betpen.10yr$cc=="1950-1960")]
+tempdiff1.10yr <- mean.betpen.10yr$meanmat60[which(mean.betpen.10yr$cc=="2000-2010")]-
+    mean.betpen.10yr$meanmat60[which(mean.betpen.10yr$cc=="1950-1960")]
 tempdiffplot.10yr <- c(0, tempdiff1.10yr)
 
 ## For Fagus sylvatica
@@ -71,15 +71,15 @@ mean.fs.10yr <- aggregate(fs.10yr[c("mat30slope", "mat30slopelog", "meanmat30", 
      "mat60slopelogconfint11", "mat60slopelogconfint89")],
       fs.10yr["cc"], FUN=mean)
 
-tempdiff1fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1970-1990")]-
-    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
-tempdiff2fs.20yr <- mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1990-2010")]-
-    mean.fs.20yr$meanmat[which(mean.fs.20yr$cc=="1950-1970")]
+tempdiff1fs.20yr <- mean.fs.20yr$meanmat60[which(mean.fs.20yr$cc=="1970-1990")]-
+    mean.fs.20yr$meanmat60[which(mean.fs.20yr$cc=="1950-1970")]
+tempdiff2fs.20yr <- mean.fs.20yr$meanmat60[which(mean.fs.20yr$cc=="1990-2010")]-
+    mean.fs.20yr$meanmat60[which(mean.fs.20yr$cc=="1950-1970")]
 
 tempdiffplotfs.20yr <- c(0, tempdiff1fs.20yr, tempdiff2fs.20yr)
 
-tempdiff1fs.10yr <- mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="2000-2010")]-
-    mean.fs.10yr$meanmat[which(mean.fs.10yr$cc=="1950-1960")]
+tempdiff1fs.10yr <- mean.fs.10yr$meanmat60[which(mean.fs.10yr$cc=="2000-2010")]-
+    mean.fs.10yr$meanmat60[which(mean.fs.10yr$cc=="1950-1960")]
 tempdiffplotfs.10yr <- c(0, tempdiff1fs.10yr)
 
 ##############
