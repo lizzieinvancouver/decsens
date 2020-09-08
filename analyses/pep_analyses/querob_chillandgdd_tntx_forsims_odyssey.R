@@ -19,7 +19,7 @@ require(lubridate)
 require(chillR)
 require(raster)
 
-use.10yr = FALSE
+use.10yr = TRUE
 
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
 d<-read.csv("input/pep_querob_all.csv", header=TRUE)
@@ -738,7 +738,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..39, pre$Site.Num..40,
                                   pre$Site.Num..41, pre$Site.Num..42,
                                   pre$Site.Num..43),
-                    year = (as.numeric(rownames(pre))))
+                    year = (as.numeric(rownames(pre))+1950))
 
 site<-full_join(predata, sites)
 site$x<-NULL
@@ -1011,7 +1011,7 @@ if(use.10yr==TRUE){
 ##################################################################################################
 ############################### MEAN TEMP instead of GDD #########################################
 ##################################################################################################
-#full.site.nonas <- read.csv("fagsyl_allchillsandgdds_nomat_1950&1990.csv", header = TRUE)
+#full.site.nonas <- read.csv("querob_allchillsandgdds_nomat_twentyyr.csv", header = TRUE)
 
 if(use.10yr==TRUE){
 period <- c(1951:1960, 2001:2010)

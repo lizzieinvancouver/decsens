@@ -18,6 +18,8 @@ df.old <- read.csv("pep_analyses/output/zarchive/bpenestimates_withlog.csv", hea
 # dfswa <- read.csv("pep_analyses/output/swaestimates_withlog.csv", header=TRUE)
 fs.20yr <- read.csv("pep_analyses/output/fsestimates_withlog_1950to2010.csv", header=TRUE) # older version: fsylestimates_withlog_1950-2010
 fs.10yr <- read.csv("pep_analyses/output/fsestimates_withlog_1950_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
+qr.20yr <- read.csv("pep_analyses/output/qrestimates_withlog_1950to2010.csv", header=TRUE) # older version: fsylestimates_withlog_1950-2010
+qr.10yr <- read.csv("pep_analyses/output/qrestimates_withlog_1950_2000.csv", header=TRUE) # 10-year estimates (1950-1960 and 2000-2010)
 
 
 #################
@@ -81,6 +83,23 @@ tempdiffplotfs.20yr <- c(0, tempdiff1fs.20yr, tempdiff2fs.20yr)
 tempdiff1fs.10yr <- mean.fs.10yr$meanmat60[which(mean.fs.10yr$cc=="2000-2010")]-
     mean.fs.10yr$meanmat60[which(mean.fs.10yr$cc=="1950-1960")]
 tempdiffplotfs.10yr <- c(0, tempdiff1fs.10yr)
+
+## For Quercus robur - prep for tables only
+mean.qr.20yr <- aggregate(qr.20yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                    "mat45slope", "mat45slopelog", "meanmat45", "varmat45","mat60slope", "mat60slopelog", "meanmat60", 
+                                    "varmat60", "varlo", "meangdd", "meanmatlo", "mat30slopeconfint11", "mat30slopeconfint89",
+                                    "mat30slopelogconfint11", "mat30slopelogconfint89",  "mat45slopeconfint11", "mat45slopeconfint89",
+                                    "mat45slopelogconfint11", "mat45slopelogconfint89", "mat60slopeconfint11", "mat60slopeconfint89",
+                                    "mat60slopelogconfint11", "mat60slopelogconfint89")],
+                          qr.20yr["cc"], FUN=mean)
+
+mean.qr.10yr <- aggregate(qr.10yr[c("mat30slope", "mat30slopelog", "meanmat30", "varmat30",
+                                    "mat45slope", "mat45slopelog", "meanmat45", "varmat45","mat60slope", "mat60slopelog", "meanmat60", 
+                                    "varmat60", "varlo", "meangdd", "meanmatlo", "mat30slopeconfint11", "mat30slopeconfint89",
+                                    "mat30slopelogconfint11", "mat30slopelogconfint89",  "mat45slopeconfint11", "mat45slopeconfint89",
+                                    "mat45slopelogconfint11", "mat45slopelogconfint89", "mat60slopeconfint11", "mat60slopeconfint89",
+                                    "mat60slopelogconfint11", "mat60slopelogconfint89")],
+                          qr.10yr["cc"], FUN=mean)
 
 ##############
 ## Plotting ##
@@ -620,6 +639,7 @@ dev.off()
 
 mean.betpen.10yr$species <- rep("Betula pendula", nrow(mean.betpen.10yr))
 mean.fs.10yr$species <- rep("Fagus sylvatica", nrow(mean.fs.10yr))
+mean.qr.10yr$species <- rep("Quercus robur", nrow(mean.qr.10yr))
 mean.betpen.forpaper10yr <- subset(mean.betpen.10yr, select=c("cc", "species", 
      "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30",
      "varmat45", "varmat60", "varlo", "meangdd", "mat30slope", "mat45slope", "mat60slope",
@@ -631,10 +651,16 @@ mean.fs.forpaper10yr <- subset(mean.fs.10yr,  select=c("cc", "species", "meanmat
       "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",
       "mat60slopelog"))
 
+mean.qr.forpaper10yr <- subset(mean.qr.10yr,  select=c("cc", "species", "meanmat30", "meanmat45", 
+                                                       "meanmat60", "meanmatlo", "varmat30", "varmat45", "varmat60", "varlo",
+                                                       "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",
+                                                       "mat60slopelog"))
 
-mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper10yr, mean.fs.forpaper10yr)
+
+mean2spp.forpaper10yr <- rbind(mean.betpen.forpaper10yr, mean.fs.forpaper10yr, mean.qr.forpaper10yr)
 mean2spp.forpaper10yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula","}"), mean2spp.forpaper10yr$species)
 mean2spp.forpaper10yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus","}"), mean2spp.forpaper10yr$species)
+mean2spp.forpaper10yr$species <- gsub("Quercus robur", paste0("\\\\emph{","Quercus","}"), mean2spp.forpaper10yr$species)
 
 mean2spp.forpaper10yr$mat30slope <- ifelse(mean2spp.forpaper10yr$mat30slope>=-0.01 & 
     mean2spp.forpaper10yr$mat30slope<=0, 0.0, mean2spp.forpaper10yr$mat30slope)
@@ -656,6 +682,7 @@ names(mean2spp.forpaper10yr) <-  c("years", "species", "30", "45", "60", "mean S
 
 mean.betpen.20yr$species <- rep("Betula pendula", nrow(mean.betpen.20yr))
 mean.fs.20yr$species <- rep("Fagus sylvatica", nrow(mean.fs.20yr))
+mean.qr.20yr$species <- rep("Fagus sylvatica", nrow(mean.qr.20yr))
 mean.betpen.forpaper <- subset(mean.betpen.20yr, select=c("cc", "species", 
      "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30", "varmat45", "varmat60", "varlo",
      "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
@@ -666,9 +693,15 @@ mean.fs.forpaper <- subset(mean.fs.20yr,  select=c("cc", "species",
     "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30", "varmat45", "varmat60", "varlo",
     "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
 
-mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper)
+mean.qr.forpaper <- subset(mean.qr.20yr,  select=c("cc", "species", 
+                                                   "meanmat30", "meanmat45", "meanmat60", "meanmatlo", "varmat30", "varmat45", "varmat60", "varlo",
+                                                   "meangdd", "mat30slope", "mat45slope", "mat60slope", "mat30slopelog", "mat45slopelog",  "mat60slopelog"))
+
+
+mean2spp.forpaper20yr <- rbind(mean.betpen.forpaper, mean.fs.forpaper, mean.qr.forpaper)
 mean2spp.forpaper20yr$species <- gsub("Betula pendula", paste0("\\\\emph{","Betula","}"), mean2spp.forpaper20yr$species)
 mean2spp.forpaper20yr$species <- gsub("Fagus sylvatica", paste0("\\\\emph{","Fagus","}"), mean2spp.forpaper20yr$species)
+mean2spp.forpaper20yr$species <- gsub("Quercus robur", paste0("\\\\emph{","Quercus","}"), mean2spp.forpaper20yr$species)
 
 
 mean2spp.forpaper20yr$mat30slope <- ifelse(mean2spp.forpaper20yr$mat30slope>=-0.01 & 
