@@ -19,7 +19,7 @@ require(lubridate)
 require(chillR)
 require(raster)
 
-use.10yr = TRUE
+use.10yr = FALSE
 
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
 d<-read.csv("input/pep_querob_all.csv", header=TRUE)
@@ -74,7 +74,11 @@ allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
 
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
+badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
+sites<-sites[!(sites$lat.long%in%badsites),]
 nsites<-length(sites$lat.long)
+sites$x<-sites$long
+sites$y<-sites$lat
 sites$siteslist<-1:nsites
 tmin<-rn
 tmax<-rx
@@ -87,7 +91,7 @@ lositeyear<-na.omit(lositeyear)
 leaps<-seq(from=1952, to=2010, by=4)
 if(use.10yr==TRUE){
 period<-1951:1960
-} else {1951:1970}
+} else {period <- 1951:1970}
 ## set function - depending on the period you are using
 extractclimpre<-function(tmin,period){
   #extractclimpost<-function(tmin,period){
@@ -257,15 +261,15 @@ clim_pre<-extractclimpre(tmin,period)
 
 pre<-as.data.frame(clim_pre)
 if(use.10yr==TRUE){
-write.csv(pre, file="~/Desktop/Misc/Ospree Misc/prefagsylten.csv", row.names=FALSE)
+write.csv(pre, file="~/Desktop/Misc/Ospree Misc/prequerobten.csv", row.names=FALSE)
 } else {
-  write.csv(pre, file="~/Desktop/Misc/Ospree Misc/prefagsyl.csv", row.names=FALSE)
+  write.csv(pre, file="~/Desktop/Misc/Ospree Misc/prequerob.csv", row.names=FALSE)
 }
 
 
 if(use.10yr==TRUE){
   period<-2001:2010
-} else {1991:2010}
+} else {period<-1991:2010}
 extractclimpost<-function(tmin,period){
   #extractclim90s<-function(tmin,period){
   
@@ -600,21 +604,24 @@ if(use.10yr==FALSE){
   
   clim_mid<-extractclimmid(tmin,period) 
   mid<-as.data.frame(clim_mid)
-  write.csv(mid, file="~/Desktop/Misc/Ospree misc/midbetpen.csv", row.names=FALSE)
+  write.csv(mid, file="~/Desktop/Misc/Ospree misc/midquerob.csv", row.names=FALSE)
 }
 
-#if(FALSE){
-setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
-#pre <- read.csv("/n/wolkovich_lab/Lab/Cat/prebetpen.csv")
-#post <- read.csv("/n/wolkovich_lab/Lab/Cat/postbetpen.csv")
 
-#pre <- read.csv("prefagsyl.csv")
-#post <- read.csv("postfagsyl.csv")
-#mid <- read.csv("midfagsyl.csv")
+#setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 
-pre <- read.csv("prefagsylten.csv")
-post <- read.csv("postfagsylten.csv")
+savepre <- pre
+savepost <- post
+savemid <- mid
 
+if(use.10yr==TRUE){
+pre <- read.csv("~/Desktop/Misc/Ospree Misc/prequerobten.csv")
+post <- read.csv("~/Desktop/Misc/Ospree Misc/postquerobten.csv")
+} else{
+  pre <- read.csv("~/Desktop/Misc/Ospree Misc/prequerob.csv")
+  post <- read.csv("~/Desktop/Misc/Ospree Misc/postquerob.csv")
+  mid <- read.csv("~/Desktop/Misc/Ospree Misc/midquerob.csv")
+}
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -637,9 +644,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.37, pre$Mean.Utah.38,
                                   pre$Mean.Utah.39, pre$Mean.Utah.40,
                                   pre$Mean.Utah.41, pre$Mean.Utah.42,
-                                  pre$Mean.Utah.43, pre$Mean.Utah.44,
-                                  pre$Mean.Utah.45, pre$Mean.Utah.46,
-                                  pre$Mean.Utah.47),
+                                  pre$Mean.Utah.43),
                     
                     chillports = c(pre$Mean.Port.1, pre$Mean.Port.2,
                                    pre$Mean.Port.3, pre$Mean.Port.4,
@@ -662,9 +667,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                    pre$Mean.Port.37, pre$Mean.Port.38,
                                    pre$Mean.Port.39, pre$Mean.Port.40,
                                    pre$Mean.Port.41, pre$Mean.Port.42,
-                                   pre$Mean.Port.43, pre$Mean.Port.44,
-                                   pre$Mean.Port.45, pre$Mean.Port.46,
-                                   pre$Mean.Port.47),
+                                   pre$Mean.Port.43),
                     
                     
                     gdd = c(pre$Mean.GDD.1, pre$Mean.GDD.2,
@@ -688,9 +691,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                             pre$Mean.GDD.37, pre$Mean.GDD.38,
                             pre$Mean.GDD.39, pre$Mean.GDD.40,
                             pre$Mean.GDD.41, pre$Mean.GDD.42,
-                            pre$Mean.GDD.43, pre$Mean.GDD.44,
-                            pre$Mean.GDD.45, pre$Mean.GDD.46,
-                            pre$Mean.GDD.47),
+                            pre$Mean.GDD.43),
                     
                     mat.lo = c(pre$Spring.Temp.1, pre$Spring.Temp.2,
                                pre$Spring.Temp.3, pre$Spring.Temp.4,
@@ -713,9 +714,7 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                pre$Spring.Temp.37, pre$Spring.Temp.38,
                                pre$Spring.Temp.39, pre$Spring.Temp.40,
                                pre$Spring.Temp.41, pre$Spring.Temp.42,
-                               pre$Spring.Temp.43, pre$Spring.Temp.44,
-                               pre$Spring.Temp.45, pre$Spring.Temp.46,
-                               pre$Spring.Temp.47),
+                               pre$Spring.Temp.43),
                     
                     siteslist = c(pre$Site.Num..1, pre$Site.Num..2,
                                   pre$Site.Num..3, pre$Site.Num..4,
@@ -738,10 +737,8 @@ predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Site.Num..37, pre$Site.Num..38,
                                   pre$Site.Num..39, pre$Site.Num..40,
                                   pre$Site.Num..41, pre$Site.Num..42,
-                                  pre$Site.Num..43, pre$Site.Num..44,
-                                  pre$Site.Num..45, pre$Site.Num..46,
-                                  pre$Site.Num..47),
-                    year = (as.numeric(rownames(pre))+1950))
+                                  pre$Site.Num..43),
+                    year = (as.numeric(rownames(pre))))
 
 site<-full_join(predata, sites)
 site$x<-NULL

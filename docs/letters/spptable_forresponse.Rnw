@@ -45,7 +45,7 @@ species
 \textit{Betula pendula} & 17 & 17 & 45 & 45 & 45  \\
 \textit{Fagus sylvatica} & 24 & 24 & 47 & 47 & 47 \\
 \textit{Alnus glutinosa} & 5 & 5 & 19 & 19 & 19  \\
-\textit{Quercus robur} & 20 & 20 & 45 & 45 & 45  \\
+\textit{Quercus robur} & 20 & 20 & 43 & 43 & 43  \\
 \textit{Fraxinus excelsior} & 4 & 4 & 30 & 30 & 30  \\
 \textit{Cornus mas} & 0 & 0 & 0 & 0 & 0  \\
 \textit{Populus tremuloides} & 0 & 0 & 0 & 0 & 0  \\
