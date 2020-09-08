@@ -67,6 +67,14 @@ If you want to plot the data, I would consider small multiples (using facet_wrap
 However, I think reporting the R^2 is better—looks like it will be > .95 for all sites. You could compare that to the R^2 of leaf-out on mean temperature since if researchers are willing to assume that that relationship is linear, they would have to agree that ours is as well.
 
 
+REFS from Dan B on thermal sums ...
+
+His email (1 Sep 2020):
+
+The attached paper indicates that thermal sums have been used to some degree (no pun intended) since the 1700's, however it's a critique of using them so I don't know if it is good to cite that for our purposes. Instead I'm attaching a few other citations from within it that seem like "classics".
+
+Attached paper is Wang  1960: A Critique of the Heat Unit Approach to Plant Response Studies (Ecology)
+
 
 <><><><><><><><<><>
 Notes to myself on friendly review edits:
