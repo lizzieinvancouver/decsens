@@ -147,6 +147,44 @@ for (i in degreez){
    }
 dev.off()
 
+if(FALSE){
+# Make a more compact version of the above, to share with JA
+
+df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeric(), simplelm=numeric())
+    
+for (i in degreez){
+   for (j in 1:sitez){
+       daily_temp <- sapply(rep(NA, yearz), function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
+           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc)))
+       chill <- daily_temp
+       chill[(chill)<0] <- 0
+       chill[(chill)>5] <- 0
+       gdd <- daily_temp
+       gdd[(gdd)<0] <- 0
+       gddreq <- c()
+       leafout_date <- c()
+       for (k in 1:ncol(chill)){
+           chillsum <- sapply(1:ncol(chill), function(x) (cumsum(chill[,x])))
+           gddsum <- sapply(1:ncol(gdd), function(x) (cumsum(gdd[dayswinter:nrow(gdd),x])))
+           if (chillsum[dayswinter,k]>cstar) {
+           gddreq[k] <- fstar
+           } else {
+           gddreq[k] <- fstar + (cstar-chillsum[dayswinter,k])*fstaradjforchill
+           }
+           leafout_date[k] <- min(which(gddsum[,k] > gddreq[k])) # leafout_date unit of days *after* dayswinter
+           meanchill <- mean(chillsum[dayswinter,])
+           meanfstar <- mean(gddreq)
+           }
+           yearly_temp <- colMeans(daily_temp)
+           dfadd <- data.frame(degwarm=i, rep=j, chill=meanchill, fstar=meanfstar,     
+               simplelm=coef(lm(leafout_date~yearly_temp))[2],
+               loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2])
+           df <- rbind(df, dfadd)     
+       }
+   }
+
+}
+
 plot(simplelm~degwarm, data=df, pch=16, ylab="Sensitivity (days/C or log(days)/log(C)", xlab="Degree warming")
 points(loglm~degwarm, data=df, col="dodgerblue")
 points(perlm~degwarm, data=df, col="firebrick")
