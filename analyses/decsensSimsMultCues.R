@@ -97,7 +97,7 @@ for (i in degreez){
    for (j in 1:sitez){
        yearly_temp <- rep(0, yearz) # set up for sapply
        daily_temp <- sapply(yearly_temp, function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
-           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc)))
+           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc))) # plot(daily_temp[,1] ~ c(1:length(daily_temp[,1])))
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
@@ -374,12 +374,12 @@ pstar <- 12 # threshold to leafout
 pstarday <- min(which(photoper > pstar))
 yearz <- 20
 sitez <- 45
-simsnum <- 12
+simsnum <- 30
 degreez <- round(seq(0, 7, length.out=simsnum), digits=1) # warming -- applied evenly across `winter' and `spring'
 
 # Step 2: Run the simulations
-dfphoto <- data.frame(degwarm=numeric(), rep=numeric(), meantemp=numeric(), leafoutdoy=numeric(), gddmetday=numeric(),
-    simplelm=numeric(), loglm=numeric(), perlm=numeric()) 
+dfphoto <- data.frame(degwarm=numeric(), rep=numeric(), meantemp=numeric(), leafoutdoy=numeric(), gddmetday=numeric(), 
+    propyrsphoto=numeric(), simplelm=numeric(), loglm=numeric(), perlm=numeric()) 
 
 for (i in degreez){
    for (j in 1:sitez){
@@ -393,7 +393,7 @@ for (i in degreez){
        for (k in 1:ncol(daily_temp)){
            gddsum <- sapply(1:ncol(gdd), function(x) (cumsum(gdd[dayswinter:nrow(gdd),x])))
            gddmetday[k] <- min(which(gddsum[,k] > fstar))
-           if (photoper[(gddmetday[k] + dayswinter)] > pstar) {
+           if (photoper[(gddmetday[k] + dayswinter)] > pstar) { # check if the photoperiod threshold is met by the GDD-met day
             leafout_date[k] <- gddmetday[k]
            } else {
             leafout_date[k] <- pstarday-dayswinter # keep on same day scale as gdd
@@ -402,8 +402,10 @@ for (i in degreez){
            yearly_temp <- colMeans(daily_temp)
            per_leafout_date <- leafout_date/mean(leafout_date)
            per_yearly_temp <- yearly_temp/mean(yearly_temp)
+           photodriver <- length(which(leafout_date!=gddmetday))/yearz
            dfadd <- data.frame(degwarm=i, rep=j, meantemp=mean(yearly_temp),
                leafoutdoy=mean(leafout_date), gddmetday= mean(gddmetday),
+               propyrsphoto=photodriver,
                simplelm=coef(lm(leafout_date~yearly_temp))[2],
                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
                perlm=coef(lm(per_leafout_date~per_yearly_temp))[2])
@@ -416,7 +418,8 @@ par(mfrow=c(1,1))
 pstarday-dayswinter
 hist(dfphoto$leafoutdoy)
 
-# plot by whether leafout was due to forcing or photoperiod
+# plot by whether leafout was due to forcing or photoperiod --averaged over years
+# propyrsphoto for better resolution, but even then it is not totally accurate when the gdd met day is same as photo threhold!
 # saved as shiftingcuessims_photo.pdf
 dfphoto$leafoutdriver <- NA
 dfphoto$leafoutdriver[which(dfphoto$leafoutdoy==dfphoto$gddmetday)] <- "forcing"
@@ -430,3 +433,43 @@ ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, group=leafoutdriver, color=le
         xlab("day of year") +
     ylab("mean daily temperature (C)") +
     theme_minimal() 
+
+# plot the means
+mean.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=mean)
+sd.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=sd)
+
+cexhere <- 0.95
+cextext <- 0.8
+
+pdf(file.path("figures/shiftingcuessims_photo2panel.pdf"), width = 6, height = 8)
+par(mfrow=c(2,1), mar=c(5,5,2,5))
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-8, 5),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$simplelm[i]
+  sdhere <- sd.simsphoto$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$loglm[i]
+  sdhere <- sd.simsphoto$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
+   cex=cextext, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-0.1, 1), mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
+     ylab="Propotion years when photoperiod drives leafout",
+     xlab=expression(paste("Warming (", degree, "C)")), bty="u",main="")
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$propyrsphoto[i]
+  sdhere <- sd.simsphoto$propyrsphoto[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkgray")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
+}
+dev.off()
