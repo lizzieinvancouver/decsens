@@ -430,16 +430,15 @@ ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, group=leafoutdriver, color=le
    geom_point() +
    geom_smooth(method = "lm", linetype = 2, lwd=0.5, se = FALSE) +
    facet_wrap(.~degwarmtext, scales="free") +
-        xlab("day of year") +
-    ylab("mean daily temperature (C)") +
-    theme_minimal() 
+        ylab("Mean day of year") +
+    xlab(expression(paste("Mean daily temperature (", degree, "C)"), sep=""))
 
 # plot the means
 mean.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=mean)
 sd.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=sd)
 
 cexhere <- 0.95
-cextext <- 0.8
+cextext <- 0.7
 
 pdf(file.path("figures/shiftingcuessims_photo2panel.pdf"), width = 6, height = 8)
 par(mfrow=c(2,1), mar=c(5,5,2,5))
@@ -463,8 +462,8 @@ for(i in 1:length(unique(mean.simsphoto$degwarm))){
 legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
    cex=cextext, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-0.1, 1), mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
-     ylab="Propotion years when photoperiod drives leafout",
-     xlab=expression(paste("Warming (", degree, "C)")), bty="u",main="")
+     ylab="Proportion years photoperiod drives leafout",
+     xlab=expression(paste("Warming (", degree, "C)")), bty="l",main="")
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
   pos.x <- mean.simsphoto$degwarm[i]
   pos.y <- mean.simsphoto$propyrsphoto[i]
@@ -473,3 +472,4 @@ for(i in 1:length(unique(mean.simsphoto$degwarm))){
   points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
 }
 dev.off()
+
