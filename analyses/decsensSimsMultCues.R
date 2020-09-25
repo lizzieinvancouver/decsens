@@ -16,6 +16,9 @@ if(length(grep("ailene", getwd()))>0) {
 } else
   setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 
+# libraries
+require(ggplot2)
+
 #############################
 ## Chilling x forcing sims ##
 #############################
@@ -32,7 +35,7 @@ sigma <- 4
 fstar <- 200
 cstar <- 110
 fstaradjforchill <- 3 # how much more GDD to you need based on diff from cstar at end of daystostart
-yearz <- 20
+yearz <- 50
 sitez <- 45
 simsnum <- 10
 degreez <- seq(0, 7, length.out=simsnum) # warming -- applied evenly across `winter' and `spring'
@@ -45,7 +48,7 @@ for (i in degreez){
    for (j in 1:sitez){
        yearly_temp <- rep(0, yearz)
        daily_temp <- sapply(yearly_temp, function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
-           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc)))
+           (rnorm(daysspring, springtemp + i , sigma) + c(1:daysspring)*springtempinc)))
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
@@ -90,14 +93,14 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeri
 yearlytemp <- "alltemps"
 # plot the simulated data and simple linear models from one site
 site2plot = 11 # arbirarily pick a site to plot! 
-figname<-paste("figures/simsiteplots/decsensplot_warm","_site",site2plot,".pdf",sep="_")
-pdf(figname, width = 12, height = 3)
-par(mfrow=c(1, length(degreez)))
+figname<-paste("figures/simsiteplots/decsensplot_warm","_site",site2plot,".pdf",sep="")
+pdf(figname, width = 12, height = 7)
+par(mfrow=c(2, length(degreez)/2))
 for (i in degreez){
    for (j in 1:sitez){
        yearly_temp <- rep(0, yearz) # set up for sapply
        daily_temp <- sapply(yearly_temp, function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
-           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc))) # plot(daily_temp[,1] ~ c(1:length(daily_temp[,1])))
+           (rnorm(daysspring, springtemp + i , sigma) + c(1:daysspring)*springtempinc))) # plot(daily_temp[,1] ~ c(1:length(daily_temp[,1])))
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
@@ -138,7 +141,7 @@ for (i in degreez){
                 
                 if(j==site2plot){
                   plot(yearly_temp, leafout_date,pch=16,col="darkgreen", bty="l",
-                      xlab="Temperature",ylab="Leafout", main = paste(i,"warming_site",j, sep=""))
+                      xlab="Temperature",ylab="Leafout", main = paste(round(i, 2),"warming_site",j, sep=" "))
                   m<-lm(leafout_date~yearly_temp)
                   if(summary(m)$coef[2,4]<=0.1){abline(m,lwd=2,col="darkgreen")}
                 }
@@ -261,6 +264,123 @@ dev.off()
 
 
 
+################################################
+## From Jonathan, understanding shifting cues ##
+################################################
+# taken from auerbach_sep2020.R
+
+dayswinter <- 120
+daysspring <- 90
+wintertemp <- 1
+springtemp <- 2
+springtempinc <- 0.1
+sigma <- 4
+fstar <- 200
+cstar <- 110
+yearz <- 50
+sitez <- 45
+simsnum <- 11
+degreez <- 0:10
+
+df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(),
+    fstar=numeric(), simplelm=numeric(), fstaradjforchill  = numeric(), gddreq = numeric())
+
+for(fstaradjforchill in c(0,1,3,9)) {
+for (i in degreez){
+    for (j in 1:sitez){
+        daily_temp <- sapply(rep(NA, yearz), function(x)
+          c(rnorm(dayswinter, wintertemp + i, sigma),
+            (rnorm(daysspring, springtemp + i , sigma)+
+               c(1:daysspring)*springtempinc)))
+       
+        chill <- daily_temp
+        chill[(chill)<0] <- 0
+        chill[(chill)>5] <- 0
+        gdd <- daily_temp
+        gdd[(gdd)<0] <- 0
+        gddreq <- c()
+        leafout_date <- c()
+        for (k in 1:ncol(chill)){
+            chillsum <- sapply(1:ncol(chill), function(x) (cumsum(chill[,x])))
+            gddsum <- sapply(1:ncol(gdd), function(x) (cumsum(gdd[dayswinter:nrow(gdd),x])))
+         
+          if (chillsum[dayswinter,k]>cstar) {
+            gddreq[k] <- fstar
+            } else {
+            gddreq[k] <- fstar + (cstar-chillsum[dayswinter,k])*fstaradjforchill
+            }
+           
+            leafout_date[k] <- min(which(gddsum[,k] > gddreq[k]))
+
+            meanchill <- mean(chillsum[dayswinter,])
+            meanfstar <- mean(gddreq)
+            }
+            yearly_temp <- colMeans(daily_temp)
+            if(FALSE){ # this can cause some negative yearly_temps, and then you can't take the log
+            for(col in 1:length(yearly_temp)) yearly_temp[col] <-
+                mean(daily_temp[1:leafout_date[col],col])
+            }
+            dfadd <- data.frame(degwarm=i,
+                                rep=j,
+                                chill=meanchill,
+                                fstar=meanfstar,
+                                simplelm=coef(lm(leafout_date~yearly_temp))[2],
+                                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
+                                fstaradjforchill = fstaradjforchill,
+                                gddreq = mean(gddreq))
+            df <- rbind(df, dfadd)
+        }
+    }
+}
+
+ggplot(df) +
+  theme_bw() +
+  aes(factor(degwarm), loglm) +
+  geom_boxplot() +
+  labs(x = "temperature increase", y = "sensitivity (log)",
+       title = "Fig. 1") +
+  facet_wrap(~ fstaradjforchill, scales = "free",
+             labeller = labeller(.cols = label_both))
+
+ggplot(df) +
+  theme_bw() +
+  aes(factor(degwarm), simplelm) +
+  geom_boxplot() +
+  labs(x = "temperature increase", y = "sensitivity",
+       title = "Fig. 2") +
+  facet_wrap(~ fstaradjforchill, scales = "free",
+             labeller = labeller(.cols = label_both))
+
+ggplot(df) +
+  theme_bw() +
+  aes(factor(degwarm), gddreq) +
+  geom_boxplot() +
+  labs(x = "temperature increase", y = "average required gdd",
+       title = "Fig. 3") +
+  facet_wrap(~ fstaradjforchill, scales = "free",
+             labeller = labeller(.cols = label_both))
+ 
+ggplot(df) +
+  theme_bw() +
+  aes(gddreq, loglm) +
+  geom_point() +
+  geom_smooth() +
+  labs(x = "average required gdd", y = "sensitivity (log)",
+       title = "Fig. 4") +
+  facet_wrap(~ fstaradjforchill, scales = "free",
+             labeller = labeller(.cols = label_both))
+
+ggplot(df) +
+  theme_bw() +
+  aes(gddreq, simplelm) +
+  geom_point() +
+  geom_smooth() +
+  labs(x = "average required gdd", y = "sensitivity",
+       title = "Fig. 5") +
+  facet_wrap(~ fstaradjforchill, scales = "free",
+             labeller = labeller(.cols = label_both))
+
+
 
 ##########################
 ## Non-identifiability  ##
@@ -313,7 +433,6 @@ for (i in degreez){
        }
 
 
-library(ggplot2)
 ggplot(data=df.noninf, aes(x=fstar, y=leafoutdoy, group=degwarm, color=as.factor(degwarm))) +
    geom_point()
 
@@ -365,7 +484,7 @@ library(geosphere) # for daylengths
 dayswinter <- 60 # sims are set up as though starting on Jan 1 (so 60 here means 'winter temps' end in early March)
 daysspring <- 90
 wintertemp <- 0
-springtemp <- 3
+springtemp <- 4
 springtempinc <- 0.1
 photoper <- daylength(45, 1:(dayswinter+daysspring)) # latitude=45
 sigma <- 4
@@ -402,7 +521,11 @@ for (i in degreez){
            yearly_temp <- colMeans(daily_temp)
            per_leafout_date <- leafout_date/mean(leafout_date)
            per_yearly_temp <- yearly_temp/mean(yearly_temp)
-           photodriver <- length(which(leafout_date!=gddmetday))/yearz
+           driverbyyear <- NA
+           driverbyyear[which(leafout_date==gddmetday)] <- "forcing"
+           driverbyyear[which(leafout_date!=gddmetday)] <- "photo"
+           driverbyyear[which(leafout_date==(pstarday-dayswinter))] <- "forcing/photo"
+           photodriver <- length(which(driverbyyear!="forcing"))/yearz # here I pick only definitive forcing years!
            dfadd <- data.frame(degwarm=i, rep=j, meantemp=mean(yearly_temp),
                leafoutdoy=mean(leafout_date), gddmetday= mean(gddmetday),
                propyrsphoto=photodriver,
@@ -418,15 +541,25 @@ par(mfrow=c(1,1))
 pstarday-dayswinter
 hist(dfphoto$leafoutdoy)
 
-# plot by whether leafout was due to forcing or photoperiod --averaged over years
+
+# plot by whether leafout was due to forcing and/or photoperiod (averaged over years)
 # propyrsphoto for better resolution, but even then it is not totally accurate when the gdd met day is same as photo threhold!
-# saved as shiftingcuessims_photo.pdf
 dfphoto$leafoutdriver <- NA
-dfphoto$leafoutdriver[which(dfphoto$leafoutdoy==dfphoto$gddmetday)] <- "forcing"
-dfphoto$leafoutdriver[which(dfphoto$leafoutdoy!=dfphoto$gddmetday)] <- "photo"
+dfphoto$leafoutdriver[which(dfphoto$propyrsphoto==0)] <- "all forcing"
+dfphoto$leafoutdriver[which(dfphoto$propyrsphoto==1)] <- "all photo" # in current sims does not always occur
+dfphoto$leafoutdriver[which(dfphoto$propyrsphoto>0 & dfphoto$propyrsphoto<1)] <- "photo/forcing"
 dfphoto$degwarmtext <- paste("warming:", as.factor(dfphoto$degwarm), "C")
 
+# saved as shiftingcuessims_photo.pdf
 ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, group=leafoutdriver, color=leafoutdriver)) +
+   geom_point() +
+   geom_smooth(method = "lm", linetype = 2, lwd=0.5, se = FALSE) +
+   facet_wrap(.~degwarmtext, scales="free") +
+        ylab("Mean day of year") +
+    xlab(expression(paste("Mean daily temperature (", degree, "C)"), sep=""))
+
+# saved as shiftingcuessims_photogradient.pdf
+ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, color=propyrsphoto)) +
    geom_point() +
    geom_smooth(method = "lm", linetype = 2, lwd=0.5, se = FALSE) +
    facet_wrap(.~degwarmtext, scales="free") +
@@ -442,7 +575,7 @@ cextext <- 0.7
 
 pdf(file.path("figures/shiftingcuessims_photo2panel.pdf"), width = 6, height = 8)
 par(mfrow=c(2,1), mar=c(5,5,2,5))
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-8, 5),
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-8, 1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
@@ -461,7 +594,8 @@ for(i in 1:length(unique(mean.simsphoto$degwarm))){
   }
 legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
    cex=cextext, bty="n")
-plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-0.1, 1), mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez)+ 0.5)), ylim=c(-0.1, (max(mean.simsphoto$propyrsphoto)+0.1)),
+     mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
      ylab="Proportion years photoperiod drives leafout",
      xlab=expression(paste("Warming (", degree, "C)")), bty="l",main="")
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
@@ -473,3 +607,50 @@ for(i in 1:length(unique(mean.simsphoto$degwarm))){
 }
 dev.off()
 
+
+
+
+# For just one site ...
+dfphoto_onesite <- data.frame(degwarm=numeric(), rep=numeric(), yearly_temp=numeric(), leafoutdoy=numeric(),
+    gddmetday=numeric(), driver=numeric()) 
+
+for (i in degreez){
+       yearly_temp <- rep(0, yearz) 
+       daily_temp <- sapply(yearly_temp, function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
+           (rnorm(daysspring, springtemp + i , sigma)+ c(1:daysspring)*springtempinc)))
+       gdd <- daily_temp
+       gdd[(gdd)<0] <- 0
+       leafout_date <- c()
+       gddmetday <- c()
+       for (k in 1:ncol(daily_temp)){
+           gddsum <- sapply(1:ncol(gdd), function(x) (cumsum(gdd[dayswinter:nrow(gdd),x])))
+           gddmetday[k] <- min(which(gddsum[,k] > fstar))
+           if (photoper[(gddmetday[k] + dayswinter)] > pstar) { # check if the photoperiod threshold is met by the GDD-met day
+            leafout_date[k] <- gddmetday[k]
+           } else {
+            leafout_date[k] <- pstarday-dayswinter # keep on same day scale as gdd
+           }
+           }
+           yearly_temp <- colMeans(daily_temp)
+           per_leafout_date <- leafout_date/mean(leafout_date)
+           per_yearly_temp <- yearly_temp/mean(yearly_temp)
+           driverbyyear <- NA
+           driverbyyear[which(leafout_date==gddmetday)] <- "forcing"
+           driverbyyear[which(leafout_date!=gddmetday)] <- "photo"
+           driverbyyear[which(gddmetday==(pstarday-dayswinter))] <- "forcing/photo"
+           dfadd <- data.frame(degwarm=rep(i, yearz), yearly_temp=yearly_temp,
+               leafoutdoy=leafout_date, gddmetday=gddmetday,
+               driver=driverbyyear)
+           dfphoto_onesite <- rbind(dfphoto_onesite, dfadd)     
+       }
+
+
+dfphoto_onesite$degwarmtext <- paste("warming:", as.factor(dfphoto_onesite$degwarm), "C")
+
+# saved as shiftingcuessims_photo_onesite.pdf
+ggplot(data=dfphoto_onesite, aes(x=yearly_temp, y=leafoutdoy, group=driver, color=driver)) +
+   geom_point() +
+   geom_smooth(method = "lm", linetype = 2, lwd=0.5, se = FALSE) +
+   facet_wrap(.~degwarmtext, scales="free") +
+        ylab("Day of year") +
+    xlab(expression(paste("Mean daily temperature (", degree, "C)"), sep=""))

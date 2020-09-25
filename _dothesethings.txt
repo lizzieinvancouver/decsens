@@ -13,7 +13,16 @@ Dealing with revisions ...
 
 
 ** Me do next **
--> Try holding warming constant increase FSTAR ...
+-> Nacho says, "I've also read the highlighted section in the SI and understood it. My only suggestion would be to add some clarification about what non-identifiability is (probably readers going through the SI would know what that is, but just in case?)."
+
+-> Ailene says, "I looked at the photoperiod code and I think it looks good!
+
+I really like the ggplot figure that shows which cue is driving leafout and how that shifts with warming. On this one, I fixed the x and y labels, which were switched. I wasn’t sure if we want to use this figure in the supplement, so I didn’t make additional changes to make it “manuscript-ready” but I think it might be a nice addition- let me know if you want me to further alter it"
+
+ 
+
+For the photoperiod panel, I only made minor changes to the axes. Let me know if there are other things you want me to change!
+
 
 
 
