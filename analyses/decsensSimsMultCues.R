@@ -35,7 +35,7 @@ sigma <- 4
 fstar <- 200
 cstar <- 110
 fstaradjforchill <- 3 # how much more GDD to you need based on diff from cstar at end of daystostart
-yearz <- 50
+yearz <- 50 # used to be 20, adjusted to 50 to compare to Jonathan's code 
 sitez <- 45
 simsnum <- 10
 degreez <- seq(0, 7, length.out=simsnum) # warming -- applied evenly across `winter' and `spring'
@@ -491,7 +491,7 @@ sigma <- 4
 fstar <- 200
 pstar <- 12 # threshold to leafout
 pstarday <- min(which(photoper > pstar))
-yearz <- 20
+yearz <- 50
 sitez <- 45
 simsnum <- 30
 degreez <- round(seq(0, 7, length.out=simsnum), digits=1) # warming -- applied evenly across `winter' and `spring'
