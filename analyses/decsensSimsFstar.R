@@ -32,7 +32,7 @@ if(length(grep("ailene", getwd()))>0) {
 daysperyr <- 60
 yearz <- 30
 sitez <- 45 # reps
-simsnum <- 6
+simsnum <- 40
 fstarsims <- seq(100, 300, length.out=simsnum)
 sigma <- 4
 basetemp <- 4 # alpha_0
@@ -98,7 +98,7 @@ par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 plot(x=NULL,y=NULL, xlim=c(90, 310), ylim=c(-6.6, 1), yaxt="n",
      ylab=expression(paste("Estimated sensitivity"), sep=""),
-     xlab=expression(paste("Fstar (", degree, "C)")), main="", cex.lab=1.2,
+     xlab=expression(paste("Thermal sum required (", degree, "C)")), main="", cex.lab=1.2,
      bty="l", mgp=c(1.5,.5,0), tck=-.01)
 axis(2,seq(-6,0,1),las=2)
 tempsteps <- simsnum

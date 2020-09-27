@@ -92,7 +92,7 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeri
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
 
-plotonesite <- FALSE
+plotonesite <- FALSE # this doesn't work when degreez is too big (it worked for length(degreez)=10, but not 30)
 if(plotonesite){
 # plot the simulated data and simple linear models from one site
 site2plot = 11 # arbirarily pick a site to plot! 
@@ -673,7 +673,7 @@ ggplot(data=dfphoto_onesite, aes(x=yearly_temp, y=leafoutdoy, group=driver, colo
 
 pdf(file.path("figures/shiftingcuessims_4panels.pdf"), width = 12, height = 8)
 par(mfrow=c(2,2), mar=c(5,5,2,5))
-plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-15, 5),
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-10, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
      xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
 for(i in 1:length(unique(mean.sims$degwarm))){
@@ -694,7 +694,7 @@ legend("bottomright", pch=c(19, 19), col=c("salmon","darkblue"), legend=c("Using
    cex=cexhere, bty="n")
 
 
-plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-8, 1),
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-6, 1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
          xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
