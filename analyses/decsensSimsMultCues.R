@@ -37,7 +37,7 @@ cstar <- 110
 fstaradjforchill <- 3 # how much more GDD to you need based on diff from cstar at end of daystostart
 yearz <- 50 # used to be 20, adjusted to 50 to compare to Jonathan's code 
 sitez <- 45
-simsnum <- 10
+simsnum <- 30
 degreez <- seq(0, 7, length.out=simsnum) # warming -- applied evenly across `winter' and `spring'
 
 if(FALSE){
@@ -91,11 +91,15 @@ df <- data.frame(degwarm=numeric(), rep=numeric(), chill=numeric(), fstar=numeri
 
 # yearlytemp <- "postwinter"
 yearlytemp <- "alltemps"
+
+plotonesite <- FALSE
+if(plotonesite){
 # plot the simulated data and simple linear models from one site
 site2plot = 11 # arbirarily pick a site to plot! 
 figname<-paste("figures/simsiteplots/decsensplot_warm","_site",site2plot,".pdf",sep="")
 pdf(figname, width = 12, height = 7)
 par(mfrow=c(2, length(degreez)/2))
+}
 for (i in degreez){
    for (j in 1:sitez){
        yearly_temp <- rep(0, yearz) # set up for sapply
@@ -138,17 +142,20 @@ for (i in degreez){
                loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
                perlm=coef(lm(per_leafout_date~per_yearly_temp))[2],
                propryrschillmet = chillmet,meangddsum= meangddsum)
-                
+               if(plotonesite){
                 if(j==site2plot){
                   plot(yearly_temp, leafout_date,pch=16,col="darkgreen", bty="l",
                       xlab="Temperature",ylab="Leafout", main = paste(round(i, 2),"warming_site",j, sep=" "))
                   m<-lm(leafout_date~yearly_temp)
                   if(summary(m)$coef[2,4]<=0.1){abline(m,lwd=2,col="darkgreen")}
                 }
+                }
            df <- rbind(df, dfadd)     
        }
    }
+if(plotonesite){
 dev.off()
+}
 
 if(FALSE){
 # Make a more compact version of the above, to share with JA
@@ -550,6 +557,7 @@ dfphoto$leafoutdriver[which(dfphoto$propyrsphoto==1)] <- "all photo" # in curren
 dfphoto$leafoutdriver[which(dfphoto$propyrsphoto>0 & dfphoto$propyrsphoto<1)] <- "photo/forcing"
 dfphoto$degwarmtext <- paste("warming:", as.factor(dfphoto$degwarm), "C")
 
+if(FALSE){
 # saved as shiftingcuessims_photo.pdf
 ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, group=leafoutdriver, color=leafoutdriver)) +
    geom_point() +
@@ -565,13 +573,14 @@ ggplot(data=dfphoto, aes(x=meantemp, y=leafoutdoy, color=propyrsphoto)) +
    facet_wrap(.~degwarmtext, scales="free") +
         ylab("Mean day of year") +
     xlab(expression(paste("Mean daily temperature (", degree, "C)"), sep=""))
+}
 
 # plot the means
 mean.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=mean)
 sd.simsphoto <- aggregate(dfphoto[c("simplelm", "loglm", "perlm","leafoutdoy", "gddmetday", "propyrsphoto")], dfphoto["degwarm"], FUN=sd)
 
 cexhere <- 0.95
-cextext <- 0.7
+cextext <- 0.8
 
 pdf(file.path("figures/shiftingcuessims_photo2panel.pdf"), width = 6, height = 8)
 par(mfrow=c(2,1), mar=c(5,5,2,5))
@@ -609,7 +618,7 @@ dev.off()
 
 
 
-
+if(FALSE){
 # For just one site ...
 dfphoto_onesite <- data.frame(degwarm=numeric(), rep=numeric(), yearly_temp=numeric(), leafoutdoy=numeric(),
     gddmetday=numeric(), driver=numeric()) 
@@ -654,3 +663,96 @@ ggplot(data=dfphoto_onesite, aes(x=yearly_temp, y=leafoutdoy, group=driver, colo
    facet_wrap(.~degwarmtext, scales="free") +
         ylab("Day of year") +
     xlab(expression(paste("Mean daily temperature (", degree, "C)"), sep=""))
+}
+
+###################################
+## Plots chilling and daylength  ##
+##          sims together        ##
+###################################
+
+
+pdf(file.path("figures/shiftingcuessims_4panels.pdf"), width = 12, height = 8)
+par(mfrow=c(2,2), mar=c(5,5,2,5))
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-15, 5),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+     xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$simplelm[i]
+  sdhere <- sd.sims$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$loglm[i]
+  sdhere <- sd.sims$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c("salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
+   cex=cexhere, bty="n")
+
+
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-8, 1),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$simplelm[i]
+  sdhere <- sd.simsphoto$simplelm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkblue")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
+  }
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$loglm[i]
+  sdhere <- sd.simsphoto$loglm[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+  }
+legend("bottomright", pch=c(19, 19), col=c( "salmon","darkblue"), legend=c("Using logged variables","Simple linear regression"),
+   cex=cexhere, bty="n")
+
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-0.1, 1),mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
+     ylab="Proportion years when chilling is met",
+     xlab=expression(paste("Warming (", degree, "C)")), bty="u",main="")
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$propryrschillmet[i]
+  sdhere <- sd.sims$propryrschillmet[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkgray")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
+}
+par(new = TRUE)
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(200,300),yaxt="n", ylab="",xaxt="n", xlab="", bty="u",mgp=c(1.5,.5,0), tck=-.01)
+axis(side = 4,mgp=c(1.5,.5,0), tck=-.01)
+mtext(expression(paste("Thermal sum required for leafout (", degree, "C)"), sep=""), side=4, adj=.5, line=2, cex=cexhere)
+
+for(i in 1:length(unique(mean.sims$degwarm))){
+  pos.x <- mean.sims$degwarm[i]
+  pos.y <- mean.sims$fstar[i]
+  sdhere <- sd.sims$fstar[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkred")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkred")
+}
+text(mean.sims$degwarm[1] + 1.6, mean.sims$fstar[1] + 6,
+     labels=expression(paste("Thermal sum (", degree, "C)"), sep=""), cex=cextext,
+      col="darkred")
+text(mean.sims$degwarm[1] + 0.8, mean.sims$fstar[1] + 80,
+     labels=expression(paste("Chilling met"), sep=""), cex=cextext,
+     col="darkgray")
+
+
+plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez)+ 0.5)), ylim=c(-0.1, (max(mean.simsphoto$propyrsphoto)+0.1)),
+     mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
+     ylab="Proportion years photoperiod drives leafout",
+     xlab=expression(paste("Warming (", degree, "C)")), bty="l",main="")
+for(i in 1:length(unique(mean.simsphoto$degwarm))){
+  pos.x <- mean.simsphoto$degwarm[i]
+  pos.y <- mean.simsphoto$propyrsphoto[i]
+  sdhere <- sd.simsphoto$propyrsphoto[i]
+  lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="darkgray")
+  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkgray")
+}
+dev.off()
