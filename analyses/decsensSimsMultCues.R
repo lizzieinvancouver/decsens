@@ -676,6 +676,7 @@ par(mfrow=c(2,2), mar=c(5,5,2,5))
 plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-10, 5),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
      xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+mtext("(a)", side = 3, adj=0.05)
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$simplelm[i]
@@ -696,7 +697,8 @@ legend("bottomright", pch=c(19, 19), col=c("salmon","darkblue"), legend=c("Using
 
 plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(-6, 1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+     xlab=expression(paste("Warming (", degree, "C)")), main="", bty="l", mgp=c(1.5,.5,0), tck=-.01)
+mtext("(b)", side = 3, adj=0.05)
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
   pos.x <- mean.simsphoto$degwarm[i]
   pos.y <- mean.simsphoto$simplelm[i]
@@ -728,7 +730,7 @@ par(new = TRUE)
 plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez) + 0.5)), ylim=c(200,300),yaxt="n", ylab="",xaxt="n", xlab="", bty="u",mgp=c(1.5,.5,0), tck=-.01)
 axis(side = 4,mgp=c(1.5,.5,0), tck=-.01)
 mtext(expression(paste("Thermal sum required for leafout (", degree, "C)"), sep=""), side=4, adj=.5, line=2, cex=cexhere)
-
+mtext("(c)", side = 3, adj=0.05)
 for(i in 1:length(unique(mean.sims$degwarm))){
   pos.x <- mean.sims$degwarm[i]
   pos.y <- mean.sims$fstar[i]
@@ -748,6 +750,7 @@ plot(x=NULL,y=NULL, xlim=c(-0.5, (max(degreez)+ 0.5)), ylim=c(-0.1, (max(mean.si
      mgp=c(1.5,.5,0), tck=-.01,xaxs="i",yaxs = "i",
      ylab="Proportion years photoperiod drives leafout",
      xlab=expression(paste("Warming (", degree, "C)")), bty="l",main="")
+mtext("(d)", side = 3, adj=0.05)
 for(i in 1:length(unique(mean.simsphoto$degwarm))){
   pos.x <- mean.simsphoto$degwarm[i]
   pos.y <- mean.simsphoto$propyrsphoto[i]

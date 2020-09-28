@@ -13,7 +13,7 @@ Dealing with revisions ...
 
 
 ** Me do next **
--> Nacho says, "I've also read the highlighted section in the SI and understood it. My only suggestion would be to add some clarification about what non-identifiability is (probably readers going through the SI would know what that is, but just in case?)."
+-> ADD Auerbach's notes on the trade-off driving shifting sensitivities in chill/force model
 -> Check spelling of spp names in tables for letter
 -> Cat's help with tables for letter
 

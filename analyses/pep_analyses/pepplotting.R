@@ -674,8 +674,8 @@ mean2spp.forpaper10yr$mat45slopelog <- ifelse(mean2spp.forpaper10yr$mat45slopelo
 mean2spp.forpaper10yr$mat60slopelog <- ifelse(mean2spp.forpaper10yr$mat60slopelog>=-0.01 & 
     mean2spp.forpaper10yr$mat60slopelog<=0, 0.0, mean2spp.forpaper10yr$mat60slopelog)
 
-names(mean2spp.forpaper10yr) <-  c("years", "species", "30", "45", "60", "mean ST.lo", 
-    "30", "45", "60", "var (lo)", "GDD", "30", "45", "60", "30", "45", "60")
+names(mean2spp.forpaper10yr) <-  c("years", "species", "31", "45", "60", "mean ST.lo", 
+    "31", "45", "60", "var (lo)", "GDD", "31", "45", "60", "31", "45", "60")
 
 mean3spp.forpaper10yr <- mean2spp.forpaper10yr
 mean2spp.forpaper10yr <- mean2spp.forpaper10yr[1:4,]
@@ -715,8 +715,8 @@ mean2spp.forpaper20yr$mat45slopelog <- ifelse(mean2spp.forpaper20yr$mat45slopelo
 mean2spp.forpaper20yr$mat60slopelog <- ifelse(mean2spp.forpaper20yr$mat60slopelog>=-0.01 & 
     mean2spp.forpaper20yr$mat60slopelog<=0, 0.0, mean2spp.forpaper20yr$mat60slopelog)
 
-names(mean2spp.forpaper20yr) <-  c("years", "species", "30", "45", "60", "mean ST.lo", 
-    "30", "45", "60", "var (lo)", "GDD", "30", "45", "60", "30", "45", "60")
+names(mean2spp.forpaper20yr) <-  c("years", "species", "31", "45", "60", "mean ST.lo", 
+    "31", "45", "60", "var (lo)", "GDD", "31", "45", "60", "31", "45", "60")
 
 mean3spp.forpaper20yr <- mean2spp.forpaper20yr
 mean2spp.forpaper20yr <- mean2spp.forpaper20yr[1:6,]
