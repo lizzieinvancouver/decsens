@@ -18,14 +18,12 @@ https://texblog.org/2018/08/14/track-changes-with-latexdiff/
 latexdiff docs/zarchive/decsens_plosbio1.tex docs/decsens.tex > diff.tex
 pdflatex diff.tex
 
+- Add cites here: "Our model holds the temperature threshold for leafout constant" in main text (maybe Zohner 2020?) 
+
 
 ** Me do next **
--> Make figure s1 look more like rest and add letters perhaps
--> ADD Auerbach's notes on the trade-off driving shifting sensitivities in chill/force model
--> Check spelling of spp names in tables for letter
--> Cat's help with tables for letter
--> Get refs into EndNote/Bibtex, from Ailene, from lit review and from Ben
-
+-> Review text, add final refs
+-> Work up letter. 
 
 -> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)."
 -> Think on the slides in Auerbach's defense (some_stat_models.pdf)
