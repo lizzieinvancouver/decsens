@@ -30,7 +30,7 @@
 \section{Tables}
 \vspace{-3ex}
 \begin{center}
-\captionof{table}{Number of consistent sites for each species with substantial leafout data in PEP725 over 10 and 20-year windows; we do not provide these numbers for \emph{Cornus mas, Fraxinus excelsior, Tilia cordata} as they were effectively zero given fewer consistent data for leafout across the same sites.} % Betula pubescens, Larix decidua, Populus tremuloides, Robinia pseudoacacia, Sambucus nigra, Tilia platyphyllos not considered or ...?
+\captionof{table}{Number of consistent sites for each species with substantial leafout data in PEP725 over 10 and 20-year windows; we do not provide these numbers for \emph{Betula pubescens, Cornus mas, Fraxinus excelsior, Larix decidua, Populus tremuloides, Robinia pseudoacacia, Sambucus nigra, Tilia cordata, Tilia platyphyllos} as they were effectively zero given fewer consistent data for leafout across the same sites.} % Betula pubescens, Larix decidua, Populus tremuloides, Robinia pseudoacacia, Sambucus nigra, Tilia platyphyllos not considered or ...?
 \label{tab:numsites}
 \begin{tabular}{| c | c | c | c | c | c |}
 \hline
@@ -41,11 +41,11 @@ species
  & \multicolumn{1}{|p{2cm}|}{\centering n sites \\ (1970-1990)}
  & \multicolumn{1}{|p{2cm}|}{\centering n sites \\ (1990-2010)}\\
 \hline
-\textit{Alnus glutinosa} & 5 & 5 & 19 & 19 & 19  \\
-\textit{Betula pendula} & 17 & 17 & 45 & 45 & 45  \\
-\textit{Fagus sylvatica} & 24 & 24 & 47 & 47 & 47 \\
-\textit{Fraxinus excelsior} & 4 & 4 & 30 & 30 & 30  \\
-\textit{Quercus robur} & 20 & 20 & 43 & 43 & 43  \\
+\textit{Alnus glutinosa} & 19 & 19 & 5 & 5 & 5  \\
+\textit{Betula pendula} & 45 & 45 & 17 & 17 & 17  \\
+\textit{Fagus sylvatica} & 47 & 47 & 24 & 24 & 24 \\
+\textit{Fraxinus excelsior} & 30 & 30 & 4 & 4 & 4  \\
+\textit{Quercus robur} & 43 & 43 & 20 & 20 & 20  \\
 \hline
 \end{tabular}
 \end{center}

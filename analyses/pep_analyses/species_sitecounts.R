@@ -82,7 +82,7 @@ nsites<-length(sites$lat.long)
 ## betpen: 20yr = 17  ; 10yr = 45  ### Betula pendula
 ## fagsyl: 20yr = 24 ; 10yr = 47  ### Fagus sylvatica
 ## alnglu: 20yr = 5 ; 10yr =  19     ### Alnus glutinosa
-## querob: 20yr = 20 ; 10yr =  45     ### Quercus robur
+## querob: 20yr = 20 ; 10yr =  43     ### Quercus robur
 ## fraexc: 20yr = 4 ; 10yr =  30     ### Fraxinus excelsior
 ## cormas: 20yr = 0 ; 10yr =  0   ### Cornus mas
 ## tilcor: 20yr = 0  ; 10yr =  0   ### Tilia cordata
