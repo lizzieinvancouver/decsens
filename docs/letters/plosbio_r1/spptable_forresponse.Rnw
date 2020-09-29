@@ -30,7 +30,7 @@
 \section{Tables}
 \vspace{-3ex}
 \begin{center}
-\captionof{table}{Number of consistent sites for each species with substantial leafout data in PEP725 over 10 and 20-year windows; we do not provide these numbers for \emph{Betula pubesens, Cornus mas, Larix decidua, Populus tremuloides, Robinua psuedo..., Sambucus nigra, Tilia cordata. Tilia pla...} as they were effectively zero given fewer consistent data for leafout across the same sites.} 
+\captionof{table}{Number of consistent sites for each species with substantial leafout data in PEP725 over 10 and 20-year windows; we do not provide these numbers for \emph{Cornus mas, Fraxinus excelsior, Tilia cordata} as they were effectively zero given fewer consistent data for leafout across the same sites.} % Betula pubescens, Larix decidua, Populus tremuloides, Robinia pseudoacacia, Sambucus nigra, Tilia platyphyllos not considered or ...?
 \label{tab:numsites}
 \begin{tabular}{| c | c | c | c | c | c |}
 \hline
@@ -52,7 +52,7 @@ species
 
 <<label=xtablez2, echo=FALSE, results=tex>>=
 library(xtable)
-source("..//..//analyses/pep_analyses/pepplotting.R")
+source("..//..//..//analyses/pep_analyses/pepplotting.R")
 italic <- function(x){ paste0('{\\emph{', x, '}}')
 }
 construct_header <- function(df, grp_names, span, align = "c", draw_line = T) {

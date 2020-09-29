@@ -24,7 +24,11 @@ bp <- read.csv("output/dailytemps_jantoapr.csv")
 bp$date <- as.Date(bp$Date, format="%Y-%m-%d")
 bp$doy <- format(bp$date, "%j")
 bp$mon <- format(bp$date, "%m")
-
+bp$lat.round <- round(bp$lat, 2)
+bp$lon.round <- round(bp$lon, 2)
+bp$latlon.round <- paste(bp$lat.round, "N", bp$lon.round, "E", sep=" ")
+length(unique(bp$lat.long))
+length(unique(bp$latlon.round))
 
 bpsm <- subset(bp, as.numeric(doy)>45)
 
@@ -32,7 +36,7 @@ bpsm.select <- subset(bpsm, year==2007)
 ggplot(bpsm.select, aes(x=as.numeric(doy), y=Tavg, group=as.factor(year), colour=as.factor(year))) +
     geom_point() +
    # geom_smooth(method="lm") + 
-    facet_wrap(.~as.factor(lat.long))
+    facet_wrap(.~as.factor(latlon.round))
 
 bpsm$decade <- NA
 bpsm$decade[which(bpsm$year<1971)] <- "1951-1970"
@@ -40,16 +44,16 @@ bpsm$decade[which(bpsm$year>1990)] <- "1991-2010"
 bpsm$decade[which(is.na(bpsm$decade)==TRUE)] <- "1971-1990"
 
 bpsummdec <-
-      ddply(bpsm, c("lat.long", "decade", "doy"), summarise,
+      ddply(bpsm, c("latlon.round", "decade", "doy"), summarise,
       temp = mean(Tavg))
 
 ggplot(bpsummdec, aes(x=as.numeric(doy), y=temp, group=as.factor(decade), color=as.factor(decade))) +
     geom_line() +
     # geom_smooth(method="lm") +
-    facet_wrap(.~as.factor(lat.long))
+    facet_wrap(.~as.factor(latlon.round))
 
 bpsumm <-
-      ddply(bpsm, c("lat.long", "doy"), summarise,
+      ddply(bpsm, c("latlon.round", "doy"), summarise,
       temp = mean(Tavg))
 
 getrsq <- function(df, x, y, group){
@@ -65,19 +69,20 @@ getrsq <- function(df, x, y, group){
 return(dfnew)
 }
 
-bpsummr2 <- getrsq(bpsumm, "doy", "temp", "lat.long")
-names(bpsummr2)[names(bpsummr2)=="group"] <- "lat.long"
+bpsummr2 <- getrsq(bpsumm, "doy", "temp", "latlon.round")
+names(bpsummr2)[names(bpsummr2)=="group"] <- "latlon.round"
 
 # Jonathan's suggested visualization: https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/
 ggplot(bpsumm, aes(x=as.numeric(doy), y=temp)) +
     geom_line(color="dodgerblue") +
     geom_smooth(method = "lm", linetype = 2, lwd=0.5, color="darkgray", se = FALSE) +
-    facet_wrap(.~as.factor(lat.long)) +
+    facet_wrap(.~as.factor(latlon.round)) +
     geom_text(color="dodgerblue", size=3, data=bpsummr2, aes(x = 57, y = 12, label = r2)) +
-    xlab("day of year") +
-    ylab("daily temperature (C)") +
-    theme_minimal() 
-  
+    xlab("Day of year") +
+    ylab(expression(paste("Daily temperature (", degree, "C)"), sep="")) +
+    theme_minimal()
+
+
 
 ## tried to see if moving average helped with visualization... no much
 if(FALSE){

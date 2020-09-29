@@ -10,38 +10,13 @@ Dealing with late April edits
 
 
 <><><><><><><><<><>
-REFS
-<><><><><><><><><><>
-
-Wang et al. 2019: Inner Mongolian grassland plant phenological changes and their climatic drivers (March to April) -- they did each month but focus on March-April in abstract but note "The rates of climate warming during the two months prior to green-up (i.e., March and April) were generally not statistically significant, and the highest two warming rates occurred at Qahar and Alxa (Table 3). "
-
-
-
-Papers that use TWO months windows
-Park et al. 2018 (predefined as 2 months before SOS): Slowdown of spring green-up advancements in boreal forests
-
-Ma 2018: Reduced geographical variability in spring phenology of temperate trees with recent warming
-Asse 2018: Warmer winters reduce the advance of tree spring phenology induced by warmer springs in the Alps
-Wang 2015: Geographical pattern in first bloom variability and its relation to temperature sensitivity in the USA and China
-Wang 2015: Temperature sensitivity of spring vegetation phenology correlates to within-spring warming speed over the Northern Hemisphere
-Prevey 2017: Greater temperature sensitivity of plant phenology at colder sites: implications for convergence across northern latitudes (2 months, pre-defined)
-Zhang 2015: Sensitivity of flowering phenology to changing temperature in China (2 months prior to event)
-Wang 2015: Temperature sensitivity of spring vegetation phenology correlates to within-spring warming speed over the Northern Hemisphere (2 month moving window)
-
-Similar:
-Park 2018: Herbarium specimens reveal substantial and unexpected variation in phenological sensitivity across the eastern United States (predefined, Mar-May)
-Kopp 2020: Herbarium records indicate variation in bloom-time sensitivity to temperature across a geographically diverse region (predefined, 3 months prior to event)
-
-
-60 day windows crops:
-(CROP) Ren 2019: Contrasting wheat phenological responses to climate change in global scale
-(CROP) Ren 2019: Heat and Drought Stress Advanced Global Wheat Harvest Timing from 1981-2014 (also redefined)
-
-
-
-<><><><><><><><<><>
 Dealing with revisions ...
 <><><><><><><><><><>
+
+
+https://texblog.org/2018/08/14/track-changes-with-latexdiff/
+latexdiff docs/zarchive/decsens_plosbio1.tex docs/decsens.tex > diff.tex
+pdflatex diff.tex
 
 
 ** Me do next **

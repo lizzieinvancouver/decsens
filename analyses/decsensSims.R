@@ -398,16 +398,22 @@ plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue")
 pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
 par(mfrow=c(2,3))
 plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="Leafout date", main="", cex=cexhere)
+     ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(a)", side = 3, adj=0.05)
 plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="log(Leafout date)", main="", cex=cexhere)
+     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(b)", side = 3, adj=0.05)
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
-     ylab="log(Leafout date)", main="", cex=cexhere)
+     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(c)", side = 3, adj=0.05)
 plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
-    ylab="Leafout date", main="", cex=cexhere)
+    ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(d)", side = 3, adj=0.05)
 plot(yearly_temp, log(leafout_date), pch=20, xlab="Simulated spring temperature",
-    ylab="log(Leafout date)", main="", cex=cexhere)
+    ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(e)", side = 3, adj=0.05)
 plot(log(yearly_temp), log(leafout_date), pch=20, xlab="log(Simulated spring temperature)",
-     ylab="log(Leafout date)", main="", cex=cexhere)
+     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+# mtext("(f)", side = 3, adj=0.05)
 dev.off()
 
