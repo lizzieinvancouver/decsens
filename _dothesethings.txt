@@ -23,7 +23,9 @@ pdflatex diff.tex
 
 ** Me do next **
 -> Review text, add final refs
--> Work up letter. 
+-> Review how do I feel about more negative/smaller etc?
+-> Work up letter
+-> Send to Jonathan!
 
 -> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)."
 -> Think on the slides in Auerbach's defense (some_stat_models.pdf)
