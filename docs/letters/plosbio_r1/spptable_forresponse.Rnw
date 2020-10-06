@@ -21,7 +21,7 @@
 \renewcommand{\refname}{\CHead{}}
 
 \title{Additional tables} 
-\author{E. M. Wolkovich  J. Auerbach, C. J. Chamberlain, D. M. Buonaiuto, \\ A. K. Ettinger, I. Morales-Castilla \& A. Gelman}
+% \author{E. M. Wolkovich  J. Auerbach, C. J. Chamberlain, D. M. Buonaiuto, \\ A. K. Ettinger, I. Morales-Castilla \& A. Gelman}
 \date{} 
 \maketitle  
 \renewcommand{\thetable}{S\arabic{table}}

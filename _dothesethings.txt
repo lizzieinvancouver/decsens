@@ -13,10 +13,26 @@ Dealing with late April edits
 Dealing with revisions ...
 <><><><><><><><><><>
 
+Window notes: 
+Ailene:
+
+I didn't find *the perfect* paper for you to cite supporting the window we chose, but here are three options that are at least well-aligned with ours: and might help:
+1) The Park et al 2019 paper "Herbarium specimens reveal substantial and unexpected variation in phenological sensitivity across the eastern United States" in PHILOSOPHICAL TRANSACTIONS OF THE ROYAL SOCIETY B-BIOLOGICAL SCIENCES uses Mar-May (almost our window...)
+2) Wang et al  2014 "The influence of local spring temperature variance on temperature sensitivity of spring phenology" used 60-day windows that ended on the mean leafout date overtime (so the start date varied by site; they also tested 45- and 90-day windows
+3) Bolmgren et al used the 60-day time-period before mean FFD and stated "Using a proxy for 90 days did not improve the fit of the model, while a proxy for 30 days reduced the fit."
+
+Dan:
+
+Wang 2020 (Satellite-observed decrease in the sensitivity of spring phenology to climate change under high nitrogen deposition) used March April and May temps as a window as well.
+
 
 https://texblog.org/2018/08/14/track-changes-with-latexdiff/
-latexdiff docs/zarchive/decsens_plosbio1.tex docs/decsens.tex > diff.tex
+latexdiff decsens_plosbio1.tex ..//decsens.tex > diff.tex
 pdflatex diff.tex
+
+latexdiff decsens_supp_plosbio1.tex ..//decsens_supp.tex > suppdiff.tex
+pdflatex suppdiff.tex
+
 
 - Add cites here: "Our model holds the temperature threshold for leafout constant" in main text (maybe Zohner 2020?) 
 
