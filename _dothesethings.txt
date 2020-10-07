@@ -6,7 +6,9 @@ Dealing with late April edits
 ** Do before submitting **
 
 (1) Update all the code on labgit to the newer versions!
-
+(2) Work on the diff file to submit (refs to figures etc.)
+(3) Clean up mess below in 'Dealing with revisions ...'
+(4) Make sure letter has part 1, part 2 and additional tables
 
 
 <><><><><><><><<><>
