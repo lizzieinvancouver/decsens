@@ -40,7 +40,8 @@ dailytempchange <- 0.1 # alpha_1
 
 # Step 2: Build the data and calculate sensitivities 
 df <- data.frame(fstar=numeric(), rep=numeric(), simplelm=numeric(), loglm=numeric(), perlm=numeric(),
-    simplelm.trunc=numeric(), loglm.trunc=numeric())
+    simplelm.trunc=numeric(), loglm.trunc=numeric(), varx=numeric(), covarxy=numeric(), covarlogxy=numeric(),
+    varx.trunc=numeric(), covarxy.trunc=numeric(), covarlogxy.trunc=numeric())
 
 for (i in fstarsims){
    for (j in 1:sitez){
@@ -56,7 +57,12 @@ for (i in fstarsims){
            loglm=coef(lm(log(leafout_date)~log(yearly_temp)))[2],
            perlm=coef(lm(per_leafout_date~per_yearly_temp))[2],
            simplelm.trunc=coef(lm(leafout_date~yearly_temp_trunc))[2],
-           loglm.trunc=coef(lm(log(leafout_date)~log(yearly_temp_trunc)))[2])
+           loglm.trunc=coef(lm(log(leafout_date)~log(yearly_temp_trunc)))[2],
+           varx=var(yearly_temp), covarxy=cov(leafout_date, yearly_temp),
+           covarlogxy=cov(log(leafout_date), log(yearly_temp)),
+           varx.trunc=var(yearly_temp_trunc), covarxy.trunc=cov(leafout_date, yearly_temp_trunc),
+           covarlogxy.trunc=cov(log(leafout_date), log(yearly_temp_trunc))
+           )
        df <- rbind(df, dfadd)
     }
 }
@@ -82,6 +88,16 @@ mean.sims.sm <- aggregate(dfsm[c("simplelm", "loglm")], dfsm["fstar"], FUN=mean)
 ##############
 ## Plotting ##
 ##############
+# saved ad basicsims_fstaronly_varcov
+par(mfrow=c(2,4))
+plot(simplelm.trunc~fstar, data=df, xlab="thermal sum", ylab="lm sensitivity (temp until leafout)")
+plot(varx.trunc~fstar, data=df, xlab="thermal sum", ylab="var(temp until leafout)")
+plot(covarxy.trunc~fstar, data=df, xlab="thermal sum", ylab="covar(leafout day, temp until leafout)")
+plot(covarlogxy.trunc~fstar, data=df, xlab="thermal sum", ylab="covar(log(leafout day), log(temp until leafout))")
+plot(simplelm~fstar, data=df, xlab="thermal sum", ylab="lm sensitivity (temp over window)")
+plot(varx~fstar, data=df, xlab="thermal sum", ylab="var(temp over window)")
+plot(covarxy~fstar, data=df, xlab="thermal sum", ylab="covar(leafout day, temp over window)")
+plot(covarlogxy~fstar, data=df, xlab="thermal sum", ylab="covar(log(leafout day), (log(temp over window))")
 
 # Summarize the fstar sims
 mean.sims <- aggregate(df[c("simplelm", "loglm", "perlm", "simplelm.trunc", "loglm.trunc")], df["fstar"], FUN=mean)
