@@ -15,13 +15,9 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses")
 # get some data
 # Fagus sylvatica data from PEP (both have has GDD from 1 Jan to leafout)
 # fs has mat from March 1st to June 1st and mat.lo is 30 days before leafout (uses tg -- aka mean -- data from E-OBS)
-# fsalt is similar, but calculated uses txtm -- aka min and max (and we caculate the mean ourselves from those values) -- data from E-OBS) ... we don't use this currently 
-#fs <- read.csv("output/betpen_allchillsandgdds_45sites_mat_tntx_forsims.csv", header=TRUE)
-#fspre <- read.csv("output/fs_climatedatapre.csv")
-#fspost <- read.csv("output/fs_climatedatapost.csv")
 
-#fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")
-fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")
+#fs <- read.csv("output/fagsyl_decsens_1950_2000.csv")  ### 10 yr timeframes (1950-1960 vs 2000-2010)
+fs <- read.csv("output/fagsyl_decsens_1950-2000.csv")  ### 20 yr comparisons (1950-1970 vs 1970-1990 vs 1990-2010)
 
 # loop to extract some model estimates
 # this takes mean for each time period then allows comparison acrosgs the two resulting values
