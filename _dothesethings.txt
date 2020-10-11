@@ -1,69 +1,48 @@
 <><><><><><><><><>
 Notes to Lizzie 
-Dealing with late April edits
+Dealing with edits
 <><><><><><><><><>
-
-** Do before submitting **
-
-(1) Update all the code on labgit to the newer versions!
-(2) Work on the diff file to submit (refs to figures etc.)
-(3) Clean up mess below in 'Dealing with revisions ...'
-(4) Make sure letter has part 1, part 2 and additional tables
 
 
 <><><><><><><><<><>
 Dealing with revisions ...
 <><><><><><><><><><>
 
-Window notes: 
-Ailene:
 
-I didn't find *the perfect* paper for you to cite supporting the window we chose, but here are three options that are at least well-aligned with ours: and might help:
-1) The Park et al 2019 paper "Herbarium specimens reveal substantial and unexpected variation in phenological sensitivity across the eastern United States" in PHILOSOPHICAL TRANSACTIONS OF THE ROYAL SOCIETY B-BIOLOGICAL SCIENCES uses Mar-May (almost our window...)
-2) Wang et al  2014 "The influence of local spring temperature variance on temperature sensitivity of spring phenology" used 60-day windows that ended on the mean leafout date overtime (so the start date varied by site; they also tested 45- and 90-day windows
-3) Bolmgren et al used the 60-day time-period before mean FFD and stated "Using a proxy for 90 days did not improve the fit of the model, while a proxy for 30 days reduced the fit."
+** Do before submitting **
 
-Dan:
-
-Wang 2020 (Satellite-observed decrease in the sensitivity of spring phenology to climate change under high nitrogen deposition) used March April and May temps as a window as well.
+(*) Better way to bibtex the diff?
+(*) Make sure letter has part 1, part 2 and additional tables
 
 
-https://texblog.org/2018/08/14/track-changes-with-latexdiff/
-latexdiff decsens_plosbio1.tex ..//decsens.tex > diff.tex
-pdflatex diff.tex
-
-latexdiff decsens_supp_plosbio1.tex ..//decsens_supp.tex > suppdiff.tex
-pdflatex suppdiff.tex
 
 
-- Add cites here: "Our model holds the temperature threshold for leafout constant" in main text (maybe Zohner 2020?) 
 
+<><><><><><><><<><>
+Work on PLOS Bio revisions 
+(Summer 2020, submitted in October 2020 I hope)
+<><><><><><><><><><>
 
-** Me do next **
--> Review text, add final refs
--> Review how do I feel about more negative/smaller etc?
--> Work up letter
--> Send to Jonathan!
+Have done ...
 
--> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)."
+-> Address non-identifiability: "Show it's non-identified, assume all coefficients are 0, find two sets of parameters that yield the same data (half the interval lengths and double the coefficients)." [Though this is so obvious I just explained it generally in the supp, but decsensSimsMultCues.R (in decsens repo) does have code for this if needed.]
+-> Review chilling -- more or less done, if depressing/confusing (see chillunits.pdf)
+-> Changed pre-season length (see 'Pre-season NOTES' below).
+-> Add table of species with constant sites across the windows we chose. Then add top two species? 
+-> Build up simulations in the supp -- to show differences between estimates of models with true declines and with just statistical artifacts (add photoperiod model in addition to chilling, add greater comparison of estimates ...)
+-> Added lots of refs (checked: Ailene wrote, I also checked Hunter and Lechowicz and 1992, which seems good for supporting the constant themal sum thresholds. In my quick look, I didn’t see support from Man and Lu, 2010 for constant thermal sum thresholds but I can look again more carefully. [I took out Man & Lu 2010.]]
+
+Did not do, but okay I think:
 -> Think on the slides in Auerbach's defense (some_stat_models.pdf)
-
-Review chilling -- more or less done, if depressing/confusing (see chillunits.pdf)
-
-
-- Address non-identifiability when trying to vary other things in model 
-
-- Build up simulations in the supp -- to show differences between estimates of models with true declines and with just statistical artifacts (add photoperiod model in addition to chilling, add greater comparison of estimates ...) 
-
-- Add lilacs or some other long-term data or just add more PEP species? 
-- Add table of species with constant sites across the windows we chose. Then add top two species? 
-- Do something about pre-season length (currently: 1 March to 30 April)
+-> Add lilacs or some other long-term data or just add more PEP species? 
 
 German phenology data: https://link.springer.com/article/10.1007/s00484-013-0650-2
 Russian phenology data: https://www.nature.com/articles/s41597-020-0376-z
 Lilac data: https://www.nature.com/articles/sdata201538
 
-Pre-season:
++++++++
+Pre-season NOTES:
+
 - Currently 1 Mar to 30 Apr:
 	- we could shift it back 15 d: 15-ish Feb - 15 Apr 
 	- we could make it 15 days shorter 
@@ -71,13 +50,6 @@ Pre-season:
 - FAGSYL data range is ~105-135, mean is 110 (very late April)
 - Fu et al. find a 60 day preseason is most common across species (Ext. Data Fig 2) and for BETPEN, though for FAGSYL it looks to be tied for 15 and 30 d. For BETPEN 45 d is runner-up. They seem to actually calculate the temperature window from leaf unfolding based on their preseason length, but I don't think we want to do that. 
 
-Suggested to Cat on 3 Sep 2020:
-So we have already:
-(1) 1 Mar to 30 Apr
-We add:
-(2) 1 Mar to 15 Apr
-(3) 15 Mar to 15 Apr
-How does that seem? 
 
 Here's what Gusewell did: 
 "The optimal preseason for each species, station and time period was determined as the series of 20–120 days (with 10-day steps) preceding the mean date of the phenological event, whose mean temperatures correlate most negatively with phenology. We initially varied both preseason start and preseason end dates to check that the optimal end date was the mean date of the phenological event in most cases, as assumed by our model. We then fixed preseason end at the mean date of the event and selected the optimal start date, which in turn determined preseason length. The optimal preseason start date and the following statistics were determined for the entire period 1970–2012 (“fixed start date”), separately for 1970–1987 and 1995–2012 (“period-specific start dates”), and separately for cold and warm years, provided that data from at least eight years were available in the data subset considered."
@@ -87,12 +59,35 @@ Here's what Gusewell did:
 "Temperature sensitivity did on average not differ significantly between years with warm and cold winters (z = 1.57, p = .12)."
 
 
++++++++
+Pre-season window notes:
+
+In draft sent in early October, all these refs in the pre-season Supp section were checked:
+- Park et al 2019 and Bolmgren et al 2013 -- (Ailene wrote) I think they are good citations to support the 60 day window that we used.
+- Kopp 2020 and (Dan wrote) the citation is correct.
+- Prevey 2017 (I checked, they wrote "The summer time-window was defined as either average May–June, June, June–July, or June–August mean monthly temperatures per year.")
+- Zhang et al. 2015 (I checked)
+- Park et al. 2018 (pre-defined) -- Dan
+- Wang et al. 2015 (statistical search) -- Nacho
+
+Ailene:
+I didn't find *the perfect* paper for you to cite supporting the window we chose, but here are three options that are at least well-aligned with ours: and might help:
+1) The Park et al 2019 paper "Herbarium specimens reveal substantial and unexpected variation in phenological sensitivity across the eastern United States" in PHILOSOPHICAL TRANSACTIONS OF THE ROYAL SOCIETY B-BIOLOGICAL SCIENCES uses Mar-May (almost our window...)
+2) Wang et al  2014 "The influence of local spring temperature variance on temperature sensitivity of spring phenology" used 60-day windows that ended on the mean leafout date overtime (so the start date varied by site; they also tested 45- and 90-day windows
+3) Bolmgren et al used the 60-day time-period before mean FFD and stated "Using a proxy for 90 days did not improve the fit of the model, while a proxy for 30 days reduced the fit."
+
+Dan:
+Wang 2020 (Satellite-observed decrease in the sensitivity of spring phenology to climate change under high nitrogen deposition) used March April and May temps as a window as well.
+
+
++++++++
+Other NOTES ...
+
 JA wrote about the linear alpha_1 example from PEP
 
 If you want to plot the data, I would consider small multiples (using facet_wrap to give each site its own plot): https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/
 
 However, I think reporting the R^2 is better—looks like it will be > .95 for all sites. You could compare that to the R^2 of leaf-out on mean temperature since if researchers are willing to assume that that relationship is linear, they would have to agree that ours is as well.
-
 
 REFS from Dan B on thermal sums ...
 
