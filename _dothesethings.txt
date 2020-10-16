@@ -9,12 +9,6 @@ Dealing with revisions ...
 <><><><><><><><><><>
 
 
-** Do before submitting **
-
-(*) Better way to bibtex the diff?
-(*) Make sure letter has part 1, part 2 and additional tables
-
-
 
 
 
@@ -66,9 +60,9 @@ In draft sent in early October, all these refs in the pre-season Supp section we
 - Park et al 2019 and Bolmgren et al 2013 -- (Ailene wrote) I think they are good citations to support the 60 day window that we used.
 - Kopp 2020 and (Dan wrote) the citation is correct.
 - Prevey 2017 (I checked, they wrote "The summer time-window was defined as either average May–June, June, June–July, or June–August mean monthly temperatures per year.")
-- Zhang et al. 2015 (I checked)
+- Zhang et al. 2015 (Journal of Geophysical Research-Biogeosciences) ... Nacho wrote: they use a 60 day fixed window (they inspect correlations for different length periods, but since those correlate with the 60-day one, they end up choosing a fixed window). So this citation seems correct
 - Park et al. 2018 (pre-defined) -- Dan
-- Wang et al. 2015 (statistical search) -- Nacho
+- Wang et al. 2015 (statistical search) -- Nacho wrote: they use a 2 month fixed window, but change/slide when the window start/ends conditioned on the last month containing the onset of the phenological event. So it should be ok?
 
 Ailene:
 I didn't find *the perfect* paper for you to cite supporting the window we chose, but here are three options that are at least well-aligned with ours: and might help:
