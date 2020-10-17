@@ -83,6 +83,32 @@ ggplot(bpsumm, aes(x=as.numeric(doy), y=temp)) +
     theme_minimal()
 
 
+# add photoperiod for Ailene's paper
+library(geosphere)
+
+bpsumm2 <- bpsumm
+bpsites <- subset(bp, select=c("latlon.round", "lat.round"))
+bpsites <- bpsites[!duplicated(bpsites),]
+bpsumm.wp <- merge(bpsumm2, bpsites, by="latlon.round", all.x=TRUE)
+bpsumm.wp$daylength <- NA
+
+for (i in c(1:nrow(bpsumm.wp))){
+    photoper <- daylength(bpsumm.wp$lat.round[i], as.numeric(bpsumm.wp$doy[i]))
+    bpsumm.wp$daylength[i] <- photoper
+    }
+
+ggplot(bpsumm.wp, aes(x=as.numeric(doy))) +
+    geom_line(aes(y=temp), color="dodgerblue") +
+    geom_line(aes(y=daylength), color="darkorchid") +
+    facet_wrap(.~as.factor(latlon.round)) +
+    xlab("Day of year") +
+    ylab("Photoperiod") +
+    theme_minimal()
+
+onesite <- subset(bpsumm.wp, lat.round==52.4)
+plot(daylength~as.numeric(doy), data=onesite, col="red", ylim=c(6,18), pch=16)
+points(temp+8~as.numeric(doy), data=onesite, pch=16)
+
 
 ## tried to see if moving average helped with visualization... no much
 if(FALSE){
