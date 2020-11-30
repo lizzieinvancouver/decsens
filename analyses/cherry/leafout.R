@@ -105,6 +105,7 @@ qplot(M_bins, n_beta, geom = "boxplot") +
        y = "Cherry Blossom Peak Bloom Date") +
   theme_bw()
 
+# plot(Yoshino.peak.bloom.date~Year, data=cherry, type="l", col="hotpink", lwd=2)
 
 ## Eurodata
 bp <- read.csv("..//pep_analyses/output/betpen_decsens_1950-2000.csv")

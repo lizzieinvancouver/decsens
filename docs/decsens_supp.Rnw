@@ -30,7 +30,9 @@
 
 \section{A first-hitting-time model of leafout}
 
-Our model follows the general understanding of how warm temperatures (forcing) trigger leafout in temperate deciduous trees \citep{chuineJTB}. We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leafout day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
+We use a simple model based on the general understanding of how warm temperatures (forcing) trigger leafout in temperate deciduous trees \citep{chuineJTB}: that leafout occurs after a certain thermal sum is met. Though very simple, we formalize it here to show its inherent non-linearity and some of its statistical properties. \\
+
+We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leafout day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
 
 We derive the relationship between daily temperature and leafout in two common scenarios. In the first, we take the average daily temperature up until the leafout date. In the second, we take the average daily temperature over a fixed window, such as March 1st to April 30th. In both cases, we discretize time since, although many biological processes depend continuously on time, research typically measures time in discretized units, such as days, weeks, or months. % We assume the researcher knows the day temperatures start to accumulate, $n=0$. 
 
