@@ -420,8 +420,8 @@ setwd("~/Documents/git/decsens/analyses/pep_analyses/output/zarchive")
 #post <- read.csv("postbetpen.csv")
 #mid <- read.csv("midbetpen.csv")
 
-pre <- read.csv("prebetpenten.csv")
-post <- read.csv("postbetpenten.csv")
+pre <- read.csv("~/Desktop/prebetpen_cherries.csv")
+post <- read.csv("~/Desktop/postbetpenten_cherries.csv")
 
 predata<-data.frame(chillutah = c(pre$Mean.Utah.1, pre$Mean.Utah.2,
                                   pre$Mean.Utah.3, pre$Mean.Utah.4,
@@ -669,7 +669,7 @@ postdata<-data.frame(chillutah = c(post$Mean.Utah.1, post$Mean.Utah.2,
                                    post$Site.Num..41, post$Site.Num..42,
                                    post$Site.Num..43, post$Site.Num..44,
                                    post$Site.Num..45),
-                     year = (as.numeric(rownames(post))+2000))
+                     year = (as.numeric(rownames(post))+1983))
 
 site.post<-full_join(postdata, sites)
 site.post$x<-NULL
