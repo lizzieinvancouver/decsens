@@ -22,7 +22,7 @@ d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 
 df<-d%>%
   filter(BBCH==11)%>%
-  filter(YEAR>=1950 & YEAR<=2010)%>%
+  filter(YEAR>=1950 & YEAR<=2015)%>%
   dplyr::select(YEAR, DAY, BBCH, PEP_ID, LAT, LON, species)%>%
   rename(year=YEAR)%>%
   rename(lo=DAY)%>%
@@ -37,18 +37,18 @@ x<-paste(df$year, df$lo)
 df$date<-as.Date(strptime(x, format="%Y %j"))
 df$Date<- as.character(df$date)
 df$lat.long <- paste(df$lat, df$long)
-allpeps <- df[(df$year>=1950 & df$year<=2011),]
+allpeps <- df[(df$year>=1950 & df$year<=2016),]
 
 allpeps$cc <- NA
-allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1970, "1950-1970", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
-allpeps$cc<-ifelse(allpeps$year>1990 & allpeps$year<=2010, "1990-2010", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1950 & allpeps$year<=1983, "1950-1983", allpeps$cc)
+#allpeps$cc<-ifelse(allpeps$year>1970 & allpeps$year<=1990, "1970-1990", allpeps$cc)
+allpeps$cc<-ifelse(allpeps$year>1983 & allpeps$year<=2015, "1984-2016", allpeps$cc)
 allpeps$num.years<-ave(allpeps$year, allpeps$lat.long, FUN=length)
-mostdata<-allpeps[(allpeps$num.years>=60),]
+mostdata<-allpeps[(allpeps$num.years>=65),]
 tt<-as.data.frame(table(mostdata$cc, mostdata$lat.long))
 tt<-tt[!(tt$Freq==0),]
 bestsites<-as.data.frame(table(tt$Var2))
-bestsites<-bestsites[(bestsites$Freq>2),]
+bestsites<-bestsites[(bestsites$Freq>1),]
 bestsites <- bestsites$Var1
 
 allpeps.subset<-mostdata[(mostdata$lat.long %in% bestsites),]
@@ -62,8 +62,8 @@ rx<-brick("~/Desktop/Big Data Files/tx_0.25deg_reg_v16.0.nc", sep="")
 #period<-2001:2010
 sites<-subset(allpeps.subset, select=c(lat, long, lat.long))
 sites<-sites[!duplicated(sites$lat.long),]
-#badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
-#sites<-sites[!(sites$lat.long%in%badsites),]
+badsites<-c("54.5 11.1", "49.7667 11.55", "47.8 11.0167") 
+sites<-sites[!(sites$lat.long%in%badsites),]
 sites$x<-sites$long
 sites$y<-sites$lat
 nsites<-length(sites$lat.long)
@@ -76,7 +76,7 @@ lositeyear <- lositeyear[!duplicated(lositeyear),]
 lositeyear <- left_join(lositeyear, sites)
 lositeyear<-na.omit(lositeyear)
 
-leaps<-seq(from=1952, to=2010, by=4)
+leaps<-seq(from=1952, to=2016, by=4)
 
 bb<-sites
 bb$lat.long<-paste(bb$lat, bb$long, sep=",")
@@ -141,12 +141,12 @@ tempdata$yday <- yday(tempdata$Date)
 alltemps <- subset(tempdata, select=c("Date", "year", "yday", "day", "month", "temp", "siteslist"))
 names(alltemps)<-c("date", "year", "yday", "day", "month", "temp", "spatial")
 alltemps$date <- as.character(alltemps$date)
-climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1971),]
-climatedatamid <- alltemps[(alltemps$year>=1970 & alltemps$year<=1991),]
-climatedatapost <- alltemps[(alltemps$year>=1990 & alltemps$year<=2011),]
+climatedatapre <- alltemps[(alltemps$year>=1950 & alltemps$year<=1984),]
+#climatedatamid <- alltemps[(alltemps$year>=1970 & alltemps$year<=1991),]
+climatedatapost <- alltemps[(alltemps$year>=1983 & alltemps$year<=2017),]
 
 write.csv(climatedatapre, file="output/bp_climatedatapre.csv", row.names=FALSE)
 write.csv(climatedatapost, file="output/bp_climatedatapost.csv", row.names=FALSE)
-write.csv(climatedatamid, file="output/bp_climatedatamid.csv", row.names=FALSE)
+#write.csv(climatedatamid, file="output/bp_climatedatamid.csv", row.names=FALSE)
 
 
