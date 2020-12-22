@@ -17,7 +17,11 @@ library(egg)
 library(raster)
 library(RColorBrewer)
 
-setwd("~/Documents/git/decsens/analyses/pep_analyses")
+
+if(length(grep("Lizzie", getwd())>0)) { 
+  setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses") 
+} else setwd("~/Documents/git/decsens/analyses/pep_analyses")
+
 d<-read.csv("input/pep_betpen_all.csv", header=TRUE)
 
 df<-d%>%

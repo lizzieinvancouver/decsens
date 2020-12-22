@@ -11,7 +11,11 @@ require(dplyr)
 require(tidyr)
 
 # Setting working directory. Add in your own path in an if statement for your file structure
-setwd("~/Documents/git/decsens/analyses/pep_analyses")
+if(length(grep("Lizzie", getwd())>0)) { 
+  setwd("~/Documents/git/projects/treegarden/decsens/analyses/pep_analyses") 
+} else setwd("~/Documents/git/decsens/analyses/pep_analyses")
+
+randomizeme <- TRUE # flag by Lizzie for randomizing the leafout date
 
 ###### FOR JUST ANALYZING RESULTS JUMP TO LINE 75 ########
 
@@ -75,12 +79,25 @@ bbsw$bb_date <- as.character(bbsw$bb_date)
 bbsw$doy95 <- bbsw$lo - 4
 
 bbsw <- subset(bbsw, select=c("year", "bb_date", "lo", "doy95", "siteslist"))
-colnames(bbsw) <- c("Year", "bb_date", "bb_mean", "doy95", "spatial")
+colnames(bbsw) <- c("Year", "bb_date", "bb_mean", "doy95", "spatial") # these are the specific columns it needs: year with a capital Y, bb_date (an actual date), bb_mean is leafout DOY (same as date but in doy), doy95 if leafout minus 4 (??), and spatial is different sites.
 bbsw$bb_date <- as.character(bbsw$bb_date)
 
 bbswpre <- bbsw[(bbsw$Year>1950 & bbsw$Year<=1983),]
 bbswpost <- bbsw[(bbsw$Year>1983 & bbsw$Year<=2016),]
 #bbswmid <- bbsw[(bbsw$Year>1970 & bbsw$Year<=1990),]
+
+if(randomizeme==TRUE){
+# rando <- sample(length(bbswpostrand$bb_date)) # if you just want resampled row numbers
+bbswprerand <- bbswpre
+bbswpostrand <- bbswpost
+# current approach ... just shuffle the years (need to overwrite date too)
+bbswprerand$Year <- sample(bbswprerand$Year, length(bbswprerand$Year))
+bbswprerand$bb_date <- as.Date(paste(bbswprerand$bb_mean, bbswprerand$Year, sep="-"),
+   format=("%j-%Y"))
+bbswpostrand$Year <- sample(bbswpostrand$Year, length(bbswpostrand$Year))
+bbswpostrand$bb_date <- as.Date(paste(bbswpostrand$bb_mean, bbswpostrand$Year, sep="-"),
+   format=("%j-%Y"))
+}
 
 #bbswtest <- bbswpre[(bbswpre$spatial==1),]
 
@@ -100,25 +117,47 @@ source("simmonds_slidingwin/Run_SW.R")
 #run_SW <- function(absolute = TRUE, datafile, climate, refday)
 
 ### Now checking Simmond's sliding window approach:
-refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
+refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun (this is the average time of year is when leafout is, supposedly, should play around with this more)
+if(randomizeme==FALSE){
 datafile <- bbswpre
+}
+if(randomizeme==TRUE){
+datafile <- bbswprerand
+}
 climate <- climatedatapre
 climate$X <- NA ### needed in order to run... 
 
 Results_SWRpre <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
+if(randomizeme==FALSE){
 write.csv(Results_SWRpre[[2]], file="simmonds_slidingwin/output/results_swapre_bp_mayref.csv")
 write.csv(Results_SWRpre[[1]], file="simmonds_slidingwin/output/sumstats_swapre_bp_mayref.csv")
+}
+if(randomizeme==TRUE){
+write.csv(Results_SWRpre[[2]], file="simmonds_slidingwin/output/results_swapre_bp_mayrefrand.csv")
+write.csv(Results_SWRpre[[1]], file="simmonds_slidingwin/output/sumstats_swapre_bp_mayrefrand.csv")
+}
 
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 05) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
+if(randomizeme==FALSE){
 datafile <- bbswpost
+}
+if(randomizeme==TRUE){
+datafile <- bbswpostrand
+}
 climate <- climatedatapost
-climate$X <- NA ### needed in order to run... 
+climate$X <- NA ### needed in order to run...
 
+if(randomizeme==FALSE){
 Results_SWRpost <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
 write.csv(Results_SWRpost[[2]], file="simmonds_slidingwin/output/results_swapost_bp_mayref.csv")
 write.csv(Results_SWRpost[[1]], file="simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
-
+}
+if(randomizeme==TRUE){
+write.csv(Results_SWRpost[[2]], file="simmonds_slidingwin/output/results_swapost_bp_mayrefrand.csv")
+write.csv(Results_SWRpost[[1]], file="simmonds_slidingwin/output/sumstats_swapost_bp_mayrefrand.csv")
+}
+    
 if(FALSE){
 ### Now checking Simmond's sliding window approach:
 #refday <- c(01, 04) ### results in folders are from a ref day of 01-03, I think this new ref day is more appropriate for PEP leafout data - to rerun
