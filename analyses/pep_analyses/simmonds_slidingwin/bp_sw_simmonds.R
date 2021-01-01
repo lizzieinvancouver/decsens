@@ -145,11 +145,12 @@ datafile <- bbswpost
 if(randomizeme==TRUE){
 datafile <- bbswpostrand
 }
+
 climate <- climatedatapost
 climate$X <- NA ### needed in order to run...
 
-if(randomizeme==FALSE){
 Results_SWRpost <- run_SW(absolute=TRUE, datafile, climate, refday) ## takes a long time to run
+if(randomizeme==FALSE){
 write.csv(Results_SWRpost[[2]], file="simmonds_slidingwin/output/results_swapost_bp_mayref.csv")
 write.csv(Results_SWRpost[[1]], file="simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
 }
@@ -195,6 +196,13 @@ swapre_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayref.cs
 #swapre_stat <- Results_SWRpre[[1]]
 swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_mayref.csv")
 #swapost_stat <- Results_SWRpost[[1]]
+
+if(FALSE){
+swaprerand <- read.csv("simmonds_slidingwin/output/results_swapre_bp_mayrefrand.csv")
+swapre_statrand <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayrefrand.csv")
+swapostrand <- read.csv("simmonds_slidingwin/output/results_swapre_bp_mayrefrand.csv")
+swapost_statrand <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayrefrand.csv")
+}
 
 if(FALSE){
 ### Alright, now we have to convert to Kelvin again...
