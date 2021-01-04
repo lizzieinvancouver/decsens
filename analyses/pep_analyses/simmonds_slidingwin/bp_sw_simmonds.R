@@ -200,8 +200,8 @@ swapost_stat <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_mayref.
 if(FALSE){
 swaprerand <- read.csv("simmonds_slidingwin/output/results_swapre_bp_mayrefrand.csv")
 swapre_statrand <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayrefrand.csv")
-swapostrand <- read.csv("simmonds_slidingwin/output/results_swapre_bp_mayrefrand.csv")
-swapost_statrand <- read.csv("simmonds_slidingwin/output/sumstats_swapre_bp_mayrefrand.csv")
+swapostrand <- read.csv("simmonds_slidingwin/output/results_swapost_bp_mayrefrand.csv")
+swapost_statrand <- read.csv("simmonds_slidingwin/output/sumstats_swapost_bp_mayrefrand.csv")
 }
 
 if(FALSE){

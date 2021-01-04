@@ -30,22 +30,21 @@ cstar <- 110
 fstaradjforchill <- 3 # how much more GDD to you need based on diff from cstar at end of daystostart
 yearz <- 30 
 sitez <- 45
-simsnum <- 1
-degreez <- seq(0, 7, length.out=simsnum) # warming -- applied evenly across `winter' and `spring'
+simsnum <- 2
+degreez <- seq(0, 2, length.out=simsnum) # warming -- applied evenly across `winter' and `spring'
 
-dfbb <- data.frame(site=numeric(), year=numeric(), gddreq=numeric(),
-    leafout_date=numeric())
-dfclim <- data.frame(site=numeric(), year=numeric(), day=numeric(), daily_temp=numeric())
 
-# Climate data goes dayswinter/2, daysspring, summer, dayssummer, daysfall, dayswinter/2
-# Leafout_date is reported in df as days since start of spring PLUS dayswinter/2
+
+# Climate data goes dayswinter, daysspring, summer, dayssummer, daysfall 
+# Leafout_date is reported in df as days since start of spring PLUS dayswinter
 for (i in degreez){
+    dfbb <- data.frame(site=numeric(), year=numeric(), gddreq=numeric(), leafout_date=numeric())
+    dfclim <- data.frame(site=numeric(), year=numeric(), day=numeric(), daily_temp=numeric())
    for (j in 1:sitez){
-       daily_temp <- sapply(rep(NA, yearz), function(x) c(rnorm(dayswinter/2, wintertemp + i, sigma),
+       daily_temp <- sapply(rep(NA, yearz), function(x) c(rnorm(dayswinter, wintertemp + i, sigma),
            (rnorm(daysspring, springtemp + i , sigma) + c(1:daysspring)*springtempinc),
            rnorm(dayssummer, summertemp + i, sigma),
-           (rnorm(daysfall, summertemp + i , sigma) - c(1:daysfall)*springtempinc),
-           rnorm(dayswinter/2, wintertemp + i, sigma)))
+           (rnorm(daysfall, summertemp + i , sigma) - c(1:daysfall)*springtempinc)))
        chill <- daily_temp
        chill[(chill)<0] <- 0
        chill[(chill)>5] <- 0
@@ -68,11 +67,24 @@ for (i in degreez){
            dfclim <- rbind(dfclim, dfclimadd)
            }
            yearly_temp <- colMeans(daily_temp)
-           dfbbadd <- data.frame(site=rep(j, yearz), year=1:yearz, gddreq=gddreq, leafout_date=leafout_date+dayswinter/2)
+           dfbbadd <- data.frame(site=rep(j, yearz), year=1:yearz, gddreq=gddreq, leafout_date=leafout_date+dayswinter)
            dfbb <- rbind(dfbb, dfbbadd)
 
        }
-   }
+    if(fstaradjforchill>0){
+        write.csv(dfclim, paste("simmonds_slidingwin/output/fakeclim_wchill_", i, "deg.csv", sep=""),
+            row.names=FALSE)
+        write.csv(dfbb, paste("simmonds_slidingwin/output/fakebb_wchill_", i, "deg.csv", sep=""),
+            row.names=FALSE)
+      }
+    if(fstaradjforchill==0){
+        write.csv(dfclim, paste("simmonds_slidingwin/output/fakeclim_nochill_", i, "deg.csv", sep=""),
+            row.names=FALSE)
+        write.csv(dfbb, paste("simmonds_slidingwin/output/fakebb_nochill_", i, "deg.csv", sep=""),
+            row.names=FALSE)
+     }
+
+}
 
 if(plottinghere){
 plot(daily_temp[,1]~c(1:dayz), type="l")
@@ -86,23 +98,5 @@ ggplot(dfclim, aes(x=as.numeric(day), y=daily_temp)) +
     xlab("Day of year") +
     ylab(expression(paste("Daily temperature (", degree, "C)"), sep="")) +
     theme_minimal()
-}
-
-if((i==0) && (fstaradjforchill>0)){
-write.csv(dfclim, "simmonds_slidingwin/output/fakeclim_wchill_0deg.csv")
-write.csv(dfbb, "simmonds_slidingwin/output/fakebb_wchill_0deg.csv")
-}
-if((i==2) && (fstaradjforchill>0)){
-write.csv(dfclim, "simmonds_slidingwin/output/fakeclim_wchill_2deg.csv")
-write.csv(dfbb, "simmonds_slidingwin/output/fakebb_wchill_2deg.csv")
-}
-
-if((i==0) && (fstaradjforchill==0)){
-write.csv(dfclim, "simmonds_slidingwin/output/fakeclim_nochill_0deg.csv")
-write.csv(dfbb, "simmonds_slidingwin/output/fakebb_nochill_0deg.csv")
-}
-if((i==2) && (fstaradjforchill==0)){
-write.csv(dfclim, "simmonds_slidingwin/output/fakeclim_nochill_2deg.csv")
-write.csv(dfbb, "simmonds_slidingwin/output/fakebb_nochill_2deg.csv")
 }
 
