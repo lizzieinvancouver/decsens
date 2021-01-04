@@ -1,0 +1,72 @@
+Started 4 January 2020
+Info on moving window approaches ...
+
+
+<><><><><><><><>
+Some refs:
+
+Climwin package vignettes:
+https://cran.r-project.org/web/packages/climwin/vignettes/climwin.html
+https://cran.r-project.org/web/packages/climwin/vignettes/advanced_climwin.html
+
+Papers that introduce climwin method:
+
+MEE van de Pol in 2016 (Identifying the best climatic predictors in ecology and evolution) 
+https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12590
+
+Bailey & van de Pol 2016, PLOS One, climwin: An R Toolbox for Climate Window Analysis
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0167980
+
+Papers using climwin:
+
+Simmonds et al. 2019: Cue identification in phenology: A case study of the predictive performance of current statistical tools
+https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2656.13038
+
+Similar to Climwin but not using it:
+New PNAS paper on Russian data: 
+https://www.pnas.org/content/117/49/31249
+
+Phillimore et al. 2013
+https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2745.12067
+
+Other approaches (lasso etc.): https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12486
+
+
+<><><><><><><><>
+Some climwin notes:
+
+Model selects the best model based on deltAIC against the baseline model you give it. 
+
+It tests 4 'aggregate statistics' ...
+
+1) mean (so take the mean climate over the 'best window')
+2) max (so take the max climate over the 'best window')
+3) min (so take the min climate over the 'best window')
+4) slope -- take the SLOPE of the climate data in the window (this is the only method I believe has ever been tested with simulated data according to their publications).
+
+from Simmons et al. 2019, 
+
+"The aggregate statistic used in this method is typically a sum, mean (e.g. of the daily mean, minimum, or maximum temperature), minimum (e.g. the minimum mean daily temperature reached in a focal window) or maximum (e.g. the maximum mean daily temperature reached in a focal window) envi- ronmental value, or the slope of environmental change across the window (the gradient of a linear model of daily mean temperature against date within the focal window)."
+
+Requires a reference day:
+
+Often selected as AFTER the latest observed event date.
+
+All windows are reported as DAYS PRIOR to this date. 
+
+Absolute versus relative windows:
+Simmonds et al.2 019, "The temporal position is either tied to a reference calendar day (i.e. 20 May) or to the time event itself (i.e. days prior to event); these approaches are absolute sliding time window (SWA) analysis and relative sliding time window (SWR) analysis, respectively (van de Pol et al., 2016)."
+
+
+<><><><><><><><>
+What we have tried:
+
+Baseline model of lm(1~mean(budburst date))
+Linear fit
+Try the 4 default 
+'aggregate statistics'
+Absolute window (mostly I think?)
+
+Ran it on Betula pendula for Europe over two climate windows.
+Ran it on Betula pendula for Europe over two climate windows but randomized leafout.
+Used some of the simulated climate data I have created for the decsens paper
