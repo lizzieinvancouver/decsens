@@ -98,7 +98,7 @@ runSW_nospatial <- function(datafile, climate, refday){
       bdate = datafile$bb_date,
       cmissing="method1", cinterval="day", type="absolute",
       range=c(366,0), refday = refday,
-      stat=c("mean", "min", "max", "slope"),
+      stat=c("mean", "min", "max", "slope", "sum"),
       func="lin"
     )
     return(results)
@@ -112,7 +112,7 @@ runSW_nospatialnoNA <- function(datafile, climate, refday){
       bdate = datafile$bb_date,
       cmissing=FALSE, cinterval="day", type="absolute",
       range=c(365,0), refday = refday,
-      stat=c("mean", "min", "max", "slope"),
+      stat=c("mean", "min", "max", "slope", "sum"),
       func="lin"
     )
     return(results)
@@ -126,7 +126,7 @@ runSW_nospatial_rel<- function(datafile, climate, refday){
       bdate = datafile$bb_date,
       cmissing="method1", cinterval="day", type="relative",
       range=c(366,0), refday = refday,
-      stat=c("mean", "min", "max", "slope"),
+      stat=c("mean", "min", "max", "slope", "sum"),
       func="lin"
     )
     return(results)
