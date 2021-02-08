@@ -5,11 +5,13 @@ Dealing with edits
 
 
 <><><><><><><><<><>
-Dealing with revisions ...
+Revising for a new journal ...
 <><><><><><><><><><>
+- Map the Ma data and look at how much data we have across a latitudinal gradient
+- Think on Ma data
+- Add winegrape data?
 
-
-
+See also projects/misc/pep725/pep725check_decsens.R
 
 
 <><><><><><><><<><>

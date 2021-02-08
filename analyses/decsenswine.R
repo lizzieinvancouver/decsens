@@ -50,6 +50,12 @@ summary(lm(Bur.ghd~Bur.temp, data=sublate))
 summary(lm(log(Bur.ghd+60)~log(Bur.temp), data=subearly)) # adding 60 because the GHD can be negative
 summary(lm(log(Bur.ghd+60)~log(Bur.temp), data=sublate))
 
+summary(lm(Bor.ghd~Bor.temp, data=subearly))
+summary(lm(Bor.ghd~Bor.temp, data=sublate))
+
+summary(lm(log(Bor.ghd+60)~log(Bor.temp), data=subearly)) # adding 60 because the GHD can be negative
+summary(lm(log(Bor.ghd+60)~log(Bor.temp), data=sublate))
+
 # 20 years ...
 subearly <- subset(envdata, year>1958 & year <1979)
 sublate <- subset(envdata, year>1987)
