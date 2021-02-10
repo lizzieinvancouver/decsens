@@ -11,6 +11,7 @@ graphics.off()
 require(lubridate)
 require(chillR)
 require(raster)
+library(ncdf4)
 
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
 d<-read.csv("input/siteztotry.csv", header=TRUE)
@@ -23,7 +24,7 @@ Coords <- subset(getsitez, select=c(x, y))
 Coords <- na.omit(Coords)
 nsites <- length(getsitez$lat.lon)
 
-rg <- brick("~/Desktop/Big Data Files/tg_0.25deg_reg_v16.0.nc")
+rg <- brick("~/Desktop/Big Data Files/tg_0.25deg_reg_v19.0.nc")
 
 period <- c(1959:2011)
 
@@ -35,7 +36,7 @@ climsub <- subset(rg,yearsinperiod) # takes a couple of minutes
 
 ## subset climate days
 monthsinclim <- as.numeric(format(as.Date(names(climsub),format="X%Y.%m.%d"),"%m"))
-dailytempmonths <- c(1:4)
+dailytempmonths <- c(1:6)
 monthsindailytemps <- which(monthsinclim%in%dailytempmonths)
 dailytempssub <- subset(climsub,monthsindailytemps)
 
