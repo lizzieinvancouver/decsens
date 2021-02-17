@@ -7,6 +7,9 @@ Dealing with edits
 <><><><><><><><<><>
 Revising for a new journal ...
 <><><><><><><><><><>
+
+- Try analyses with Type II regression (reduced major axis) ... as reviewer Keenan et al. 2019 suggest
+
 - Map the Ma data and look at how much data we have across a latitudinal gradient
 - Think on Ma data
 - Add winegrape data?
