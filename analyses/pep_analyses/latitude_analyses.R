@@ -107,23 +107,45 @@ for (site in unique(pdat$lat.lon)){
     statz <- rbind(statz, statzadd)
  }
 
+
+pchhere <- 16
+colz <- c("dodgerblue", "darkred", "darkorchid1")
+
 par(mfrow=c(2,2))
-plot(lmslope60d~lat, data=statz)
-abline(lm(lmslope60d~lat, data=statz))
+plot(lmslope60d~lat, data=statz, col=colz[1], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean 60 d before event")
+abline(lm(lmslope60d~lat, data=statz), col=colz[1])
 summary(lm(lmslope60d~lat, data=statz))
 
-plot(logslope60d~lat, data=statz)
-abline(lm(logslope60d~lat, data=statz))
+plot(logslope60d~lat, data=statz, col=colz[2], pch=pchhere,
+     xlab="Latitude", ylab="Slope w log: T mean 60 d before event")
+abline(lm(logslope60d~lat, data=statz), col=colz[2])
 summary(lm(logslope60d~lat, data=statz))
 
-plot(lmslopeSpcWindow~lat, data=statz)
-abline(lm(lmslopeSpcWindow~lat, data=statz))
+plot(lmslopeSpcWindow~lat, data=statz, col=colz[1], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean of Apr-June")
+abline(lm(lmslopeSpcWindow~lat, data=statz), col=colz[1])
 summary(lm(lmslopeSpcWindow~lat, data=statz))
 
-plot(logslopeSpcWindow~lat, data=statz)
-abline(lm(logslopeSpcWindow~lat, data=statz))
+plot(logslopeSpcWindow~lat, data=statz, col=colz[2], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean of Apr-June")
+abline(lm(logslopeSpcWindow~lat, data=statz), col=colz[2])
 summary(lm(logslopeSpcWindow~lat, data=statz))
 
+## try to look at on similar scale ...
+par(mfrow=c(1,2))
+plot(lmslope60d~lat, data=statz, col=colz[1], pch=pchhere)
+abline(lm(lmslope60d~lat, data=statz), col=colz[1])
+summary(lm(lmslope60d~lat, data=statz))
+
+points((logslope60d*10)~lat, data=statz, col=colz[2], pch=pchhere)
+abline(lm((logslope60d*10)~lat, data=statz), col=colz[2])
+
+# And ... are the two metrics more similar in log scale?
+# Seems it ... but scaling is an issue again
+plot(logslope60d~lat, data=statz, ylim=c(-0.8, 0.8))
+abline(lm(logslope60d~lat, data=statz), col=colz[2])
+abline(lm(logslopeSpcWindow~lat, data=statz), col=colz[3])
 
 ## Some quick plotting ...
 library(ggplot2)
@@ -148,3 +170,5 @@ ggplot(d, aes(x=as.numeric(doy), y=tmean, color=lat)) +
     xlab("Day of year") +
     ylab(expression(paste("Daily mean temperature (", degree, "C)"), sep="")) +
     theme_minimal()
+
+
