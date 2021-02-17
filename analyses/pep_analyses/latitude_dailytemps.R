@@ -2,6 +2,8 @@
 ### 8 Feb 2021 - Cat
 ## based off of betpen_chillandgdd_tntx_forsims.R but using Tmin and Tmax now to find Tmean
 
+## See also projects/misc/pep725/pep725check_decsens.R (Lizzie's computer) ##
+
 # Clear workspace
 rm(list=ls()) # remove everything currently held in the R memory
 options(stringsAsFactors=FALSE)
@@ -14,7 +16,7 @@ require(raster)
 library(ncdf4)
 
 setwd("~/Documents/git/decsens/analyses/pep_analyses")
-d<-read.csv("input/siteztotry.csv", header=TRUE)
+d<-read.csv("input/siteztotry.csv", header=TRUE) # name changed to sitespeplatBBCH10
 
 d$lat.lon <- paste(d$latnum, d$lonnum, sep="")
 getsitez <- d[!duplicated(d$lat.lon),] # bad, should add lon, but works for these sites - changed column to lat.lon and then address below

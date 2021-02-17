@@ -8,7 +8,12 @@ Dealing with edits
 Revising for a new journal ...
 <><><><><><><><><><>
 
+Regarding pnas reviews:
 - Try analyses with Type II regression (reduced major axis) ... as reviewer Keenan et al. 2019 suggest
+- Maybe add some note acknowledging we note that BetPen and FagSyl are very different species.... same reviewer was looking for photo versus chill models; perhaps stress that we develop a forcing-only NULL model?
+- Say that maybe sensitivity has NOT changed recently... or not much at least?
+- Table S1-S2: explain the meaning of the 31-45-60 subheadings in the tables
+- From Matt:  Metabolic rates of caterpillars tend to have higher Q10s at cooler temperatures than at warmer temperatures (e.g., Ayres and Scriber from before you were born). I think Arrhenius predicted this attribute for chemical reactions in general.
 
 - Map the Ma data and look at how much data we have across a latitudinal gradient
 - Think on Ma data

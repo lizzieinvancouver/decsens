@@ -60,10 +60,10 @@ summary(lm(log(Bor.ghd+60)~log(Bor.temp), data=sublate))
 subearly <- subset(envdata, year>1958 & year <1979)
 sublate <- subset(envdata, year>1987)
 
-## major axis
+## major axis regression (Type II)
+
 library(lmodel2)
 # By Legendre https://cran.r-project.org/web/packages/lmodel2/lmodel2.pdf
-
 MAearly <- lmodel2(Bur.ghd~Bur.temp, data=subearly, nperm=99)
 MAlate <- lmodel2(Bur.ghd~Bur.temp, data=sublate, nperm=99)
 
