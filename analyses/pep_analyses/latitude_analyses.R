@@ -172,3 +172,102 @@ ggplot(d, aes(x=as.numeric(doy), y=tmean, color=lat)) +
     theme_minimal()
 
 
+## Now try some simulations using the real climate data ...
+fstar <- 200
+
+simleafout <- data.frame(lat=numeric(),
+                   lon=numeric(),
+                   lat.lon=character(),
+                   year=numeric(),
+                   leafoutdoy=numeric(),
+                   tmean60=numeric())
+
+for(asite in unique(d$lat.lon)){
+    onesitedf <- d[which(d$lat.lon==asite),]
+    for(oneyear in unique(onesitedf$year)){
+        oneyeardf <-  onesitedf[which(onesitedf$year==oneyear),]
+        oneyeardf$tmeanforgdd <- ifelse(oneyeardf$tmean>0, oneyeardf$tmean, 0)
+        leafoutdoy <-  min(which(cumsum(oneyeardf$tmeanforgdd) > fstar))
+        clim60 <- oneyeardf[which(oneyeardf$doy<leafoutdoy & oneyeardf$doy>(leafoutdoy-windowlength)),]
+        simloadd <- data.frame(
+                   lat=oneyeardf$lat[1],
+                   lon=oneyeardf$lon[1],
+                   lat.lon=asite,
+                   year=oneyear,
+                   leafoutdoy=leafoutdoy,
+                   tmean60=mean(clim60$tmean, na.rm=TRUE))
+        simleafout <- rbind(simleafout, simloadd)
+    }
+}
+
+simleafoutwmean <- merge(dspcwindowmean, simleafout, by=c("lat", "lon", "lat.lon", "year"))
+simleafoutwmean$tmeanplus10 <- simleafoutwmean$tmean+10
+simleafoutwmean$tmean60plus10 <- simleafoutwmean$tmean60+10
+
+
+simstatz <- data.frame(lat=numeric(),
+                   lon=numeric(),
+                   lat.lon=character(),
+                   lmslopeSpcWindow=numeric(),
+                   logslopeSpcWindow=numeric(),
+                   lmslope60d=numeric(),
+                   logslope60d=numeric())
+
+for (site in unique(simleafoutwmean$lat.lon)){
+    subby <- simleafoutwmean[which(simleafoutwmean$lat.lon==site),]
+    statzadd <- data.frame(
+                   lat=subby$lat[1],
+                   lon=subby$lon[1],
+                   lat.lon=site,
+                   lmslopeSpcWindow=coef(lm(leafoutdoy~tmeanplus10, data=subby))[2],
+                   logslopeSpcWindow=coef(lm(log(leafoutdoy)~log(tmeanplus10), data=subby))[2],
+                   lmslope60d =coef(lm(leafoutdoy~tmean60plus10, data=subby))[2],
+                   logslope60d=coef(lm(log(leafoutdoy)~log(tmean60plus10), data=subby))[2],
+                   n=nrow(subby))
+    simstatz <- rbind(simstatz, statzadd)
+ }
+
+pchhere <- 16
+colz <- c("dodgerblue", "darkred", "darkorchid1")
+
+par(mfrow=c(2,2))
+plot(lmslope60d~lat, data=simstatz, col=colz[1], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean 60 d before event")
+abline(lm(lmslope60d~lat, data=simstatz), col=colz[1])
+summary(lm(lmslope60d~lat, data=simstatz))
+
+plot(logslope60d~lat, data=simstatz, col=colz[2], pch=pchhere,
+     xlab="Latitude", ylab="Slope w log: T mean 60 d before event")
+abline(lm(logslope60d~lat, data=simstatz), col=colz[2])
+summary(lm(logslope60d~lat, data=simstatz))
+
+plot(lmslopeSpcWindow~lat, data=simstatz, col=colz[1], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean of Apr-June")
+abline(lm(lmslopeSpcWindow~lat, data=simstatz), col=colz[1])
+summary(lm(lmslopeSpcWindow~lat, data=simstatz))
+
+plot(logslopeSpcWindow~lat, data=simstatz, col=colz[2], pch=pchhere,
+     xlab="Latitude", ylab="Slope lm: T mean of Apr-June")
+abline(lm(logslopeSpcWindow~lat, data=simstatz), col=colz[2])
+summary(lm(logslopeSpcWindow~lat, data=simstatz))
+
+
+# Compare real and sim data ...
+drealsim <- merge(dprepforstat, simleafoutwmean, by=c("lat", "lon", "lat.lon", "year"),
+    all.x=TRUE, suffixes=c(".real", ".sim"))
+statzrealsim <- merge(statz, simstatz, by=c("lat", "lon", "lat.lon"),
+    all.x=TRUE, suffixes=c(".real", ".sim"))
+
+plot(doy~leafoutdoy, data=drealsim) # should color code by lat
+abline(0,1)
+plot(tmean.real~tmean.sim, data=drealsim) # safety-check!
+plot(tmean60.real~tmean60.sim, data=drealsim) # should color code by lat
+
+plot(lmslopeSpcWindow.real~lmslopeSpcWindow.sim, data=statzrealsim)
+abline(0,1)
+plot(logslopeSpcWindow.real~logslopeSpcWindow.sim, data=statzrealsim) 
+abline(0,1)
+plot(lmslope60d.real~lmslope60d.sim, data=statzrealsim)
+abline(0,1)
+plot(logslope60d.real~logslope60d.sim, data=statzrealsim) 
+abline(0,1)
