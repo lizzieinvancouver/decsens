@@ -38,7 +38,7 @@ envdata <- merge(envdata, prec, by="year", suffixes=c("", ".prec"))
 envdata <- merge(envdata, pdsi, by="year", suffixes=c("", ".pdsi"))
 
 ## Setting up data to have same years 1980+ and before
-subearly <- subset(envdata, year>1950 & year <1979)
+subearly <- subset(envdata, year>1950 & year <1980)
 sublate <- subset(envdata, year>1979)
 
 nrow(subearly)
@@ -57,7 +57,7 @@ bordearlylog <- lm(log(Bor.ghd+60)~log(Bor.temp), data=subearly) # adding 60 bec
 bordlatelog <- lm(log(Bor.ghd+60)~log(Bor.temp), data=sublate)
 
 burearly <- data.frame(where="Burgundy",
-                    when="Before",
+                    when="1951-1979",
                     meantemp=mean(subearly$Bur.temp, na.rm=TRUE),
                     lmslope=coef(burearlylm)[2],
                     lmslopeconfint11=confint(burearlylm,level=0.89)[2,1],
@@ -67,7 +67,7 @@ burearly <- data.frame(where="Burgundy",
                     logslopeconfint89=confint(burearlylog,level=0.89)[2,2])
 
 burlate <- data.frame(where="Burgundy",
-                    when="After",
+                    when="1980-2007",
                     meantemp=mean(sublate$Bur.temp, na.rm=TRUE),
                     lmslope=coef(burlatelm)[2],
                     lmslopeconfint11=confint(burlatelm,level=0.89)[2,1],
@@ -77,7 +77,7 @@ burlate <- data.frame(where="Burgundy",
                     logslopeconfint89=confint(burlatelog,level=0.89)[2,2])
 
 bordearly <- data.frame(where="Bordeaux",
-                    when="Before",
+                    when="1951-1979",
                     meantemp=mean(subearly$Bor.temp, na.rm=TRUE),
                     lmslope=coef(bordearlylm)[2],
                     lmslopeconfint11=confint(bordearlylm,level=0.89)[2,1],
@@ -86,7 +86,7 @@ bordearly <- data.frame(where="Bordeaux",
                     logslopeconfint11=confint(bordearlylog,level=0.89)[2,1],
                     logslopeconfint89=confint(bordearlylog,level=0.89)[2,2])
 bordlate <- data.frame(where="Bordeaux",
-                    when="After",
+                    when="1980-2007",
                     meantemp=mean(sublate$Bor.temp, na.rm=TRUE),
                     lmslope=coef(bordlatelm)[2],
                     lmslopeconfint11=confint(bordlatelm,level=0.89)[2,1],
@@ -95,38 +95,73 @@ bordlate <- data.frame(where="Bordeaux",
                     logslopeconfint11=confint(bordlatelog,level=0.89)[2,1],
                     logslopeconfint89=confint(bordlatelog,level=0.89)[2,2])
 
-plotdat <- rbind(burearly, burlate, bordearly, bordlate)
+plotburdat <- rbind(burearly, burlate)
+plotborddat <- rbind(bordearly, bordlate)
 
-if(FALSE){
+tempdiffbur <- plotburdat$meantemp[which(plotburdat$when=="1980-2007")]-
+    plotburdat$meantemp[which(plotburdat$when=="1951-1979")]
+tempdiffburplot <- c(-0.01, tempdiffbur)
+
+tempdiffbord <- plotborddat$meantemp[which(plotborddat$when=="1980-2007")]-
+    plotborddat$meantemp[which(plotborddat$when=="1951-1979")]
+tempdiffbordplot <- c(0.01, tempdiffbord)
+
+
 cexhere <- 0.95
 cextext <- 0.75
-pdf(file.path("figures/winedata.pdf"), width = 6, height = 4)
+colz <- c("tomato2", "maroon4")
+pdf(file.path("..//..//..//treegarden/decsens/analyses/figures/winedata.pdf"), width = 9, height = 4)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-plot(x=NULL,y=NULL, xlim=c(-0.1, 1.5), ylim=c(-10, 1),
+par(mfrow=c(1,2))
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.7), ylim=c(-10, -4),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
-         xlab=expression(paste("Warming (", degree, "C)")), main="")
-for(i in 1:length(unique(plotdat$when))){
-  pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$mat60slope[i]
-  ciherelo <- mean.betpen.20yr$mat60slopeconfint11[i]
-  cihereup <- mean.betpen.20yr$mat60slopeconfint89[i]
-  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="darkblue")
-  points(pos.x, pos.y, cex=cexhere, pch=19, col="darkblue")
-  text(pos.x + 0.1, pos.y, labels=unique(mean.betpen.20yr$cc)[i], cex=cextext, col="darkblue")
+         xlab=expression(paste("Warming (", degree, "C)")), main="Linear (untransformed)",
+     font.main = 1, cex.main = 0.9, cex.lab=1.2, bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+for(i in 1:length(unique(plotburdat$when))){
+  pos.x <- tempdiffburplot[i]
+  pos.y <- plotburdat$lmslope[i]
+  ciherelo <- plotburdat$lmslopeconfint11[i]
+  cihereup <- plotburdat$lmslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col=colz[1])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colz[1])
+  text(pos.x + 0.22, pos.y, labels=unique(plotburdat$when)[i], cex=cextext, col=colz[1])
   }
-for(i in 1:length(unique(mean.betpen.20yr$cc))){
-  pos.x <- tempdiffplot.20yr[i]
-  pos.y <- mean.betpen.20yr$mat60slopelog[i]
-  ciherelo <- mean.betpen.20yr$mat60slopelogconfint11[i]
-  cihereup <- mean.betpen.20yr$mat60slopelogconfint89[i]
-  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col="salmon")
-  points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
+for(i in 1:length(unique(plotborddat$when))){
+  pos.x <- tempdiffbordplot[i]
+  pos.y <- plotborddat$lmslope[i]
+  ciherelo <- plotborddat$lmslopeconfint11[i]
+  cihereup <- plotborddat$lmslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col=colz[2])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colz[2])
+  text(pos.x + 0.24, pos.y, labels=unique(plotborddat$when)[i], cex=cextext, col=colz[2])
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Using raw x, y", "Using logged x, y"),
+legend("bottomright", pch=c(19, 17), col=colz, legend=c("Burgundy", "Bordeaux"),
    cex=1, bty="n")
+plot(x=NULL,y=NULL, xlim=c(-0.1, 1.7), ylim=c(-2.5, -0.5),
+     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+         xlab=expression(paste("Warming (", degree, "C)")), main="Non-linear (logged)",
+     font.main = 1, cex.main = 0.9, cex.lab=1.2, bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+for(i in 1:length(unique(plotburdat$when))){
+  pos.x <- tempdiffburplot[i]
+  pos.y <- plotburdat$logslope[i]
+  ciherelo <- plotburdat$logslopeconfint11[i]
+  cihereup <- plotburdat$logslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col=colz[1])
+  points(pos.x, pos.y, cex=cexhere, pch=19, col=colz[1])
+ text(pos.x + 0.22, pos.y, labels=unique(plotburdat$when)[i], cex=cextext, col=colz[1])
+  }
+for(i in 1:length(unique(plotborddat$when))){
+  pos.x <- tempdiffbordplot[i]
+  pos.y <- plotborddat$logslope[i]
+  ciherelo <- plotborddat$logslopeconfint11[i]
+  cihereup <- plotborddat$logslopeconfint89[i]
+  lines(x=rep(pos.x, 2), y=c(ciherelo, cihereup), col=colz[2])
+  points(pos.x, pos.y, cex=cexhere, pch=17, col=colz[2])
+  text(pos.x + 0.24, pos.y-0.1, labels=unique(plotborddat$when)[i], cex=cextext, col=colz[2])
+  }
 dev.off()
-}
+
 
 ## Side note ... 
 ## major axis regression (Type II)
