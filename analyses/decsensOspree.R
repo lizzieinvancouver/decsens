@@ -173,7 +173,51 @@ dev.off()
 ##
 ##
 
-# Use simplest examples for ms?
-pdf("..//..//..//..//decsens/analyses/figures/ospreeforcechill.pdf", width=10, height=6)
-grid.arrange(char2raw, char2logy, char2logyx, thielraw, thiellogy, thiellogyx, nrow = 2)
+# For manuscript, add sims
+
+expected_temp <- c(rep(5,10), rep(10,10), rep(15,10), rep(20, 10), rep(25, 10))
+daily_temp <- sapply(expected_temp, function(x) rnorm(100, 0 + x, 2)) # now make some simple daily temps
+leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > 200))) # set leafout date as whenever 200 GDD is reached
+realized_temp <- colMeans(daily_temp) # estimate the mean temp of each simulated dataset
+
+pdf("..//..//..//..//decsens/analyses/figures/ospreeforcewsims.pdf", width=10, height=6)
+par(xpd=FALSE)
+par(mar=c(5,5,2,2))
+par(mfrow=c(2,3))
+plot(jitter(leafout_date)~expected_temp, pch=19,
+     ylab="Days to event",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Sims: Linear (untransformed)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+plot(jitter(log(leafout_date))~expected_temp, pch=19,
+     ylab="Days to event",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Sims: Non-linear (logged y)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+plot(jitter(log(leafout_date))~log(expected_temp), pch=19,
+     ylab="Days to event",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Sims: Non-linear (logged x and y)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+plot(response.time~forceday, data=char2, pch=19,
+     ylab="Days to budburst",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Experiment: Linear (untransformed)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+plot(log(response.time)~forceday, data=char2, pch=19,
+     ylab="Days to budburst",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Experiment: Non-linear (logged y)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+plot(log(response.time)~log(forceday), data=char2, pch=19,
+     ylab="Days to budburst",
+     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     main="Experiment: Non-linear (logged x and y)", 
+     font.main = 1, cex.main = 0.9, cex.lab=1.2,
+     bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 dev.off()
