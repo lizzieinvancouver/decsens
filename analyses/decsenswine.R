@@ -21,12 +21,6 @@ setwd("~/Documents/git/projects/vinmisc/vintages/analyses")
 temp <- read.csv("../../grapesdrought/WINELIZZIE/data/seas_temp_MJJ.onedeg.csv",
     header=TRUE)
 colnames(temp)[1] <- "year"
-prec <- read.csv("../../grapesdrought/WINELIZZIE/data/seas_prec_MJJ.onedeg.csv",
-    header=TRUE)
-colnames(prec)[1] <- "year"
-pdsi <- read.csv("../../grapesdrought/WINELIZZIE/data/seas_pdsi_MJJ.onedeg.csv",
-    header=TRUE)
-colnames(pdsi)[1] <- "year"
 daux <- read.csv("input/dauxdata.csv", header=TRUE, skip=2)
 daux <- daux[,1:28]
 names(daux)[names(daux)=="Abb."] <- "year"
@@ -34,8 +28,6 @@ ghd <- as.data.frame(daux)
 ghd <- subset(ghd, select=c("year", "Bor", "Bur"))
 
 envdata <- merge(ghd, temp, by="year", suffixes=c(".ghd", ".temp"))
-envdata <- merge(envdata, prec, by="year", suffixes=c("", ".prec"))
-envdata <- merge(envdata, pdsi, by="year", suffixes=c("", ".pdsi"))
 
 ## Setting up data to have same years 1980+ and before
 subearly <- subset(envdata, year>1950 & year <1980)
