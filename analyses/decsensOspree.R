@@ -180,49 +180,52 @@ daily_temp <- sapply(expected_temp, function(x) rnorm(100, 0 + x, 2)) # now make
 leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_temp[,x]) > 200))) # set leafout date as whenever 200 GDD is reached
 realized_temp <- colMeans(daily_temp) # estimate the mean temp of each simulated dataset
 
-cex.mainhere <- 1.3
+cex.mainhere <- 0.9
+cex.labhere <- 1.1
 
-pdf("..//..//..//..//decsens/analyses/figures/ospreeforcems.pdf", width=9, height=3.25)
+pdf("..//..//..//..//decsens/analyses/figures/ospreeforcems.pdf", width=7, height=3.25)
 par(xpd=FALSE)
 par(mar=c(5,5,2,2))
-par(mfrow=c(1,3))
+par(mfrow=c(1,2))
 if(FALSE){
 plot(jitter(leafout_date)~expected_temp, pch=19,
      ylab="Days to event",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Sims: Linear (untransformed)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 plot(jitter(log(leafout_date))~expected_temp, pch=19,
      ylab="Days to event",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Sims: Non-linear (logged y)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 plot(jitter(log(leafout_date))~log(expected_temp), pch=19,
      ylab="Days to event",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Sims: Non-linear (logged x and y)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 }
 plot(response.time~forceday, data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Linear (untransformed)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
-plot(log(response.time)~forceday, data=char2, pch=19,
+if(FALSE){
+    plot(log(response.time)~forceday, data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Non-linear (logged y)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
+    }
 plot(log(response.time)~log(forceday), data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Non-linear (logged x and y)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 dev.off()
 
@@ -240,7 +243,7 @@ plot(response.time~forceday, data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Linear (untransformed)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 points(leafout_date~expected_temp, col="salmon")
 points(response.time~forceday, data=char2)
@@ -249,7 +252,7 @@ plot(log(response.time)~forceday, data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Linear (untransformed)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 points(log(leafout_date)~expected_temp, col="salmon")
 points(log(response.time)~forceday, data=char2)
@@ -258,7 +261,7 @@ plot(log(response.time)~log(forceday), data=char2, pch=19,
      ylab="Days to budburst",
      xlab=expression(paste("Forcing temperature (", degree, "C)")),
      main="Linear (untransformed)", 
-     font.main = 1, cex.main = cex.mainhere, cex.lab=1.2,
+     font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 points(log(leafout_date)~log(expected_temp), col="salmon")
 points(log(response.time)~log(forceday), data=char2)
