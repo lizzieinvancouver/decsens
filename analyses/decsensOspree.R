@@ -190,40 +190,40 @@ par(mfrow=c(1,2))
 if(FALSE){
 plot(jitter(leafout_date)~expected_temp, pch=19,
      ylab="Days to event",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Sims: Linear (untransformed)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 plot(jitter(log(leafout_date))~expected_temp, pch=19,
      ylab="Days to event",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Sims: Non-linear (logged y)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 plot(jitter(log(leafout_date))~log(expected_temp), pch=19,
      ylab="Days to event",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Sims: Non-linear (logged x and y)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 }
 plot(response.time~forceday, data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Linear (untransformed)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 if(FALSE){
     plot(log(response.time)~forceday, data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Non-linear (logged y)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
     }
 plot(log(response.time)~log(forceday), data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Non-linear (logged x and y)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
@@ -241,7 +241,7 @@ leafout_date <- sapply(1:ncol(daily_temp), function(x) min(which(cumsum(daily_te
 par(mfrow=c(1,3))
 plot(response.time~forceday, data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Linear (untransformed)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
@@ -250,7 +250,7 @@ points(response.time~forceday, data=char2)
 
 plot(log(response.time)~forceday, data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Linear (untransformed)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
@@ -259,7 +259,7 @@ points(log(response.time)~forceday, data=char2)
 
 plot(log(response.time)~log(forceday), data=char2, pch=19,
      ylab="Days to budburst",
-     xlab=expression(paste("Forcing temperature (", degree, "C)")),
+     xlab=expression(paste("Temperature (", degree, "C)")),
      main="Linear (untransformed)", 
      font.main = 1, cex.main = cex.mainhere, cex.lab=cex.labhere,
      bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)

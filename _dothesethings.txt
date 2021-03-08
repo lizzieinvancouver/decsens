@@ -9,15 +9,14 @@ Revising for a new journal ...
 <><><><><><><><><><>
 
 March 2021:
-- Continue the re-writing
-- Add in some #s/interpretation for wine data
-- Finalize captions
-- Slim the supp and add Charrier and winegrape methods (brief ... or add brief methods to main text? ... " Brief Communications include a Methods section which should not exceed 500 words"
-- Get done to 20-ish refs
 - Check out the below list
+- update posted code
 
 Regarding pnas reviews:
 - Try analyses with Type II regression (reduced major axis) ... as reviewer Keenan et al. 2019 suggest
+	- Use and misuse of the reduced major axis for line‐fitting (https://onlinelibrary.wiley.com/doi/abs/10.1002/ajpa.21090?)
+	- Phylogeny, Regression, and the Allometry of Physiological Traits (https://www.journals.uchicago.edu/doi/full/10.1086/519459)
+
 - Maybe add some note acknowledging we note that BetPen and FagSyl are very different species.... same reviewer was looking for photo versus chill models; perhaps stress that we develop a forcing-only NULL model?
 - Say that maybe sensitivity has NOT changed recently... or not much at least?
 - Table S1-S2: explain the meaning of the 31-45-60 subheadings in the tables
