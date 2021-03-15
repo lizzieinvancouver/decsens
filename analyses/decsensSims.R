@@ -392,7 +392,7 @@ points(yearly_temp_trunc, leafout_date, pch=20, col = "red")
 plot(yearly_temp_trunc, leafout_date, pch=20, col = "red")
 
 # Figure S1 currently
-cexhere <- 0.5
+cexhere <- 0.7
 setwd("~/Documents/git/projects/treegarden/decsens/analyses")
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue") 
 pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)

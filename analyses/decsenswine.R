@@ -1,7 +1,7 @@
 ## Started 25 January 2021 ##
 ## By Lizzie ##
 
-## Some taken from analyseataglance.R 
+## Some code taken from analyseataglance.R 
 
 ## housekeeping 
 rm(list=ls())
@@ -12,12 +12,11 @@ if(length(grep("Lizzie", getwd())>0)) {
 setwd("~/Documents/git/projects/treegarden/decsens/analyses") } else if (length(grep("boomer", getwd()))>0) {setwd("boom/boom")
 }  else setwd("hereliesboomboom")
 
-
 library(ggplot2)
 
 setwd("~/Documents/git/projects/vinmisc/vintages/analyses")
 
-# climate data from Ben
+# climate data from paper (received from Ben Cook)
 temp <- read.csv("../../grapesdrought/WINELIZZIE/data/seas_temp_MJJ.onedeg.csv",
     header=TRUE)
 colnames(temp)[1] <- "year"
@@ -25,7 +24,7 @@ daux <- read.csv("input/dauxdata.csv", header=TRUE, skip=2)
 daux <- daux[,1:28]
 names(daux)[names(daux)=="Abb."] <- "year"
 ghd <- as.data.frame(daux)
-ghd <- subset(ghd, select=c("year", "Bor", "Bur"))
+ghd <- subset(ghd, select=c("year", "Bor", "Bur")) # selecting these two famous region, they are high-quality, complete data
 
 envdata <- merge(ghd, temp, by="year", suffixes=c(".ghd", ".temp"))
 
@@ -39,15 +38,17 @@ nrow(sublate)
 burearlylm <- lm(Bur.ghd~Bur.temp, data=subearly)
 burlatelm <- lm(Bur.ghd~Bur.temp, data=sublate)
 
-burearlylog <- lm(log(Bur.ghd+60)~log(Bur.temp), data=subearly) # adding 60 because the GHD can be negative
+# Note: These data are anomalized to 31 August, I am adding 60 because the GHD can be negative and log-transform does not allow that (effectively I am anomalizing to early July, affects only the intercept)
+burearlylog <- lm(log(Bur.ghd+60)~log(Bur.temp), data=subearly) 
 burlatelog <-  lm(log(Bur.ghd+60)~log(Bur.temp), data=sublate)
 
 bordearlylm <- lm(Bor.ghd~Bor.temp, data=subearly)
 bordlatelm <- lm(Bor.ghd~Bor.temp, data=sublate)
 
-bordearlylog <- lm(log(Bor.ghd+60)~log(Bor.temp), data=subearly) # adding 60 because the GHD can be negative
+bordearlylog <- lm(log(Bor.ghd+60)~log(Bor.temp), data=subearly) 
 bordlatelog <- lm(log(Bor.ghd+60)~log(Bor.temp), data=sublate)
 
+# Ugly code to make up dataframes for plotting
 burearly <- data.frame(where="Burgundy",
                     when="1951-1979",
                     meantemp=mean(subearly$Bur.temp, na.rm=TRUE),
@@ -107,7 +108,7 @@ par(xpd=FALSE)
 par(mar=c(5,5,2,2))
 par(mfrow=c(1,2))
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.7), ylim=c(-10, -4),
-     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+     ylab=expression(paste("Estimated sensitivity"), sep=""), #  (days/", degree, "C)
          xlab=expression(paste("Warming (", degree, "C)")), main="Linear (untransformed)",
      font.main = 1, cex.main = 0.9, cex.lab=1.2, bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 for(i in 1:length(unique(plotburdat$when))){
@@ -131,7 +132,7 @@ for(i in 1:length(unique(plotborddat$when))){
 legend("bottomright", pch=c(19, 17), col=colz, legend=c("Burgundy", "Bordeaux"),
    cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.1, 1.7), ylim=c(-2.5, -0.5),
-     ylab=expression(paste("Estimated sensitivity (days/", degree, "C)"), sep=""),
+     ylab=expression(paste("Estimated sensitivity"), sep=""), # (days/", degree, "C)
          xlab=expression(paste("Warming (", degree, "C)")), main="Non-linear (logged)",
      font.main = 1, cex.main = 0.9, cex.lab=1.2, bty="l", mgp=c(1.5, 0.25, 0), tck=-.01)
 for(i in 1:length(unique(plotburdat$when))){
