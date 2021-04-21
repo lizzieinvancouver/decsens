@@ -19,7 +19,7 @@
 \SweaveOpts{concordance=FALSE}
 \renewcommand{\refname}{\CHead{}}
 
-\title{Supplementary information: A simple explanation for declining temperature sensitivity with warming} 
+\title{Supporting information: A simple explanation for declining temperature sensitivity with warming} 
 
 \author{E. M. Wolkovich  J. Auerbach, C. J. Chamberlain, D. M. Buonaiuto, \\ A. K. Ettinger, I. Morales-Castilla \& A. Gelman}
 \date{} 
@@ -30,7 +30,7 @@
 
 \section{A first-hitting-time model of leafout}
 
-We use a simple model based on the general understanding of how warm temperatures (forcing) trigger leafout in temperate deciduous trees \citep{chuineJTB}: that leafout occurs after a certain thermal sum is met \citep[see also][]{lindsey1956,zohner2020gcb}. Though this model is very simple, we formalize it here to show its inherent non-linearity and some of its statistical properties. \\
+We use a simple model based on the general understanding of how warm temperatures (forcing) trigger leafout in temperate deciduous trees \citep{chuineJTB}: that leafout occurs after a certain thermal sum is met \citep[see also][]{lindsey1956,zohner2020gcb}. Though this model is very simple, we formalize it here to show its inherent non-linearity and some of its relevant statistical properties. \\
 
 We use a first-hitting-time model, which describes the first time a random process hits a threshold, because of its broad applicability and conceptual simplicity. We define leafout day, $n_\beta$, as the day, $n$, that cumulative daily temperature, $S^n$, hits the threshold, $\beta$. \\ 
 
@@ -138,7 +138,7 @@ An increase in the thermal sum required for leafout ($\beta$ in our first hittin
 
 We extended simulations from our first hitting-time model to examine two common biological hypotheses for declining sensitivities in spring plant phenology to understand how discernible biological shifts would be from the shifts present when using linear models to estimate sensitivities for non-linear temperature responses. \\
 
-First, we simulated the most often cited hypothesis \citep[e.g.,][]{fu2015,piao2017}: an increasing thermal sum threshold given declines in over-winter chilling with warming. In a model where increased thermal sums are driven by declines in overwinter chilling with warming sensitivities from log-transformed data first increase and then decrease (as winter warming delays leafout day and spring warming advances leafout day) in step with biological shifts in cues (Fig. \ref{fig:simsshiftcues}a, c), while for estimates from the linear model changes in sensitivity occur throughout warming, despite no major change in cues before 4 $^{\circ}$C (Fig. \ref{fig:simsshiftcues}a, c). The ultimate effect with warming depends on exact parameter values (e.g., how much thermal cues shift with declines in warming) and likely on the covariation of $X$ and $\beta$, highlighting how difficult teasing apart relationships in observational spring phenology may be given correlations across multiple predictors (correlations that are likely exacerbated by climate change). \\
+First, we simulated the most often cited hypothesis \citep[e.g.,][]{fu2015,piao2017}: an increasing thermal sum threshold given declines in over-winter chilling with warming. In a model where increased thermal sums are driven by declines in overwinter chilling with warming sensitivities from log-transformed data first increase and then decrease (as winter warming delays leafout day and spring warming advances leafout day) in step with biological shifts in cues (Fig. \ref{fig:simsshiftcues}a, c), while for estimates from the linear model changes in sensitivity occur throughout warming, despite no major change in cues before 4 $^{\circ}$C (Fig. \ref{fig:simsshiftcues}a, c). The ultimate effect with warming depends on exact parameter values (e.g., how much thermal cues shift with declines in warming) and on the covariation of $X$ and $\beta$, highlighting how difficult teasing apart relationships in observational spring phenology may be given correlations across multiple predictors (correlations that are likely exacerbated by climate change). \\
 
 % %  Deleted Apri2021: a fair bit ... just go back and look at pre April 2021 version!
 Second, we simulated an alternative hypothesis where warming causes the thermal sum to be reached before a required daylength threshold and plants then leaf out on the first day the daylength threshold is met \citep{zohner2016,fu2019}. At its extreme this model produces the same leafout day (the day when the required daylength is met) across different temperatures and thus produces smaller in magnitude estimated sensitivities in both linear and logged models. Estimated sensitivities, however, from a linear model do not necessarily decline depending on exact parameter values (see Fig. \ref{fig:simsshiftcues}b, d). Again this shift appears more visible when using sensitivities that include the non-linear nature of plants temperature response compared to linear estimates (see Fig. \ref{fig:simsshiftcues}b, d). \\
@@ -149,7 +149,7 @@ Annotated code for these simulations are \href{https://github.com/temporalecolog
 %  Deleted Apri2021: a fair bit ... just go back and look at pre April 2021 version!
 We draw on three empirical data sources: (1) data from a controlled experiment across a wide temperature range \citep{Charrier:2011aa} (selected as it is the only study with multiple observations across a wide range of forcing temperatures in fully controlled settings from a recent meta-analysis of all published spring phenology controlled environment studies, \href{https://knb.ecoinformatics.org/view/doi:10.5063/F1QV3JQR}{OSPREE}) and long-term phenology data from two major sources---(2) \href{http://www.pep725.eu/data.php}{PEP 725 phenological data} and (3) winegrape harvest records from two main regions in France. We selected these datasets because the are relatively long-term, complete, public, have been widely used in the past and have paired climate data (see Data \& Code Availability). Code for these analyses are \href{https://github.com/temporalecologylab/labgit/tree/master/projects/decsenspost}{available via github} (\url{https://github.com/temporalecologylab/labgit/tree/master/projects/decsenspost}).\\ % For both datasets we estimated the sensitivity as a simple linear regression of leafout or harvest day versus the mean daily temperature over a temperature window (see `Additional methods \& results from long-term empirical data' for further details), or a simple linear regression using logged versions of these predictors. 
 
-To examine how estimated sensitivities of leafout shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We selected these two species given that they were best represented for consistent data at the same sites over our study years for an early-leafout (\emph{Betula pendula}) and a late-leafout (\emph{Fagus sylvatica}) species (e.g., \emph{Betula pendula} had 17 sites with leafout data from 1950-1960 and 2000-2010, while the next best option for an early-leafout species, \emph{Alnus glutinosa}, had data for only five sites). We used sites with complete leafout data across both our 10-year (and 20-year) windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species-window combination). We calculated temperature sensitivities as a simple linear regression of leafout day of year versus the mean daily temperature, using a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to calculate average temperature from 1 March to 30 April (60 d; we also present windows of 45 d, from 1 Mar to 15 Apr, and for 31 d, from 15 Mar to 15 Apr, for comparison). Our window represents a period in the spring when forcing is likely the dominant cue, and is similar to many other studies of temperature plants \citep[e.g.,][]{bolmgren2013,prevey2017,Park2019}.\\ % using pre-defined windows 
+To examine how estimated sensitivities of leafout shift over time, we selected sites of two common European tree species (silver birch, \emph{Betula pendula}, and European beech, \emph{Fagus sylvatica}) that have long-term observational data of leafout, through the Pan European Phenology Project \citep[PEP725,][]{Templ2018}. We selected these two species given that they were best represented for consistent data at the same sites over our study years for an early-leafout (\emph{Betula pendula}) and a late-leafout (\emph{Fagus sylvatica}) species (e.g., \emph{Betula pendula} had 17 sites with leafout data from 1950-1960 and 2000-2010, while the next best option for an early-leafout species, \emph{Alnus glutinosa}, had data for only five sites). We used sites with complete leafout data across both our 10-year (and 20-year) windows to avoid possible confounding effects of shifting sites over time (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr} for numbers of sites per species-window combination). We calculated temperature sensitivities as a simple linear regression of leafout day of year versus the mean daily temperature, using a European-wide gridded climate dataset \emph{\citep[{\normalfont E-OBS},][]{cornes2018}} to calculate average temperature from 1 March to 30 April (60 d). \\ % This window represents a period in the spring when forcing is likely the dominant cue, and is similar to many other studies of temperature plants \citep[e.g.,][]{bolmgren2013,prevey2017,Park2019}.
 
 % Our estimates of temperature sensitivity from a linear model using untransformed variables show a decline in sensitivity with recent warming for \emph{Betula pendula} over 10 and 20-year windows, but no decline for \emph{Fagus sylvatica}; using logged variables estimates appeared more similar over time or sometimes suggested an increase in sensitivity (see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). This shift in estimated sensitivity when regressing with untransformed versus logged variables suggests the declining estimates with untransformed variables may not be caused by changes in the underlying mechanisms of leafout (i.e., reduced winter chilling) and driven instead by using linear regression for a non-linear process. This hypothesis is supported further by large declines in variance of leafout in recent decades. \\
 
@@ -175,48 +175,13 @@ library(xtable)
 source("..//analyses/pep_analyses/pepplotting.R")
 italic <- function(x){ paste0('{\\emph{', x, '}}')
 }
-construct_header <- function(df, grp_names, span, align = "c", draw_line = T) {
-  if (length(align) == 1) align <- rep(align, length(grp_names))
-  if (!all.equal(length(grp_names), length(span), length(align)))
-    stop("grp_names and span have to have the same length!")
 
-  if (ncol(df) < sum(span)) stop("Span has to be less or equal to the number of columns of df") 
+print(xtable(mean2spp.forpaper10yr.sm, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 45 and 47 sites respectively) from the PEP725 data across all sites with continuous data from 1950-1960 and 2000-2010. ST is spring temperature ($^{\\circ}$C) from 1 March to 30 April, ST.lo is temperature 31 days before leafout, and GDD is growing degree 31 days before leafout (with a base temperature of 0$^{\\circ}$C). Slope represents the estimated sensitivity using untransformed leafout and ST, while log-slope represents the estimated sensitivity using log(leafout) and log(ST). We calculated all metrics for each species  x site x 10 year period before taking mean or variance estimates.", label="tab:pep10yr", align=c("|p{0.001\\textwidth}", "|p{0.09\\textwidth}|", "p{0.15\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|"), digits=c(0, 0, 1, 1, 1, 1, 2, 2, 2, 2), sanitize.rownames.function = italic), include.rownames=FALSE, size="\\footnotesize", caption.placement="top", sanitize.text.function = identity, hline.after = c(-1, 0,4))
 
-  header <- mapply(function(s, a, grp) sprintf("\\multicolumn{%i}{|%s|}{%s}", s, a, grp),
-                   span, align, grp_names)
-  header <- paste(header, collapse = " & ")
-  header <- paste0(header, " \\\\")
-
-  if (draw_line) {
-    # where do we span the lines:
-    min_vals <- c(1, 1 + cumsum(span)[1:(length(span) - 1)])
-    max_vals <- cumsum(span)
-    line <- ifelse(grp_names == "", "", 
-                   sprintf("\\cline{%i-%i}", min_vals, max_vals))
-    line <- paste(line[line != ""], collapse = " ")
-
-    header <- paste0("\\hline\n", header, "  ", line, "\n  ")
-  }
-
-  addtorow <- list(pos = list( -1),
-                   command = c( header))
-  return(addtorow)
-}
+print(xtable(mean2spp.forpaper20yr.sm, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 17 and 24 sites respectively) from the PEP725 data across all sites with continuous data from 1950-2010. ST is spring temperature ($^{\\circ}$C) from 1 March to 30 April, ST.lo is temperature 31 days before leafout, and GDD is growing degree 31 days before leafout (with a base temperature of 0$^{\\circ}$C). Slope represents the estimated sensitivity using untransformed leafout and ST, while log-slope represents the estimated sensitivity using log(leafout) and log(ST). We calculated all metrics for each species  x site x 10 year period before taking mean or variance estimates.", label="tab:pep20yr", align=c("|p{0.001\\textwidth}", "|p{0.09\\textwidth}|", "p{0.15\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|"), digits=c(0, 0, 1, 1, 1, 1, 2, 2, 2, 2), sanitize.rownames.function = italic), include.rownames=FALSE, size="\\footnotesize", caption.placement="top", sanitize.text.function = identity, hline.after = c(-1, 0,6))
 
 
-a_header <- construct_header(mean2spp.forpaper10yr,
-  grp_names = c("", "", "mean (ST)", "", "var (ST)",
-                "", "", "slope", "log-slope"), 
-  span = c(1,1,3,1,3,1,1,3,3), align = "c"
-)
-
-print(xtable(mean2spp.forpaper10yr, caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 45 and 47 sites respectively) from the PEP725 data across all sites with continuous data from 1950-1960 and 2000-2010. ST is spring temperature ($^{\\circ}$C) from 1 March to 30 April, ST.lo is temperature 31 days before leafout, and GDD is growing degree 31 days before leafout (with a base temperature of 0$^{\\circ}$C). Slope represents the estimated sensitivity using untransformed leafout and ST, while log-slope represents the estimated sensitivity using log(leafout) and log(ST). We report most estimates across three different windows: 60, 45, and 31 days (exact window dates give in text). We calculated all metrics for each species  x site x 10 year period before taking mean or variance estimates.", label="tab:pep10yr", align=c("|p{0.001\\textwidth}", "|p{0.09\\textwidth}|", "p{0.065\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.04\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|"), digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2), sanitize.rownames.function = italic), include.rownames=FALSE, size="\\footnotesize", caption.placement="top", sanitize.text.function = identity, add.to.row=a_header, hline.after = c(0,4))
 @ 
-
-
-<<label=xtablez3, echo=FALSE, results=tex>>=
-print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate and phenology statistics for two species (\\emph{Betula pendula, Fagus sylvatica}, across 17 and 24 sites respectively) from the PEP725 data across all sites with continuous data from 1950-2010. ST is spring temperature ($^{\\circ}$C) from 1 March to 30 April, ST.lo is temperature 31 days before leafout, and GDD is growing degree days 31 days before leafout (with a base temperature of 0$^{\\circ}$C). Slope represents the estimated sensitivity using untransformed leafout and ST, while log-slope represents the estimated sensitivity using log(leafout) and log(ST).  We report most estimates across three different windows: 60, 45, and 31 days (exact window dates give in text).We calculated all metrics for each species  x site x 20 year period before taking mean or variance estimates.", label="tab:pep20yr", align=c("|p{0.001\\textwidth}", "|p{0.09\\textwidth}|", "p{0.06\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.04\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.02\\textwidth}|", "p{0.04\\textwidth}|", "p{0.05\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.04\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|", "p{0.05\\textwidth}|"), digits=c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2), sanitize.rownames.function = italic), include.rownames=FALSE, size="\\footnotesize", caption.placement="top", sanitize.text.function = identity, add.to.row=a_header, hline.after = c(0,6))
-@
 
 
 \clearpage
@@ -227,6 +192,13 @@ print(xtable(mean2spp.forpaper20yr,   hline.after=c(0, 4), caption = "Climate an
 \noindent \includegraphics[width=0.8\textwidth]{..//analyses/figures/ospreeforcems.pdf}
 \caption{\textbf{Controlled experiments across a wide temperature range show a non-linear response to temperature.} Here we use data from \citet{Charrier:2011aa}, one of the few studies covering a wide range of temperatures in a fully controlled experiment. Data are from a growth chamber experiment of tree branch cuttings of  walnut trees (\emph{Juglans regia}), taken from the field on 29 January 2009 and exposed to five different temperatures with a 16 hour photoperiod.} 
 \label{fig:ospreewsims} % decsensOspree.R
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\noindent \includegraphics[width=1\textwidth]{..//analyses/figures/winedata.pdf}
+\caption{\textbf{Estimates of temperature sensitivities (response per $^{\circ}$C) using linear (left) and non-linear (right) models of long-term harvest data from two major French winegrowing regions.} Temperature sensitivity of data from Burgundy declines with warming when estimated with linear regression (left). This decline disappears when performing the regression on logged predictor and response variables, and increases the relative magnitude of an increase in sensitivity estimated from data from Bordeaux (right). Harvest and temperature data from \citet{cookwine2016}.} 
+\label{fig:wine} % decsenswine.R
 \end{figure}
 
 \begin{figure}[h!]
