@@ -1,0 +1,458 @@
+﻿Swiss Cherry Tree Phenology 1721-2000 AD
+-----------------------------------------------------------------------
+"               World Data Center for Paleoclimatology, Boulder"
+                                  and
+                     NOAA Paleoclimatology Program
+-----------------------------------------------------------------------
+NOTE: PLEASE CITE ORIGINAL REFERENCE WHEN USING THIS DATA!!!!!
+
+
+NAME OF DATA SET: Swiss Cherry Tree Phenology 1721-2000 AD
+LAST UPDATE: 1/2013 (Observed values added for 2008-2012 AD)
+             Original receipt by WDC Paleo 8/2008 
+"CONTRIBUTOR: This Rutishauser, University of Bern  "
+IGBP PAGES/WDCA CONTRIBUTION SERIES NUMBER: 2008-080
+
+WDC PALEO CONTRIBUTION SERIES CITATION: 
+"Rutishauser, T. 2008."
+Swiss Cherry Tree Phenology 1721-2000 AD. 
+IGBP PAGES/World Data Center for Paleoclimatology 
+Data Contribution Series # 2008-080.    
+"NOAA/NCDC Paleoclimatology Program, Boulder CO, USA."
+
+
+ORIGINAL REFERENCE:
+"Rutishauser, T. 2003. "
+Cherry Tree Phenology. Interdisciplinary Analyses of Phenological 
+Observations of the Cherry Tree in the Extended Swiss Plateau Region 
+and Their Relation to Climate Change. 
+"Diploma thesis, University of Bern, p. 122. "
+(http://www.giub.unibe.ch/klimet/docs/diplom_trutishauser.pdf)
+
+ABSTRACT:
+The 'Cherry Tree Phenology' is an analysis of phenological cherry tree 
+flowering observations.  The data covers the extended Swiss Plateau 
+region from Alps to the Basel area. The 280-year composite series 
+includes a set of 14 different records of the 'flowering of the cherry 
+tree' from 1721-2000. The contributions consist of observations from 
+phenological networks as well as records by independent observers.
+"This interdisciplinary study includes methods from phenological biology, "
+"plant physiology, climatology and history. The influence of global and "
+climate change processes on the flowering dates of the cherry tree 
+"blossoms are described from different perspectives. In particular, "
+the relation of pre-flowering mean temperature and the flowering date 
+"is assessed.  When available, observations from phenological networks "
+were averaged into yearly mean flowering dates in order to remove 
+microclimatic and cultivar specific differences. A comparison between 
+the yearly mean dates of the network observations and independent 
+observations show that the series are well correlated for the 
+1951/1978-2000 period. Correlation coefficients range between r = 0.78 
+and 0.91. Mean and single flowering dates from 1721 to 2000 were 
+corrected for altitude to a reference level of 550 m a.s.l. which is the 
+median station height of the Swiss Phenological Network in the study area. 
+The dates were adjusted by + (-) 2.5 days per 100 meters below (above) 
+the reference altitude. The most important environmental impact factor 
+for the cherry tree flowering date is temperature.  For the 1951-2000 
+"period, the most influential pre-flowering mean temperature period was "
+assessed by comparison of the flowering date with monthly and seasonal 
+means at the representative station (Zuerich-SMA). A comparison of monthly 
+and combined monthly mean temperatures with the flowering date revealed 
+that the February-April period were highest correlated (r = - 0.82). 
+The correlation is even higher with a subperiod of the Liestal-Record 
+(r= - 0.88). The negative sign describes the inverse physical dependence 
+"of the flowering date from temperatures. Thus, warmer mean February-April "
+temperatures result in an earlier flowering date and vice versa.
+"Based on this relationship a linear regression model, calculated from "
+"a predictor set of European monthly mean temperatures, was used to "
+predict the annual flowering date. The correlation coefficient in the 
+calibrating period 1951-1995 was r = 0.84. The comparison of the 
+observed and reconstructed flowering date for the 1721-1995 period 
+revealed a high common variability (r = 0.61). Systematic differences 
+before 1900 can be attributed to differences in the definition of the 
+phenological phase. The longterm mean of the observed flowering date 
+1721-2000 is April 21 (day of year 111) with a standard deviation of 
+approximately ten days.  For the reconstructed series 1721-1995 
+the mean flowering day is on April 26 (day of year 116) with a 
+standard deviation of five days.  In order to assess the quality of 
+"the observation series, subperiods of the contributing records were "
+compared with the statistical reconstruction. Correlation analysis 
+was applied to compare variability. Coefficients range from 0.38 to 0.91. 
+Systematic differences are revealed by comparing mean values for the 14 
+"subperiods. In addition, suprasegmental comparison was assessed by "
+moving correlation analysis with a 31-year time window. Even though 
+"significant at 99 % level during the whole study period, three time "
+windows showed a systematic lower moving correlation coefficient. 
+Whereas the lower correlation during the 1827-1845 period can be 
+"attributed to unprecise observations, the other two periods (1755-1765, "
+1885-1895) seem to reveal a lower dependency of the flowering dates 
+on spring temperature.  Systematic differences between observed and 
+reconstructed was additionally assessed with historical source analysis. 
+It is shown that metadata such as biographical notes of the observer 
+"and detailed place and phenological phase descriptions, can explain "
+some of the bias in the series.
+
+
+ADDITIONAL REFERENCES:
+"Hansen, J., R. Ruedy, M. Sato, M. Imhoff, W. Lawrence, D. Easterling, "
+"T. Peterson, and T. Karl. 2001. "
+A closer look at United States and global surface temperature change.  
+"J. Geophys. Res., 106(D20), 23,947-963."
+
+"Luterbacher, J., D. Dietrich, E. Xoplaki, M. Grosjean, and H. Wanner. 2004. "
+"European seasonal and annual temperature variability, trends and extremes "
+"since 1500.  Science, 303, 1499-1503. "
+
+"Mitchell, T.D. and P.D. Jones.  2005. "
+An improved method of constructing a database of monthly climate observations 
+and associated high-resolution grids. 
+"International Journal of Climatology, Volume 25, Issue 6, pp. 693-712, "
+May 2005.  doi: 10.1002/joc.1181 
+
+"Rutishauser, T. and S. Studer. 2007."
+"Klimawandel und der Einfluss auf die Fr¸hlingsph‰nologie, "
+"Schweizer Zeitschrift f¸r das Forstwesen, 158 (5), 105-111."
+
+"Xoplaki, E., J. Luterbacher, H. Paeth, D. Dietrich, N. Steiner, "
+"M. Grosjean, and H. Wanner. 2005."
+European spring and autumn temperature variability and change of extremes 
+over the last half millennium. 
+"Geophys. Res. Lett., 32, L15713. "
+
+
+
+"GEOGRAPHIC REGION: Swiss Plateau region, central Europe"
+PERIOD OF RECORD: 1721-2007 AD 
+
+FUNDING SOURCES: 
+"Swiss National Science Foundation (project ""Past, Present and Future "
+"Climate Impact on Spring and Summer Vegetation - a Phenological Approach"" "
+contract 205321-105691/1) and through its National Center of Competence
+"in Research on Climate (NCCR-Climate), projects PALVAREX and CAPRICORN "
+"and the Oeschger Centre for Climate Change Research, University of Bern, "
+Switzerland. 
+
+
+DESCRIPTION: 
+Flowering dates of cherry (Prunus avium) 
+Original data from Euroclimhist (www.euroclimhist.com) and MeteoSwiss.
+
+"Approximate regional average location: 7∞-9∞E/47∞-47∞30N, 200-1000m a.s.l."
+
+Rutishauser (2003) gives technical details 
+(http://www.giub.unibe.ch/klimet/docs/diplom_trutishauser.pdf)
+Please acknowledge original data owners: 
+Euroclimhist (www.euroclimhist.com) and MeteoSwiss (www.meteoswiss.ch)
+Updates can be obtained from rutis@giub.unibe.ch
+
+NOTE: This file updated 30-January-2013 to add observed values for 2008-2012 AD 
+
+
+DATA:
+Column 1: Year AD
+"Column 2: Observed date of cherry flowering, number of days after "
+          January 1 [DoY]
+Column 3: Observed date of cherry flowering corrected w.r.t. an 
+"          altitude reference level, number of days after January 1 [DoY]"
+Column 4: Reconstructed flowering date from temperature predictor (Feb-Apr) 
+"          stations of selected stations from Luterbacher et al. (2004, Science) "
+"          and Xoplaki et al. (2005, Geophys. Res. Lett.), number of days after "
+          January 1 [DoY]
+Column 5: Observed Feb-Apr temperatures as the mean of selected grid-points 
+"          (47∞-47∞30'N, 7∞30-9∞30'E) from Luterbacher et al. (2004), "
+"          Xoplaki et al. (2005), Mitchell and Jones (2005, Int J Climatol) "
+"          and Hansen et al. (2001, updated, J Geophys Res) [∞C]"
+
+
+YEAR       OBS  OBSCORR    RECON     TT24
+1721       107      109      121     2.24
+1722        84       86      113     4.82
+1723        91       93      113     5.09
+1724       112      114      117     3.61
+1725       104      106      121        3
+1726       113      115      119      3.1
+1727       101      103      117     4.09
+1728        97       99      113     5.03
+1729       123      125      122     2.19
+1730       112      114      114     4.43
+1731       125      127      121     1.99
+1732       102      104      111     5.18
+1733       104      106      110     4.96
+1734        93       95      108     6.25
+1735       100      102      112     4.14
+1736        98      100      116     4.39
+1737       110      112      115     4.06
+1738       104      106      113     4.47
+1739       119      120      113     4.47
+1740       142      143      135     0.15
+1741       110      111      120        3
+1742       117      118      121     2.55
+1743       117      118      120     3.18
+1744       111      112      120     2.48
+1745        96       97      120     3.58
+1746       110      111      125     2.17
+1747       107      108      116     4.17
+1748       118      119      128     0.97
+1749        96       97      120     3.47
+1750       117      118      108     5.66
+1751       117      118      118     3.77
+1752       111      112      118      3.9
+1753        85       86      115      4.6
+1754       117      118      125     1.77
+1755        98       99      119     3.39
+1756       105      106      116     3.84
+1757       114      115      114     4.12
+1758       103      104      117     3.76
+1759        79       80      112     4.88
+1760        99      100      116     4.17
+1761       101      102      110     5.23
+1762       107      108      116     3.88
+1763       102      103      114      4.4
+1764        95       96      116     3.44
+1765       114      115      117     3.97
+1766       116      114      117     3.62
+1767       120      118      115     4.45
+1768       106      104      118     3.65
+1769       120      118      116     3.73
+1770       133      131      123     2.31
+1771       125      123      126     2.22
+1772       103      101      114     4.79
+1773       113      111      119      3.3
+1774        96       94      111     5.03
+1775       114      112      111     5.52
+1776       105      103      111     5.38
+1777       106      104      119     3.81
+1778       103      101      117     3.79
+1779       101       99      106     5.73
+1780       118      116      116     3.84
+1781        96       94      108     5.41
+1782       124      122      124     2.07
+1783       103      101      113     4.47
+1784       127      125      126     1.92
+1785       130      131      132     0.41
+1786       113      115      118     3.18
+1787       115      117      113     4.61
+1788       111      113      115     5.13
+1789       121      123      119        3
+1790       112      114      113     3.94
+1791       102      104      110     4.91
+1792       102      104      111     5.15
+1793       115      117      117     3.82
+1794        91       93      102     6.81
+1795       116      118      116     3.87
+1796       112      114      117     3.61
+1797       112      114      115     3.65
+1798       106      108      112     4.65
+1799       127      129      120     3.35
+1800       113      115      116      3.5
+1801       109      111      113     5.12
+1802       114      116      114     4.56
+1803        98       99      116     3.58
+1804       113      114      121     2.65
+1805       120      121      119     3.67
+1806       107      108      117     3.93
+1807       121      122      121     2.54
+1808       125      126      127     0.96
+1809       114      115      116     3.82
+1810       109      110      118      3.8
+1811        96       97      110     5.56
+1812       120      121      119      3.5
+1813       102      103      112     4.73
+1814       107      108      123     2.26
+1815        94       95      109     5.88
+1816       117      118      122     2.52
+1817       129      130      117      4.3
+1818       112      113      115     3.98
+1819       103      103      112     4.82
+1820       108      108      115     3.86
+1821       116      116      114     3.93
+1822       105      105      106     6.32
+1823       122      122      117      4.2
+1824       124      124      117     3.84
+1825       115      115      116     3.67
+1826        91       91      111     5.17
+1827       118      118      120     4.11
+1828       110      113      113     4.71
+1829       107      110      120     2.49
+1830        79       82      116     4.61
+1831       118      121      111     4.74
+1832       106      109      117     4.09
+1833       119      122      116     3.67
+1834       110      113      117     4.01
+1835       109      112      115      4.2
+1836       112      115      116     3.93
+1837       128      131      126     1.44
+1838       121      124      126     2.07
+1839       121      122      123     2.54
+1840       114      115      119     2.75
+1841       100      101      116     4.31
+1842        NA      115      118     3.74
+1843       133      134      116     4.04
+1844        NA      115      118     3.98
+1845       125      126      130     0.77
+1846       107      108      109     5.17
+1847       113      114      123     2.02
+1848       107      108      112     4.58
+1849       114      115      116      3.4
+1850       130      131      115     4.01
+1851       126      127      115     3.88
+1852       116      117      120     2.98
+1853       134      135      130     1.43
+1854       100      107      116     3.92
+1855       110      117      128     2.76
+1856       102      109      114     3.73
+1857       109      116      120     2.94
+1858       111      118      125        3
+1859        89       96      115     4.95
+1860       118      125      123     1.44
+1861        98      105      111     4.76
+1862        89       96      108     5.07
+1863       101      108      111      4.7
+1864       105      112      120     3.57
+1865       105      112      124     2.14
+1866        98      105      111     4.84
+1867       100      107      113     4.83
+1868       101      108      114     4.56
+1869       102      109      111     4.56
+1870       111      118      127     3.02
+1871        99      106      117     4.73
+1872        95      102      109     5.32
+1873        93      100      111     3.62
+1874       102      109      113     4.42
+1875       126      122      125     1.95
+1876       130      126      114     4.11
+1877       132      129      118     3.64
+1878       126      123      115     4.51
+1879       137      134      120     3.15
+1880       122      119      110     4.74
+1881       106      109      123     3.93
+1882        97      100      114     5.15
+1883       114      116      121     2.65
+1884        94       97      109     4.12
+1885       109      112      113     4.28
+1886       109      112      121     2.54
+1887       118      121      123     2.11
+1888       121      124      126     1.33
+1889       123      126      125     1.88
+1890       107      110      120     2.89
+1891       122      125      125     2.65
+1892       102      105      120     2.85
+1893       100      103      111     5.74
+1894       106      111      107     5.02
+1895       107      112      128     1.88
+1896       106      111      115      4.7
+1897        86       91      110      5.6
+1898       106      111      112     3.53
+1899        93       98      116     4.62
+1900       113      118      119     3.08
+1901       113      118      125     1.18
+1902       102      107      116     4.14
+1903        86       91      117     3.61
+1904       104      109      113     4.22
+1905       102      107      117     3.65
+1906       103      108      120     2.53
+1907       105      110      126     1.64
+1908       119      124      119     2.12
+1909       109      114      121     2.34
+1910       105      110      114      3.6
+1911       107      112      114     3.35
+1912        86       91      109     5.14
+1913        90       95      112     4.36
+1914        99      104      112     5.39
+1915       117      122      120     2.77
+1916        97      102      113     4.22
+1917       124      129      129      0.8
+1918       103      108      112     4.05
+1919       112      117      121     2.29
+1920        90       95      109      5.5
+1921        92       97      113     3.99
+1922       111      116      119     3.14
+1923        98      103      109     4.74
+1924       115      120      122     2.71
+1925       104      109      115     3.46
+1926        99      104      103     6.05
+1927       108      113      111     4.12
+1928       105      110      109     4.55
+1929       122      127      129     0.61
+1930       109      114      111      4.1
+1931       116      121      124     1.59
+1932       120      125      123     1.17
+1933       112      117      114     3.85
+1934       106      111      107     4.57
+1935       106      111      118     2.92
+1936       100      105      111     3.96
+1937       101      106      114     3.67
+1938        91       96      114     3.55
+1939       105      110      112     3.59
+1940       112      117      122     3.51
+1941       116      121      116     3.38
+1942       114      119      122     2.96
+1943       102      107      107     5.53
+1944       109      114      122     2.02
+1945        92       97      105     6.06
+1946        96      101      106     5.79
+1947       107      112      120     4.28
+1948        88       93      106     5.43
+1949       107      112      113     4.66
+1950       100      105      112     4.58
+1951       105      105      115     3.66
+1952       109      109      113      4.3
+1953       108      108      112     4.28
+1954       124      124      119     3.13
+1955       119      119      123     2.78
+1956       120      120      129    -0.02
+1957       105      105      106     6.18
+1958       124      124      124     2.62
+1959       107      107      108     5.64
+1960       105      105      112     4.57
+1961        98       98      104     6.66
+1962       119      119      122     2.43
+1963       122      122      121      2.3
+1964       113      113      112     4.15
+1965       122      122      121     2.04
+1966       110      110      109     5.71
+1967       113      113      113     4.48
+1968       110      110      111     4.99
+1969       119      119      121      2.8
+1970       127      127      125     1.96
+1971       114      114      115     3.29
+1972       111      111      107     5.15
+1973       124      124      121     2.17
+1974       103      103      105     5.28
+1975       119      119      116     4.07
+1976       114      114      115     4.11
+1977       111      111      110     5.42
+1978       121      121      117     3.59
+1979       126      126      116     3.77
+1980       120      120      115     4.06
+1981       114      114      113     5.18
+1982       121      121      117     3.51
+1983       115      115      115     4.05
+1984       118      118      118     2.47
+1985       123      123      120     3.38
+1986       125      125      124      1.6
+1987       118      118      119     3.36
+1988       117      117      116     4.04
+1989       105      105      107     5.71
+1990       105      105      107     6.39
+1991       115      115      115     4.03
+1992       116      116      110      4.9
+1993       114      114      114     4.52
+1994       110      110      108     5.36
+1995       112      112      111     5.18
+1996       114      114       NA       NA
+1997       105      105       NA       NA
+1998       114      114       NA       NA
+1999       111      111       NA       NA
+2000       111      111       NA       NA
+2001       109      109       NA       NA
+2002        98       98       NA       NA
+2003       107      107       NA       NA
+2004       110      110       NA       NA
+2005       109      109       NA       NA
+2006       117      117       NA       NA
+2007       103      103       NA       NA
+2008       114      114       NA       NA
+2009       110      110       NA       NA
+2010       111      110       NA       NA
+2011       100      100       NA       NA
+2012       107      107       NA       NA
