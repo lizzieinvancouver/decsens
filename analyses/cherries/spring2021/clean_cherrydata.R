@@ -27,8 +27,6 @@ write.csv(noaa_clean, file="output/clean_cherry_noaa.csv", row.names=FALSE)
 ### Next with the PEP725 data for Germany and Norway...
 ger <- read.csv("input/pruavi_germany_pep.csv")
 gersites <- read.csv("input/PEP725_DE_stations.csv")
-nor <- read.csv("input/pruavi_norway_pep.csv")
-norsites <- read.csv("input/PEP725_NO_stations.csv")
 
 ger.clean <- separate(ger, `PEP_ID.BBCH.YEAR.DAY`, c("pepid", "bbch", "year", "doy"))
 ger.clean <- ger.clean[(ger.clean$bbch==60),]
@@ -37,11 +35,29 @@ gersites$PEP_ID.National_ID.LON.LAT.ALT.NAME <- rownames(gersites)
 rownames(gersites) <- 1:nrow(gersites)
 
 colnames(gersites) <- "PEP_ID;National_ID;LON;LAT;ALT;NAME"
-gersites.clean <- separate(gersites, `PEP_ID;National_ID;LON;LAT;ALT;NAME`, c("pepid", "natid", "lon", "lat", "alt", "name"))
+gersites.clean <- separate(gersites, `PEP_ID;National_ID;LON;LAT;ALT;NAME`, sep=";", c("pepid", "natid", "lon", "lat", "alt", "name"))
 gersites.clean <- subset(gersites.clean, select=c("pepid", "lon", "lat"))
 gersites.clean <-gersites.clean[!duplicated(gersites.clean),]
 
-ger.clean <- full_join(ger.clean, gersites.clean)
+ger.clean <- left_join(ger.clean, gersites.clean)
 
 
+nor <- read.csv("input/pruavi_norway_pep.csv")
+norsites <- read.csv("input/PEP725_NO_stations.csv")
 
+
+nor.clean <- separate(nor, `PEP_ID.BBCH.YEAR.DAY`, c("pepid", "bbch", "year", "doy"))
+nor.clean <- nor.clean[(nor.clean$bbch==60),]
+
+colnames(norsites) <- "PEP_ID;National_ID;LON;LAT;ALT;NAME"
+norsites.clean <- separate(norsites, `PEP_ID;National_ID;LON;LAT;ALT;NAME`, sep=";", c("pepid", "natid", "lon", "lat", "alt", "name"))
+norsites.clean <- subset(norsites.clean, select=c("pepid", "lon", "lat"))
+norsites.clean <-norsites.clean[!duplicated(norsites.clean),]
+
+nor.clean <- left_join(nor.clean, norsites.clean)
+
+
+pepclean <- full_join(ger.clean, nor.clean)
+
+
+write.csv(pepclean, file="output/clean_cherry_pep.csv", row.names=FALSE)
