@@ -25,11 +25,11 @@ $^2$Department of Statistics, Columbia University, New York, NY 10027, USA\\
 $^3$Department of Organismic and Evolutionary Biology, Harvard University, Cambridge, Massachusetts, USA\\
 $^4$The Nature Conservancy in Washington, 74 Wall Street, Seattle, WA, USA\\
 $^5$GloCEE -- Global Change Ecology and Evolution Group, Department of Life Sciences, University of Alcal\`a CTRA N-II, KM., 33,600, 28802, Alcal\`a de Henares, Spain\\
-$^a$Corresponding author (ORCID: 0000-0001-7653-893X)
+$^a$Corresponding author (ORCID: 0000-0001-7653-893X); e.wolkovich@ubc.ca; 604.827.5246
 \vspace{3ex}
 
-\emph{Article type}: Opinion\\
-% \emph{Short title:} Declining temperature sensitivity\\
+\emph{Running title:} Declining temperature sensitivity\\
+\emph{Article type}: Perspective\\
 % \emph{One sentence summary:} Declining temperature sensitivity with warming is the expected outcome of current methods, not evidence of changing biology.
 % Observations of global declines in temperature sensitivity of biological events with climate change have been used as evidence of fundamental shifts in underlying biological processes, but may more simply be explained by the statistical methods used to calculate temperature sensitivity. 
 
@@ -54,8 +54,8 @@ Recently, multiple studies have reported declining phenological sensitivities ($
 
 
 \newpage
-\linenumbers
-\section{Main text} % 1160 right now
+% \linenumbers
+\section{Main text} % 1103 right now; ack: 66; datacode: 44; author contr: 41
 Climate change has reshaped biological processes around the globe, with shifts in the timing of major life history events (phenology), carbon dynamics and other ecosystem processes. With rising temperatures,  a growing body of literature has documented changes in temperature sensitivity---the magnitude of a biological response scaled per $^{\circ}$C. Many studies have found declining responses to temperature in recent decades \citep{fu2015,piao2017} or lower sensitivities in warmer, urban areas \citep{meng2020}.\\
 
 Most studies attribute changes in temperature sensitivity to shifts in underlying biological processes. Researchers have suggested weaker temperature sensitivities are evidence of increased light limitation in the tundra \citep{piao2017}, or a decline in the relative importance of warm spring temperatures for spring phenological events (e.g., leafout, insect emergence) in the temperate zone \citep{fu2015,meng2020}, as other environmental triggers (e.g., winter temperatures that determine `chilling') play a larger role. Yet, despite an increase in studies reporting declining or shifting temperature sensitivities, none have provided strong evidence of the biological mechanisms underlying these changes  \citep[e.g.,][]{fu2015,meng2020}. The missing mechanisms may be hidden in the data: environmental factors moderate biological processes in complex ways \citep{chuine2016}, are strongly correlated in nature \citep[e.g.,][]{fu2015}, and temperature variance shifts over time and space \citep{keenan2019}. \\
@@ -75,7 +75,7 @@ Correcting for non-linearity using the transformation for an inverse relationshi
 % for wine: check out plotburdat and plotborddat in decsenswine.R 
 % We see similar corrections using 20-year windows, and a potential increase in sensitivity for European beech (\emph{Fagus sylvatica}, see Tables \ref{tab:pep10yr}-\ref{tab:pep20yr}). 
 
-Fundamentally rising temperature should alter many biological processes, making robust methods for identifying these changes critical. In spring plant phenology, where declining sensitivities are often reported \citep{fu2015,piao2017}, warming may increase the role of `chilling' (determined mainly by winter temperatures) and daylength---potentially increasing the thermal sum required for leafout at lower values of these cues \citep{Laube:2014a}. Adjusting our simulations to match this model yielded shifts in sensitivities with warming. After correcting for non-linearity, the shifts in sensitivities remained and they occurred in step with the biological change (Fig. \ref{fig:simsshiftcues}a, c). In contrast, sensitivities estimated from a linear model showed shifts across the entire range of warming, well before the simulated biological change (Fig. \ref{fig:simsshiftcues}a, c). Further, we found that an increase in the thermal sum required for leafout should yield larger in magnitude temperature sensitivities, not smaller, as is often expected \citep[e.g.,][]{fu2015}. \\ % Thus we suggest correcting for the non-linearity of biological responses for temperature will be important for future research. 
+Fundamentally rising temperatures should alter many biological processes, making robust methods for identifying these changes critical. In spring plant phenology, where declining sensitivities are often reported \citep{fu2015,piao2017}, warming may increase the role of `chilling' (determined mainly by winter temperatures) and daylength---potentially increasing the thermal sum required for leafout at lower values of these cues \citep{Laube:2014a}. Adjusting our simulations to match this model yielded shifts in sensitivities with warming. After correcting for non-linearity, the shifts in sensitivities remained and they occurred in step with the biological change (Fig. \ref{fig:simsshiftcues}a, c). In contrast, sensitivities estimated from a linear model showed shifts across the entire range of warming, well before the simulated biological change (Fig. \ref{fig:simsshiftcues}a, c). Further, we found that an increase in the thermal sum required for leafout should yield larger in magnitude temperature sensitivities, not smaller, as is often expected \citep[e.g.,][]{fu2015}. \\ % Thus we suggest correcting for the non-linearity of biological responses for temperature will be important for future research. 
 %  (see `Simulations of common hypotheses for declining sensitivity' in Supplementary Information for an extended discussion)
 
 % Our results show that rising temperatures are sufficient to explain declining temperature sensitivity. It is not necessary to invoke changes to the mechanisms that underlie the biological processes themselves. Our results provide a simpler explanation for observations of declining temperature sensitivities, but do not rule out that important changes in biological processes may underlie such declines. Instead, our results highlight how the use of linear models may make identifying when---and why---warming alters underlying biology far more difficult.\\ % Identifying when---and why---warming alters underlying biology is likely to be far more difficult using linear models
@@ -104,7 +104,7 @@ A first-hitting-time model of leafout\\
 Simulations of common hypotheses for declining sensitivity\\
 Additional methods \& results from long-term empirical data\\
 Table S1-S2\\
-Fig S1-S5
+Fig S1-S6
 
 \newpage
 \section* {Figures}
@@ -114,7 +114,7 @@ Fig S1-S5
 \begin{figure}[h!]
 \centering
 \noindent \includegraphics[width=1.05\textwidth]{..//analyses/figures/basicsimsandpepalt1.pdf} % 136 words
-\caption{\textbf{Shifts in temperature sensitivities (response per $^{\circ}$C)  with warming occur when using linear models for non-linear processes.} Estimated sensitivities decline (in magnitude) with warming in simulations (shading) with no underlying change in the biological process when sensitivities were estimated with linear regression (left; we simulated leafout for 45 sites as occurring after a certain thermal sum is met, simulating spring temperatures using draws from a normal(6,4), variation comes from fluctuation in the Monte Carlo simulations). This decline disappears when performing the regression on logged predictor and response variables (right). Such issues may underlie declining sensitivities calculated from observational data, including long-term observations of leafout across Europe (for \emph{Betula pendula} from PEP725 from for the 45 sites that had complete data for 1950-1960 and 2000-2010), which show a lower sensitivity with warming when calculated on raw data, but no change in sensitivity using logged data. Shading, symbols and lines represent means $\pm$ standard deviations of regressions across sites. See Supporting Information for a discussion of why estimated sensitivities are -1 in simulations in non-linear models.} % Estimates of sensitivities from logged variables were generally much lower than -1, suggesting other factors or a better metric of temperature underlie leafout dates.
+\caption{\textbf{Shifts in temperature sensitivities (response per $^{\circ}$C) with warming occur when using linear models for non-linear processes.} Estimated sensitivities decline (in magnitude) with warming in simulations (shading) with no underlying change in the biological process when sensitivities were estimated with linear regression (left; we simulated leafout for 45 sites as occurring after a certain thermal sum is met, simulating spring temperatures using draws from a normal(6,4), variation comes from fluctuation in the Monte Carlo simulations). This decline disappears when performing the regression on logged predictor and response variables (right). Such issues may underlie declining sensitivities calculated from observational data, including long-term observations of leafout across Europe (for \emph{Betula pendula} from PEP725 from for the 45 sites that had complete data for 1950-1960 and 2000-2010), which show a lower sensitivity with warming when calculated on raw data, but no change in sensitivity using logged data. Shading, symbols and lines represent means $\pm$ standard deviations of regressions across sites. See Supporting Information for a discussion of why estimated sensitivities are -1 in simulations in non-linear models.} % Estimates of sensitivities from logged variables were generally much lower than -1, suggesting other factors or a better metric of temperature underlie leafout dates.
 \label{fig:basicsimswpep} % decsensSims.R
 \end{figure}
 
