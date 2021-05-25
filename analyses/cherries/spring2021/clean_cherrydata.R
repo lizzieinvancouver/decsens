@@ -8,6 +8,7 @@ graphics.off()
 
 # Load libraries
 library(tidyr)
+library(lubridate)
 
 setwd("~/Documents/git/decsens/analyses/cherries/spring2021/")
 
@@ -24,7 +25,23 @@ noaa_clean <- noaa_clean[-1, ]
 write.csv(noaa_clean, file="output/clean_cherry_noaa.csv", row.names=FALSE)
 
 
-### Next with the PEP725 data for Germany and Norway...
+#### Start with the NOAA data...
+swiss <- read.csv("input/mateoswiss.csv")
+
+colnames(swiss)
+
+swiss_clean <- separate(swiss, `stn.time.mprua60d.mprua65d`, sep=";", c("station", "year", "flo_start", "flowering"))
+
+swiss_clean$flo_start <- as.Date(swiss_clean$flo_start, "%Y%m%d")
+swiss_clean$flowering <- as.Date(swiss_clean$flowering, "%Y%m%d")
+
+swiss_clean$flo_start <- yday(swiss_clean$flo_start)
+swiss_clean$flowering <- yday(swiss_clean$flowering)
+
+write.csv(swiss_clean, file="output/clean_cherry_swiss.csv", row.names=FALSE)
+
+
+### Finally with the PEP725 data for Germany and Norway...
 ger <- read.csv("input/pruavi_germany_pep.csv")
 gersites <- read.csv("input/PEP725_DE_stations.csv")
 
