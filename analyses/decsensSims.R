@@ -131,7 +131,7 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Linear (untransformed)", "Non-linear (Logged)"),
    cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C over window)"), sep=""),
@@ -152,7 +152,7 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-legend("bottomright", pch=c(19, 19), col=c("salmon", "darkblue"), legend=c("Using logged variables", "Simple linear regression"),
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Linear (untransformed)", "Non-linear (Logged)"),
    cex=1, bty="n")
 dev.off()
 
@@ -398,13 +398,13 @@ plot(log(yearly_temp_trunc), log(leafout_date), pch=20, col = "dodgerblue")
 pdf(file.path("figures/simslogging.pdf"), width = 9, height = 5)
 par(mfrow=c(2,3))
 plot(yearly_temp_trunc, leafout_date, pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+     ylab="Leafout date", main="Natural scale", font.main = 1, cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
 # mtext("(a)", side = 3, adj=0.05)
 plot(yearly_temp_trunc, log(leafout_date), pch=20, xlab="Simulated spring temperature to leafout",
-     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+     ylab="log(Leafout date)", main="Logged response", font.main = 1, cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
 # mtext("(b)", side = 3, adj=0.05)
 plot(log(yearly_temp_trunc), log(leafout_date), pch=20, xlab="log(Simulated spring temperature to leafout)",
-     ylab="log(Leafout date)", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
+     ylab="log(Leafout date)", main="Logged response and predictor", font.main = 1, cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)
 # mtext("(c)", side = 3, adj=0.05)
 plot(yearly_temp, leafout_date, pch=20, xlab="Simulated spring temperature",
     ylab="Leafout date", main="", cex=cexhere, bty="l", mgp=c(1.5,.5,0), tck=-.01)

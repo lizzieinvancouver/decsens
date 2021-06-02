@@ -723,10 +723,10 @@ mean2spp.forpaper20yr <- mean2spp.forpaper20yr[1:6,]
 
 ## Make smaller versions with just 60 day window
 mean2spp.forpaper10yr.sm <- mean2spp.forpaper10yr[,c(1,2,5,6, 9:11, 14,17)]
-names(mean2spp.forpaper10yr.sm) <- c("years", "species", "mean (ST)", "mean ST.lo", 
+names(mean2spp.forpaper10yr.sm) <- c("years", "species", "mean (ST)", "mean (ST.lo)", 
     "var (ST)", "var (lo)", "GDD", "slope", "log-slope")
 mean2spp.forpaper20yr.sm <- mean2spp.forpaper20yr[,c(1,2,5,6, 9:11, 14,17)]
-names(mean2spp.forpaper20yr.sm) <- c("years", "species", "mean (ST)", "mean ST.lo", 
+names(mean2spp.forpaper20yr.sm) <- c("years", "species", "mean (ST)", "mean (ST.lo)", 
     "var (ST)", "var (lo)", "GDD", "slope", "log-slope")
 mean2spp.forpaper10yr.sm$species <- gsub("Betula", paste0("Betula pendula"), mean2spp.forpaper10yr.sm$species)
 mean2spp.forpaper10yr.sm$species <- gsub("Fagus", paste0("Fagus sylvatica"), mean2spp.forpaper10yr.sm$species)
