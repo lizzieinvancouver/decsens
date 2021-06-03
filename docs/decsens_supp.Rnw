@@ -82,7 +82,7 @@ We slightly modify the notation:
 n & = \text{day since temperatures start to accumulate, }  n = 0, \ldots, a, \ldots, b\\
 X_n & = \text{observed temperature on day $n$} \\
 S_a^n & = \sum_{i = a+1}^{n}X_i, \text{the cumulative daily temperature from day $a+1$ to day $n$}\\ 
-M_a^n & = \frac{S_a^n}{n-a}, \text{the average daily temperature from day $a$ to day $n$}\\ 
+M_a^n & = \frac{S_a^n}{n-a}, \text{the average daily temperature from day $a+1$ to day $n$}\\ 
 \beta & = \text{the threshold of interest, } \beta > 0, \text{ (thermal sum required for leafout)}\\
 n_{\beta} &  = \underset{n}{\text{argmin}} \ S_0^n > \beta, \text{the first day the cumulative daily temperature passes the threshold} \\
 & \ \ \ \text{(for example, day of year (doy) of leafout).}
@@ -122,9 +122,9 @@ The distribution of $M_a^b$ shows that consequence (2) above still holds with th
 
 (4) The conditional mean and variance are sums of negative sigmoids, according to the following identities \\
 
-$E \left ( n_{\beta} \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ \\
+$E \left [n_{\beta} \ \big |  \ M_{a}^b = m \right] =  \sum_{n=0}^{\infty} Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ \\
 
-$E \left ( n_{\beta}^2 \ \big |  \ M_{a}^b = m \right ) =  \sum_{n=0}^{\infty} \ n \  Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ 
+$E \left [n_{\beta}^2 \ \big |  \ M_{a}^b = m \right] =  \sum_{n=0}^{\infty} \ n \  Pr \left ( n_{\beta} \geq n \ \big |  \ M_{a}^b = m \right )$ 
 
 \section{Simulations of common hypotheses for declining sensitivity}
 
