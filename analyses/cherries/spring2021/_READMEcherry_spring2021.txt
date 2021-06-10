@@ -47,12 +47,28 @@ Here is information on the three data sources for cherry blossom data.
 	
 	Data is from: https://www.ncei.noaa.gov/pub/data/paleo/historical/europe/switzerland/swiss-cherry-phenology2003.txt
 	Species: Prunus avium
+	Columns: 
+		DATA:
+			Column 1: Year AD
+			Column 2: Observed date of cherry flowering, number of days after 
+          			January 1 [DoY]
+			Column 3: Observed date of cherry flowering corrected w.r.t. an 
+          			altitude reference level, number of days after January 1 [DoY]
+			Column 4: Reconstructed flowering date from temperature predictor (Feb-Apr) 
+          			stations of selected stations from Luterbacher et al. (2004, Science) 
+          			and Xoplaki et al. (2005, Geophys. Res. Lett.), number of days after 
+          			January 1 [DoY]
+			Column 5: Observed Feb-Apr temperatures as the mean of selected grid-points 
+          			(47∞-47∞30'N, 7∞30-9∞30'E) from Luterbacher et al. (2004), 
+          			Xoplaki et al. (2005), Mitchell and Jones (2005, Int J Climatol) 
+          			and Hansen et al. (2001, updated, J Geophys Res) [∞C]
 
 (3) Meteo Swiss from Liestal site (47.481389, 7.730556; 350m)
 	
 	Data is from: https://gate.meteoswiss.ch/idaweb/system/stationList.do
 		(ask Cat for login information if needed)
 	Species: Prunus avium
-
+	Data: mprua60d is BBCH 60 so start of flowering
+	      mprua65d is BBCH 65 so middle of flowering
 
 
