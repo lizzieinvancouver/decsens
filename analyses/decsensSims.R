@@ -131,8 +131,8 @@ for(i in 1:length(unique(mean.sims$degwarm))){
   lines(x=rep(pos.x, 2), y=c(pos.y-sdhere, pos.y+sdhere), col="salmon")
   points(pos.x, pos.y, cex=cexhere, pch=19, col="salmon")
   }
-legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Linear (untransformed)", "Non-linear (logged)"),
-   cex=1, bty="n")
+legend("bottomright", pch=c(19, 19), col=c("darkblue", "salmon"), legend=c("Linear (untransformed)",
+    "Non-linear (logged)"), cex=1, bty="n")
 plot(x=NULL,y=NULL, xlim=c(-0.5, 8), ylim=c(-6, -0.1),
      ylab=expression(paste("Estimated sensitivity (days/", degree, "C over window)"), sep=""),
      xlab=expression(paste("Warming (", degree, "C)")), main="",
