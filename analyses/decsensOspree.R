@@ -4,6 +4,8 @@
 ## Trying to find a controlled multi-force and multi-chill study to use in decsens ##
 ## Maybe should also consider multi-photoperiod? ##
 
+## Updated in September 2022 to extract some data and analyses for Yann Vitasse and Manuel Walde ##
+
 rm(list=ls()) # remove everything currently held in the R memory
 options(stringsAsFactors=FALSE)
 graphics.off()
@@ -12,7 +14,7 @@ graphics.off()
 library(ggplot2)
 
 # Setting working directory. Add in your own path in an if statement for your file structure
-if(length(grep("lizzie", getwd())>0)) { 
+if(length(grep("Lizzie", getwd())>0)) { 
   setwd("~/Documents/git/treegarden/budreview/ospree/bb_analysis") 
 } else if (length(grep("ailene", getwd()))>0) {setwd("/Users/aileneettinger/git/ospree/analyses/bb_analysis")
 }else if(length(grep("Ignacio", getwd()))>0) { 
@@ -40,6 +42,7 @@ studfile <- subset(studfile, datasetID!="junttila12")
 
 # Which study is all experimental (no ambient) and has most forcing treatments ...
 manyforce <- subset(studfile, force>4)
+dwsl <- d[which(d$datasetID %in% unique(manyforce$datasetID)),] # grab the data to use below for Manuel 
 # caffarra11a exp 2 -- okay, 5 levels force (6-32 C) x 3 chilltemp -- BIGGEST range of  temps
 # campbell75 exp 3 -- okay, 4 levels force (10-22 C) x 3 chilldays at 4 C (I think) 
 # charrier11 exp 2 -- okay, 5 levels force (5-25 C) x ?? chill
@@ -268,3 +271,67 @@ points(log(leafout_date)~log(expected_temp), col="salmon")
 points(log(response.time)~log(forceday), data=char2)
 
 
+##
+##
+
+# For Yann and Manuel at WSL, some of the above repeated
+write.csv(dwsl, "..//..//..//..//decsens/analyses/misc/dwsl.csv", row.names=FALSE)
+dwsl <- read.csv("..//..//..//..//decsens/analyses/misc/dwsl.csv")
+
+##
+## Show caffarra11a exp 2 // charrier11 exp 2 for force 
+dwsl$chilldaysnum <- as.numeric(dwsl$chilldays)
+caff2 <- dwsl[which((dwsl$datasetID %in% "caffarra11a") & (dwsl$study %in% "exp2")),]
+char2 <- dwsl[which((dwsl$datasetID %in% "charrier11") & (dwsl$study %in% "exp2")),]
+
+require(ggplot2)
+require(gridExtra)
+
+## forcing ...
+caff22sp <- subset(caff2, genus=="Betula" | genus=="Fagus")
+caffraw <- ggplot(caff22sp, aes(x=forceday, y=response.time, color=genus)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"), legend.position = "none")
+
+cafflogy <- ggplot(caff22sp, aes(x=forceday, y=log(response.time), color=genus)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("log(Days to event)") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"), legend.position = "none")
+
+cafflogyx <- ggplot(caff22sp, aes(x=log(forceday), y=log(response.time), color=genus)) +
+    geom_point() +
+    xlab("log(Forcing temperature)") +
+    ylab("log(Days to event)") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"), legend.position = "none")
+
+
+char2raw <- ggplot(char2, aes(x=forceday, y=response.time)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"))
+
+char2logy <- ggplot(char2, aes(x=forceday, y=log(response.time))) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("log(Days to event)") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"))
+
+char2logyx <- ggplot(char2, aes(x=log(forceday), y=log(response.time))) +
+    geom_point() +
+    xlab("log(Forcing temperature)") +
+    ylab("log(Days to event)") +
+    theme_minimal() +
+    theme(axis.line = element_line(size = 0.5, colour = "darkgray"))
+
+pdf("..//..//..//..//decsens/analyses/figures/ospreeforcecaffchar.pdf", width=10, height=6)
+grid.arrange(caffraw, cafflogy, cafflogyx, char2raw, char2logy, char2logyx, nrow = 2)
+dev.off()
