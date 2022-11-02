@@ -335,3 +335,42 @@ char2logyx <- ggplot(char2, aes(x=log(forceday), y=log(response.time))) +
 pdf("..//..//..//..//decsens/analyses/figures/ospreeforcecaffchar.pdf", width=10, height=6)
 grid.arrange(caffraw, cafflogy, cafflogyx, char2raw, char2logy, char2logyx, nrow = 2)
 dev.off()
+
+# More plots ...
+dwslbb <- subset(dwsl, respvar=="daystobudburst") # this drops a LOT of data
+dwslbb <- subset(dwslbb, datasetID!="richardson18") # we could not calculate forcing temperature
+dwslbb <- subset(dwslbb, datasetID!="anzanello16") # new data, and mostly South Am crops?
+
+table(dwslbb$datasetID, dwslbb$chilltemp)
+table(dwslbb$datasetID, dwslbb$chilldays)
+table(dwslbb$datasetID, dwslbb$photoperiod_day)
+table(dwslbb$datasetID, dwslbb$fieldsample.date)
+
+ggplot(dwslbb, aes(x=forceday, y=response.time, color=genus)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event")
+
+ggplot(dwslbb, aes(x=forceday, y=response.time, color=datasetID)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event")
+
+ggplot(dwslbb, aes(x=forceday, y=response.time, color=chilldays)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event") 
+
+
+ggplot(dwslbb, aes(x=forceday, y=response.time, color=datasetID)) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event") +
+    facet_wrap(.~genus, scales="free")
+
+
+ggplot(dwslbb, aes(x=forceday, y=response.time, color=as.factor(chilldays))) +
+    geom_point() +
+    xlab("Forcing temperature") +
+    ylab("Days to event") +
+    facet_wrap(.~genus)
